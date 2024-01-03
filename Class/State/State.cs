@@ -2,7 +2,11 @@
 
 public enum State
 {
-    Menu,
-    Playing, 
-    Pause,
+    MainMenu,
+    Settings,
+    Resolution,
+    Sound,
+    Playing,
+    
 }
+
