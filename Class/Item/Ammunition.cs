@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Game1.Class.Item
 {
-    internal class Ammunition
+    public class Ammunition
     {
     }
 }

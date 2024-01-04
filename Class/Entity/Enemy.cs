@@ -6,9 +6,9 @@ using System.Threading.Tasks;
 
 namespace Game1.Class.Entity
 {
-    internal class Enemy
+    public class Enemy: Entity
     {
-
+        
 
     }
 }

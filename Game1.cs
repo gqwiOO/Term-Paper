@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Game1.Class.Entity;
 using Game1.Class.State;
 using Menu;
 using Microsoft.Xna.Framework;
@@ -26,18 +27,21 @@ namespace Game1
         public Menu.Menu _resolutionMenu ;
         
         public static bool isLeftMouseButtonPressed = false;
-
+        private static Game1 _instance;
+        public Texture2D _hero  ;
+        public Player _player;
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
+            
         }
-
         protected override void Initialize()
         {
             _state = State.MainMenu;
             
+
             _screenWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
             _screenHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height - 100;
 
@@ -54,6 +58,8 @@ namespace Game1
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             
             _font = Content.Load<SpriteFont>("mainFont");
+            _hero = Content.Load<Texture2D>("Hero");
+            _player = new Player(_hero);
             
             // Creating Main Menu 
             _menu = new Menu.Menu(new List<Button>
@@ -134,13 +140,11 @@ namespace Game1
 
                     },
                 },
-
                 
                 new Button(_font, "Back", new Vector2(_screenWidth / 2,_screenHeight / 2))
                 {
                     _onClick = () => { _state = State.Settings; },
                 },
-                
             }, State.Resolution);
 
             _mainMenu = new MainMenu
@@ -153,13 +157,13 @@ namespace Game1
                 }
             };
         }
-
         protected override void Update(GameTime gameTime)
         {
             _mouseState = Mouse.GetState(); // gives _mouseState state each frame
             if (_mouseState.LeftButton == ButtonState.Released) isLeftMouseButtonPressed = false;
-            
             _mainMenu.Update();
+            _player.Update();
+
             
             base.Update(gameTime);
         }
@@ -170,6 +174,7 @@ namespace Game1
             
             _spriteBatch.Begin();
             _mainMenu.Draw();
+            _player.Draw(_spriteBatch);
             _spriteBatch.End();
 
             base.Draw(gameTime);

@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace Game1.Class.Item
 {
-    internal class Weapon
+    internal class Weapon: Item
     {
+        public int _damage;
+        public int _range;
+        
     }
 }

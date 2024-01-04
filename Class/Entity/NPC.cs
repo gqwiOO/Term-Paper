@@ -6,7 +6,9 @@ using System.Threading.Tasks;
 
 namespace Game1.Class.Entity
 {
-    internal class NPC
+    public class NPC: Entity
     {
+        public string _name;
+        
     }
 }

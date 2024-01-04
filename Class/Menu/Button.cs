@@ -50,10 +50,6 @@ namespace Menu
 
         public void Draw()
         {
-            // if (_position.X * 2 != Game1.Game1._screenWidth)
-            // {
-            //     _position = 
-            // }
             _spriteBatch.DrawString(_font, _text, _position, Color.Black);
         }
         
