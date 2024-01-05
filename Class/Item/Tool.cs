@@ -8,5 +8,6 @@ namespace Game1.Class.Item
 {
     internal class Tool
     {
+        
     }
 }

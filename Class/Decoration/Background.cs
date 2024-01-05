@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Game1.Class.Decoration
 {
-    internal class Decor
+    internal class Background
     {
     }
 }

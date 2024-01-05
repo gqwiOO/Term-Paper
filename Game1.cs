@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using Game1.Class.Camera;
 using Game1.Class.Entity;
 using Game1.Class.State;
 using Menu;
@@ -18,6 +19,8 @@ namespace Game1
         public static int _screenHeight;
         public static State _state;
         public static MouseState _mouseState;
+        public Camera _camera;
+        
         private SpriteFont _font;
 
         public Menu.MainMenu _mainMenu;
@@ -54,6 +57,8 @@ namespace Game1
         }
         protected override void LoadContent()
         {
+
+            _camera = new Camera();
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             
             _font = Content.Load<SpriteFont>("mainFont");
@@ -110,6 +115,20 @@ namespace Game1
             
             _resolutionMenu = new Menu.Menu(new List<Button>
             {
+                new Button(_font, "1920x1080", new Vector2(_screenWidth / 2,_screenHeight / 2 - 300))
+                {
+                    _onClick = () =>
+                    {
+                        _screenWidth = 1920;
+                        _screenHeight = 1080;
+
+                        _graphics.PreferredBackBufferWidth = _screenWidth;
+                        _graphics.PreferredBackBufferHeight = _screenHeight;
+                        _graphics.IsFullScreen = true;
+                        _graphics.ApplyChanges();
+                        LoadContent();
+                    },
+                },
                 // Buttons
                 new Button(_font, "1600x900", new Vector2(_screenWidth / 2,_screenHeight / 2 - 200))
                 {
@@ -166,18 +185,30 @@ namespace Game1
             _enemy.Update();
             _mainMenu.Update();
             
+            _camera.Follow(_player);
+            
             base.Update(gameTime);
         }
 
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-            
-            _spriteBatch.Begin();
-            _player.Draw(_spriteBatch);
-            _enemy.Draw(_spriteBatch);
-            _mainMenu.Draw();
-            _spriteBatch.End();
+            if (_state == State.Playing)
+            {
+                _spriteBatch.Begin(transformMatrix: _camera.Transform);
+                _player.Draw(_spriteBatch);
+                _enemy.Draw(_spriteBatch);
+                _mainMenu.Draw();
+                _spriteBatch.End();
+            }
+            else
+            {
+                _spriteBatch.Begin();
+                _player.Draw(_spriteBatch);
+                _enemy.Draw(_spriteBatch);
+                _mainMenu.Draw();
+                _spriteBatch.End();
+            }
 
             base.Draw(gameTime);
         }
