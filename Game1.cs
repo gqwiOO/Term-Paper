@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Runtime.InteropServices;
+using Game1.Class;
 using Game1.Class.Camera;
 using Game1.Class.Entity;
 using Game1.Class.State;
@@ -7,6 +10,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Button = Menu.Button;
+using Keyboard = Microsoft.VisualBasic.Devices.Keyboard;
 
 namespace Game1
 {
@@ -19,7 +23,9 @@ namespace Game1
         public static int _screenHeight;
         public static State _state;
         public static MouseState _mouseState;
+        
         public Camera _camera;
+        public Fps _fps;
         
         private SpriteFont _font;
 
@@ -27,6 +33,7 @@ namespace Game1
         public Menu.Menu _menu;
         public Menu.Menu _settingsMenu;
         public Menu.Menu _resolutionMenu ;
+        public Menu.Menu _restartMenu;
         
         public static bool isLeftMouseButtonPressed = false;
         private static Game1 _instance;
@@ -45,12 +52,16 @@ namespace Game1
         {
             _state = State.MainMenu;
             
+            IsFixedTimeStep = true;
+            TargetElapsedTime = TimeSpan.FromSeconds(1d / 60d);
+            _fps = new Fps();
+            
             _screenWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
-            _screenHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height - 100;
+            _screenHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
 
             _graphics.PreferredBackBufferWidth = _screenWidth;
             _graphics.PreferredBackBufferHeight = _screenHeight;
-            _graphics.IsFullScreen = false;
+            _graphics.IsFullScreen = true;
             _graphics.ApplyChanges();
             
             base.Initialize();
@@ -73,7 +84,14 @@ namespace Game1
                 // Buttons
                 new Button(_font, "Start", new Vector2(_screenWidth / 2, _screenHeight / 2 - 200))
                 {
-                    _onClick = () => { _state = State.Playing; },
+                    _onClick = () =>
+                    {
+                        _state = State.Playing;
+                        _player._hp = 100;
+                        _player._hitBox.X = 500;
+                        _player._hitBox.Y = 500;
+                        
+                    },
                 },
 
                 new Button(_font, "Settings", new Vector2(_screenWidth / 2, _screenHeight / 2 - 100))
@@ -139,7 +157,7 @@ namespace Game1
 
                         _graphics.PreferredBackBufferWidth = _screenWidth;
                         _graphics.PreferredBackBufferHeight = _screenHeight;
-                        _graphics.IsFullScreen = false;
+                        _graphics.IsFullScreen = true;
                         _graphics.ApplyChanges();
                         LoadContent();
                     },
@@ -154,7 +172,7 @@ namespace Game1
 
                         _graphics.PreferredBackBufferWidth = _screenWidth;
                         _graphics.PreferredBackBufferHeight = _screenHeight;
-                        _graphics.IsFullScreen = false;
+                        _graphics.IsFullScreen = true;
                         _graphics.ApplyChanges();
                         LoadContent();
                     },
@@ -165,6 +183,29 @@ namespace Game1
                     _onClick = () => { _state = State.Settings; },
                 },
             }, State.Resolution);
+
+            _restartMenu = new Menu.Menu(new List<Button>
+            {
+                    // Buttons
+                    new Button(_font, "Restart", new Vector2(_screenWidth / 2,_screenHeight / 2 - 300))
+                    {
+                        _onClick = () =>
+                        {
+                            _state = State.Playing;
+                            _player._isDead = false;
+                            _player._hp = 100;
+                            _player._hitBox.X = 500;
+                            _player._hitBox.Y = 500;
+                        },
+                    },
+                
+                    new Button(_font, "Main menu", new Vector2(_screenWidth / 2,_screenHeight / 2 - 200))
+                    {
+                        _onClick = () => { _state = State.MainMenu;
+                            _player._isDead = false;
+                        }, 
+                    }
+                    },State.Playing);
 
             _mainMenu = new MainMenu
             {
@@ -178,12 +219,28 @@ namespace Game1
         }
         protected override void Update(GameTime gameTime)
         {
+            if(Microsoft.Xna.Framework.Input.Keyboard.GetState().IsKeyDown(Keys.Escape)) Exit();
             _mouseState = Mouse.GetState(); // gives _mouseState state each frame
             if (_mouseState.LeftButton == ButtonState.Released) isLeftMouseButtonPressed = false;
             
+            _fps.Update(gameTime);
             _player.Update();
             _enemy.Update();
+            if (_player._isDead == true)
+            {
+                _restartMenu.Update();
+            }
             _mainMenu.Update();
+            if (_player._hitBox.Intersects(_enemy._hitBox))
+            {
+                if (_player._isDead == false)
+                {
+                    _player._hp -= _enemy._damage;
+                }
+            }
+           
+                
+            
             
             _camera.Follow(_player);
             
@@ -196,7 +253,10 @@ namespace Game1
             if (_state == State.Playing)
             {
                 _spriteBatch.Begin(transformMatrix: _camera.Transform);
-                _player.Draw(_spriteBatch);
+                if (_player._isDead == false)
+                {
+                    _player.Draw(_spriteBatch);
+                }
                 _enemy.Draw(_spriteBatch);
                 _mainMenu.Draw();
                 _spriteBatch.End();
@@ -209,6 +269,15 @@ namespace Game1
                 _mainMenu.Draw();
                 _spriteBatch.End();
             }
+            _spriteBatch.Begin();
+            if (_player._isDead == true)
+            {
+                _restartMenu.Draw();
+            }
+            _spriteBatch.End();
+            _spriteBatch.Begin();
+            _fps.DrawFps(_spriteBatch, _font, new Vector2(0, 0), Color.Black);
+            _spriteBatch.End();
 
             base.Draw(gameTime);
         }

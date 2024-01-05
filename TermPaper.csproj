@@ -20,6 +20,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Level\Generating\**" />
+    <Compile Remove="Class\Entity\Component.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Level\Generating\**" />
