@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Game1.Class.Entity;
 using Game1.Class.State;
 using Menu;
@@ -28,8 +27,10 @@ namespace Game1
         
         public static bool isLeftMouseButtonPressed = false;
         private static Game1 _instance;
-        public Texture2D _hero  ;
         public Player _player;
+
+        public Enemy _enemy;
+        
         public Game1()
         {
             _graphics = new GraphicsDeviceManager(this);
@@ -41,7 +42,6 @@ namespace Game1
         {
             _state = State.MainMenu;
             
-
             _screenWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
             _screenHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height - 100;
 
@@ -52,14 +52,15 @@ namespace Game1
             
             base.Initialize();
         }
-
         protected override void LoadContent()
         {
             _spriteBatch = new SpriteBatch(GraphicsDevice);
             
             _font = Content.Load<SpriteFont>("mainFont");
-            _hero = Content.Load<Texture2D>("Hero");
-            _player = new Player(_hero);
+            
+            _player = new Player( Content.Load<Texture2D>("Hero"));
+
+            _enemy = new Enemy(Content.Load<Texture2D>("Enemy"));
             
             // Creating Main Menu 
             _menu = new Menu.Menu(new List<Button>
@@ -137,7 +138,6 @@ namespace Game1
                         _graphics.IsFullScreen = false;
                         _graphics.ApplyChanges();
                         LoadContent();
-
                     },
                 },
                 
@@ -161,9 +161,10 @@ namespace Game1
         {
             _mouseState = Mouse.GetState(); // gives _mouseState state each frame
             if (_mouseState.LeftButton == ButtonState.Released) isLeftMouseButtonPressed = false;
-            _mainMenu.Update();
+            
             _player.Update();
-
+            _enemy.Update();
+            _mainMenu.Update();
             
             base.Update(gameTime);
         }
@@ -173,8 +174,9 @@ namespace Game1
             GraphicsDevice.Clear(Color.CornflowerBlue);
             
             _spriteBatch.Begin();
-            _mainMenu.Draw();
             _player.Draw(_spriteBatch);
+            _enemy.Draw(_spriteBatch);
+            _mainMenu.Draw();
             _spriteBatch.End();
 
             base.Draw(gameTime);

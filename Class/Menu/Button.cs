@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using Microsoft.Xna.Framework;
+﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using SpriteBatch = Microsoft.Xna.Framework.Graphics.SpriteBatch;
@@ -11,7 +8,6 @@ namespace Menu
 {
     public class Button
     {
-        // private bool _isPressed = false; 
         private SpriteFont _font;
         public string _text;
         public delegate void onClickDelegate();
@@ -47,12 +43,10 @@ namespace Menu
                 Game1.Game1.isLeftMouseButtonPressed = true;
             }
         }
-
         public void Draw()
         {
             _spriteBatch.DrawString(_font, _text, _position, Color.Black);
         }
-        
     }
     
         

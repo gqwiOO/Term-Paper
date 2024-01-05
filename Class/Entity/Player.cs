@@ -7,36 +7,47 @@ namespace Game1.Class.Entity
 {
     public class Player: Entity 
     {
-        public float _playerSpeed = 20f;
-        public Vector2 _playerPosition;
-        public Texture2D _playerSprite;
-        public Player(Texture2D PlayerSprite)
+        public Rectangle _hitBox;
+        public Texture2D _sprite;
+        
+        public Player(Texture2D sprite)
         {
-            _playerSprite = PlayerSprite;
+            _speed = 8;
+            _sprite = sprite;
+            _hitBox = new Rectangle(500, 500, 128, 128);
         }
         public void Update()
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.W)) //Movement
+            if (Game1._state == State.State.Playing)
             {
-                _playerPosition.Y -= _playerSpeed;
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.S))
-            {
-                _playerPosition.Y += _playerSpeed;
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.A))
-            {
-                _playerPosition.X -= _playerSpeed;
-            }
-            if (Keyboard.GetState().IsKeyDown(Keys.D))
-            {
-                _playerPosition.X += _playerSpeed;
+                if (Keyboard.GetState().IsKeyDown(Keys.W)) //Movement
+                {
+                    _hitBox.Y -= _speed;
+                }
+
+                if (Keyboard.GetState().IsKeyDown(Keys.S))
+                {
+                    _hitBox.Y += _speed;
+                }
+
+                if (Keyboard.GetState().IsKeyDown(Keys.A))
+                {
+                   _hitBox.X -= _speed;
+                }
+
+                if (Keyboard.GetState().IsKeyDown(Keys.D))
+                {
+                    _hitBox.X += _speed;
+                }
             }
         }
 
         public void Draw(SpriteBatch spriteBatch)
         {
-            spriteBatch.Draw(_playerSprite, _playerPosition, Microsoft.Xna.Framework.Color.White);
+            if (Game1._state == State.State.Playing)
+            {
+                spriteBatch.Draw(_sprite, _hitBox,Color.White);
+            }
         }
     }
 }
