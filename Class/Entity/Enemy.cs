@@ -6,18 +6,33 @@ namespace Game1.Class.Entity
     public class Enemy: Entity
     {
         public Rectangle _hitBox;
-        public int _cooldown;
+        public double _cooldown;
+        private double lastTimeHitPlayer;
         
         public Enemy(Texture2D EnemySprite)
         {
             _sprite = EnemySprite;
             _speed = 4;
             _damage = 4;
+            _cooldown = 1;
             _hitBox = new Rectangle(1500,700 , 100, 100);
         }
-        public void Update()
+        public void Update(GameTime gameTime, Player player)
         {
             
+            if (this._hitBox.Intersects(player._hitBox))
+            {
+                if (gameTime.TotalGameTime.TotalSeconds > lastTimeHitPlayer + (double)_cooldown
+                    && player._hp > 0
+                    && !player._isDead
+                    || lastTimeHitPlayer == null 
+                    )
+                {
+                    player._hp -= 20;
+                    lastTimeHitPlayer = gameTime.TotalGameTime.TotalSeconds;
+                }
+                
+            }
         }
         public void Draw(SpriteBatch spriteBatch)
         {

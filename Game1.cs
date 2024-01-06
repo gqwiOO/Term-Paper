@@ -37,8 +37,8 @@ namespace Game1
         
         public static bool isLeftMouseButtonPressed = false;
         private static Game1 _instance;
+        
         public Player _player;
-
         public Enemy _enemy;
         
         public Game1()
@@ -46,12 +46,14 @@ namespace Game1
             _graphics = new GraphicsDeviceManager(this);
             Content.RootDirectory = "Content";
             IsMouseVisible = true;
-            
         }
         protected override void Initialize()
         {
             _state = State.MainMenu;
+            _camera = new Camera();
+            _spriteBatch = new SpriteBatch(GraphicsDevice);
             
+            // FPS
             IsFixedTimeStep = true;
             TargetElapsedTime = TimeSpan.FromSeconds(1d / 60d);
             _fps = new Fps();
@@ -61,7 +63,7 @@ namespace Game1
 
             _graphics.PreferredBackBufferWidth = _screenWidth;
             _graphics.PreferredBackBufferHeight = _screenHeight;
-            _graphics.IsFullScreen = true;
+            _graphics.IsFullScreen = false;
             _graphics.ApplyChanges();
             
             base.Initialize();
@@ -69,13 +71,10 @@ namespace Game1
         protected override void LoadContent()
         {
 
-            _camera = new Camera();
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
             
             _font = Content.Load<SpriteFont>("mainFont");
             
             _player = new Player( Content.Load<Texture2D>("Hero"));
-
             _enemy = new Enemy(Content.Load<Texture2D>("Enemy"));
             
             // Creating Main Menu 
@@ -90,7 +89,6 @@ namespace Game1
                         _player._hp = 100;
                         _player._hitBox.X = 500;
                         _player._hitBox.Y = 500;
-                        
                     },
                 },
 
@@ -225,25 +223,13 @@ namespace Game1
             
             _fps.Update(gameTime);
             _player.Update();
-            _enemy.Update();
+            _enemy.Update(gameTime, _player);
             if (_player._isDead == true)
             {
                 _restartMenu.Update();
             }
             _mainMenu.Update();
-            if (_player._hitBox.Intersects(_enemy._hitBox))
-            {
-                if (_player._isDead == false)
-                {
-                    _player._hp -= _enemy._damage;
-                }
-            }
-           
-                
-            
-            
             _camera.Follow(_player);
-            
             base.Update(gameTime);
         }
 
@@ -277,6 +263,7 @@ namespace Game1
             _spriteBatch.End();
             _spriteBatch.Begin();
             _fps.DrawFps(_spriteBatch, _font, new Vector2(0, 0), Color.Black);
+            _spriteBatch.DrawString(_font, $"HP: {_player._hp}", new Vector2(0,_screenHeight - 100), Color.Red);
             _spriteBatch.End();
 
             base.Draw(gameTime);

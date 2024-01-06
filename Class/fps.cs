@@ -22,7 +22,7 @@ public class Fps
         elapsed = (double)(now - last);
         if (elapsed > msgFrequency)
         {
-            msg = " Fps: " + (frames / elapsed).ToString() + "\n Elapsed time: " + elapsed.ToString() +  "\n Updates: " + updates.ToString() + "\n Frames: " + frames.ToString();
+            msg = " Fps: " +  frames.ToString();
             //Console.WriteLine(msg);
             elapsed = 0;
             frames = 0;
