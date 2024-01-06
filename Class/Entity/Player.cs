@@ -60,5 +60,13 @@ namespace Game1.Class.Entity
                spriteBatch.Draw(_sprite, _hitBox, null, Color.White, 0, new Vector2(50, 50), s, 0f);
             }
         }
+
+        public void Revive()
+        {
+            _isDead = false;
+            _hp = 100;
+            _hitBox.X = 500;
+            _hitBox.Y = 500;
+        }
     }
 }

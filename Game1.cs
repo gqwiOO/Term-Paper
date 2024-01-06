@@ -86,9 +86,7 @@ namespace Game1
                     _onClick = () =>
                     {
                         _state = State.Playing;
-                        _player._hp = 100;
-                        _player._hitBox.X = 500;
-                        _player._hitBox.Y = 500;
+                        _player.Revive();
                     },
                 },
 
@@ -190,10 +188,7 @@ namespace Game1
                         _onClick = () =>
                         {
                             _state = State.Playing;
-                            _player._isDead = false;
-                            _player._hp = 100;
-                            _player._hitBox.X = 500;
-                            _player._hitBox.Y = 500;
+                            _player.Revive();
                         },
                     },
                 
