@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Graphics;
+﻿using Menu;
+using Microsoft.Xna.Framework.Graphics;
 using SpriteBatch = Microsoft.Xna.Framework.Graphics.SpriteBatch;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
@@ -10,7 +11,8 @@ namespace Game1.Class.Entity
     {
         public Rectangle _hitBox;
         public Texture2D _sprite;
-
+        public HUD _hud;
+        
         public bool _isDead;
         
         public int _rotX = 500;
@@ -22,8 +24,10 @@ namespace Game1.Class.Entity
             _speed = 8;
             _sprite = sprite;
             _hitBox = new Rectangle(_rotX, 500, 128, 128);
+
+            _hud = new HUD(this);
         }
-        public void Update()
+        public void  Update(GameTime gameTime)
         {
             if (Game1._state == State.State.Playing && _isDead != true)
             {
@@ -51,13 +55,15 @@ namespace Game1.Class.Entity
                 {
                     _isDead = true;
                 }
+                _hud.Update(gameTime);
             }
         }
-        public void Draw(SpriteBatch spriteBatch)
+        public void Draw(SpriteBatch spriteBatch, SpriteFont font)
         {
             if (Game1._state == State.State.Playing && !_isDead)
             {
                spriteBatch.Draw(_sprite, _hitBox, null, Color.White, 0, new Vector2(50, 50), s, 0f);
+               _hud.Draw(spriteBatch,font);
             }
 
         }
@@ -68,6 +74,15 @@ namespace Game1.Class.Entity
             _hp = 100;
             _hitBox.X = 500;
             _hitBox.Y = 500;
+        }
+        public override void Update(GameTime gameTime, Player player)
+        {
+            
+        }
+
+        public override void Draw(SpriteBatch spriteBatch)
+        {
+            
         }
     }
 }

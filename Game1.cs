@@ -37,6 +37,8 @@ namespace Game1
         public Enemy _enemy;
         public Camera _camera;
         public Fps _fps;
+
+        public List<Entity> _entities;
         
         public Game1()
         {
@@ -67,10 +69,13 @@ namespace Game1
         }
         protected override void LoadContent()
         {
-            _font = Content.Load<SpriteFont>("Minecraft");
+            _player = new Player(Content.Load<Texture2D>("Hero"));
+            _entities = new List<Entity>()
+            {
+                new Enemy(Content.Load<Texture2D>("Enemy"))
+            };
             
-            _player = new Player( Content.Load<Texture2D>("Hero"));
-            _enemy = new Enemy(Content.Load<Texture2D>("Enemy"));
+            _font = Content.Load<SpriteFont>("Minecraft");
             
             // Creating Main Menu 
             _menu = new Menu.Menu(new List<Button>
@@ -189,7 +194,6 @@ namespace Game1
                   _settingsMenu,
                   _resolutionMenu
                 },
-                state = _state,
             };
         }
         protected override void Update(GameTime gameTime)
@@ -198,9 +202,9 @@ namespace Game1
             _mouseState = Mouse.GetState(); // gives _mouseState state each frame
             if (_mouseState.LeftButton == ButtonState.Released) isLeftMouseButtonPressed = false;
             
+            _entities.ForEach(entity => entity.Update(gameTime, _player));
             _fps.Update(gameTime);
-            _player.Update();
-            _enemy.Update(gameTime, _player);
+            _player.Update(gameTime);
             if (_player._isDead)
             {
                 _restartMenu.Update();
@@ -215,8 +219,8 @@ namespace Game1
             GraphicsDevice.Clear(Color.CornflowerBlue);
             
             _spriteBatch.Begin(transformMatrix: _camera.Transform);
-            _player.Draw(_spriteBatch);
-            _enemy.Draw(_spriteBatch);
+            _entities.ForEach(entity => entity.Draw(_spriteBatch));
+            _player.Draw(_spriteBatch, _font);
             _spriteBatch.End();
             
             _spriteBatch.Begin();

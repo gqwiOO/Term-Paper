@@ -17,9 +17,8 @@ namespace Game1.Class.Entity
             _cooldown = 1;
             _hitBox = new Rectangle(1500,700 , 100, 100);
         }
-        public void Update(GameTime gameTime, Player player)
+        public override void Update(GameTime gameTime, Player player)
         {
-            
             if (this._hitBox.Intersects(player._hitBox))
             {
                 if (gameTime.TotalGameTime.TotalSeconds > lastTimeHitPlayer + (double)_cooldown
@@ -31,10 +30,9 @@ namespace Game1.Class.Entity
                     player._hp -= 20;
                     lastTimeHitPlayer = gameTime.TotalGameTime.TotalSeconds;
                 }
-                
             }
         }
-        public void Draw(SpriteBatch spriteBatch)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             if (Game1._state == State.State.Playing)
             {
