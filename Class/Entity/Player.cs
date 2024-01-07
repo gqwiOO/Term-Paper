@@ -55,10 +55,11 @@ namespace Game1.Class.Entity
         }
         public void Draw(SpriteBatch spriteBatch)
         {
-            if (Game1._state == State.State.Playing)
+            if (Game1._state == State.State.Playing && !_isDead)
             {
                spriteBatch.Draw(_sprite, _hitBox, null, Color.White, 0, new Vector2(50, 50), s, 0f);
             }
+
         }
 
         public void Revive()

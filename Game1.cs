@@ -23,26 +23,20 @@ namespace Game1
         public static int _screenHeight;
         public static State _state;
         public static MouseState _mouseState;
-        
-        public Camera _camera;
-        public Fps _fps;
+        public static bool isLeftMouseButtonPressed = false;
         
         private SpriteFont _font;
 
         public Menu.MainMenu _mainMenu;
         public Menu.Menu _menu;
         public Menu.Menu _settingsMenu;
-        public Menu.Menu _resolutionMenu ;
+        public Menu.Menu _resolutionMenu;
         public Menu.Menu _restartMenu;
-        
-        public static bool isLeftMouseButtonPressed = false;
-        private static Game1 _instance;
         
         public Player _player;
         public Enemy _enemy;
-
-        public TiledMap _tiledMap;
-        public TiledMapRenderer _tiledMapRenderer;
+        public Camera _camera;
+        public Fps _fps;
         
         public Game1()
         {
@@ -81,53 +75,42 @@ namespace Game1
             // Creating Main Menu 
             _menu = new Menu.Menu(new List<Button>
             {
-                // Buttons
                 new Button(_font, "Start", new Vector2(_screenWidth / 2, _screenHeight / 2 - 200))
                 {
                     _onClick = () =>
                     {
                         _state = State.Playing;
                         _player.Revive();
-                    },
+                    }
                 },
-
                 new Button(_font, "Settings", new Vector2(_screenWidth / 2, _screenHeight / 2 - 100))
                 {
-                    _onClick = () => { _state = State.Settings; },
+                    _onClick = () => { _state = State.Settings; }
                 },
-
-
                 new Button(_font, "Quit", new Vector2(_screenWidth / 2, _screenHeight / 2))
                 {
-                    _onClick = () => { Exit(); },
+                    _onClick = () => { Exit(); }
                 },
-
             }, State.MainMenu);  
             
             // Creating Settings Menu
-            
             _settingsMenu = new Menu.Menu(new List<Button>
             {
-                // Buttons
                 new Button(_font, "Resolution", new Vector2(_screenWidth / 2,_screenHeight / 2 - 200))
                 {
                     _onClick = () => { _state = State.Resolution; },
                 },
-                
                 new Button(_font, "Sound", new Vector2(_screenWidth / 2,_screenHeight / 2 - 100))
                 {
                     _onClick = () => {  },
                 },
-
-                
                 new Button(_font, "Back", new Vector2(_screenWidth / 2,_screenHeight / 2))
                 {
                     _onClick = () => { _state = State.MainMenu; },
-                },
-                
+                }
             }, State.Settings);
             
-            
+            // Creating Resolution Menu
             _resolutionMenu = new Menu.Menu(new List<Button>
             {
                 new Button(_font, "1920x1080", new Vector2(_screenWidth / 2,_screenHeight / 2 - 300))
@@ -142,9 +125,8 @@ namespace Game1
                         _graphics.IsFullScreen = true;
                         _graphics.ApplyChanges();
                         LoadContent();
-                    },
+                    }
                 },
-                // Buttons
                 new Button(_font, "1600x900", new Vector2(_screenWidth / 2,_screenHeight / 2 - 200))
                 {
                     _onClick = () =>
@@ -159,7 +141,6 @@ namespace Game1
                         LoadContent();
                     },
                 },
-                
                 new Button(_font, "1024x768", new Vector2(_screenWidth / 2,_screenHeight / 2 - 100))
                 {
                     _onClick = () =>
@@ -174,41 +155,41 @@ namespace Game1
                         LoadContent();
                     },
                 },
-                
                 new Button(_font, "Back", new Vector2(_screenWidth / 2,_screenHeight / 2))
                 {
                     _onClick = () => { _state = State.Settings; },
-                },
+                }
             }, State.Resolution);
-
+            
             _restartMenu = new Menu.Menu(new List<Button>
             {
-                    // Buttons
-                    new Button(_font, "Restart", new Vector2(_screenWidth / 2,_screenHeight / 2 - 300))
+                new Button(_font, "Restart", new Vector2(_screenWidth / 2,_screenHeight / 2 - 300))
+                {
+                    _onClick = () =>
                     {
-                        _onClick = () =>
-                        {
-                            _state = State.Playing;
-                            _player.Revive();
-                        },
-                    },
-                
-                    new Button(_font, "Main menu", new Vector2(_screenWidth / 2,_screenHeight / 2 - 200))
-                    {
-                        _onClick = () => { _state = State.MainMenu;
-                            _player._isDead = false;
-                        }, 
+                        _state = State.Playing;
+                        _player.Revive();
                     }
-                    },State.Playing);
+                },
+                new Button(_font, "Main menu", new Vector2(_screenWidth / 2,_screenHeight / 2 - 200))
+                {
+                    _onClick = () => 
+                    {
+                        _state = State.MainMenu;
+                        _player._isDead = false;
+                    }
+                }
+            },State.Playing);
 
             _mainMenu = new MainMenu
             {
                 _menus = new List<Menu.Menu>
-                {
-                    _menu,
-                    _settingsMenu,
-                    _resolutionMenu,
-                }
+                { 
+                  _menu,
+                  _settingsMenu,
+                  _resolutionMenu
+                },
+                state = _state,
             };
         }
         protected override void Update(GameTime gameTime)
@@ -232,34 +213,17 @@ namespace Game1
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
-            if (_state == State.Playing)
-            {
-                _spriteBatch.Begin(transformMatrix: _camera.Transform);
-                if (_player._isDead == false)
-                {
-                    _player.Draw(_spriteBatch);
-                }
-                _enemy.Draw(_spriteBatch);
-                _mainMenu.Draw();
-                _spriteBatch.End();
-            }
-            else
-            {
-                _spriteBatch.Begin();
-                _player.Draw(_spriteBatch);
-                _enemy.Draw(_spriteBatch);
-                _mainMenu.Draw();
-                _spriteBatch.End();
-            }
-            _spriteBatch.Begin();
-            if (_player._isDead)
-            {
-                _restartMenu.Draw();
-            }
+            
+            _spriteBatch.Begin(transformMatrix: _camera.Transform);
+            _player.Draw(_spriteBatch);
+            _enemy.Draw(_spriteBatch);
             _spriteBatch.End();
+            
             _spriteBatch.Begin();
             _fps.DrawFps(_spriteBatch, _font, new Vector2(0, 0), Color.Black);
             _spriteBatch.DrawString(_font, $"HP: {_player._hp}", new Vector2(0,_screenHeight - 100), Color.Red);
+            if (_player._isDead) _restartMenu.Draw();
+            _mainMenu.Draw();
             _spriteBatch.End();
 
             base.Draw(gameTime);

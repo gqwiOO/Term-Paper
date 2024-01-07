@@ -18,10 +18,6 @@
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.1.303" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Level\" />
-    <Folder Include="lib\MonoGame.Extended\" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Remove="Level\Generating\**" />
     <Compile Remove="Class\Entity\Component.cs" />
   </ItemGroup>
