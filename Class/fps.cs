@@ -19,11 +19,10 @@ public class Fps
     public void Update(GameTime gameTime)
     {
         now = gameTime.TotalGameTime.TotalSeconds;
-        elapsed = (double)(now - last);
+        elapsed = (now - last);
         if (elapsed > msgFrequency)
         {
             msg = " Fps: " +  frames.ToString();
-            //Console.WriteLine(msg);
             elapsed = 0;
             frames = 0;
             updates = 0;

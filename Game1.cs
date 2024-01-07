@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Runtime.InteropServices;
 using Game1.Class;
 using Game1.Class.Camera;
 using Game1.Class.Entity;
@@ -9,8 +8,9 @@ using Menu;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGame.Extended.Tiled;
+using MonoGame.Extended.Tiled.Renderers;
 using Button = Menu.Button;
-using Keyboard = Microsoft.VisualBasic.Devices.Keyboard;
 
 namespace Game1
 {
@@ -40,6 +40,9 @@ namespace Game1
         
         public Player _player;
         public Enemy _enemy;
+
+        public TiledMap _tiledMap;
+        public TiledMapRenderer _tiledMapRenderer;
         
         public Game1()
         {
@@ -70,9 +73,7 @@ namespace Game1
         }
         protected override void LoadContent()
         {
-
-            
-            _font = Content.Load<SpriteFont>("mainFont");
+            _font = Content.Load<SpriteFont>("Minecraft");
             
             _player = new Player( Content.Load<Texture2D>("Hero"));
             _enemy = new Enemy(Content.Load<Texture2D>("Enemy"));
@@ -219,7 +220,7 @@ namespace Game1
             _fps.Update(gameTime);
             _player.Update();
             _enemy.Update(gameTime, _player);
-            if (_player._isDead == true)
+            if (_player._isDead)
             {
                 _restartMenu.Update();
             }
@@ -251,7 +252,7 @@ namespace Game1
                 _spriteBatch.End();
             }
             _spriteBatch.Begin();
-            if (_player._isDead == true)
+            if (_player._isDead)
             {
                 _restartMenu.Draw();
             }

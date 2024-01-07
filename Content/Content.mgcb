@@ -10,7 +10,7 @@
 
 #-------------------------------- References --------------------------------#
 
-/reference:C:\Users\USER\.nuget\packages\monogame.extended.content.pipeline\3.8.0\tools\MonoGame.Extended.Content.Pipeline.dll
+/reference:..\MonoGame.Extended.Content.Pipeline.dll
 
 #---------------------------------- Content ---------------------------------#
 
@@ -33,6 +33,15 @@
 /processorParam:TextureFormat=Compressed
 /build:galleryFont.spritefont;mainFont.spritefont
 
+#begin Minecraft.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Minecraft.spritefont
+
+#begin Minecraft.ttf
+/copy:Minecraft.ttf
 
 #begin Player.png
 /importer:TextureImporter
