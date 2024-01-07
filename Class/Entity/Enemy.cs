@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Game1.Class.Entity
@@ -13,21 +14,20 @@ namespace Game1.Class.Entity
         {
             _sprite = EnemySprite;
             _speed = 4;
-            _damage = 4;
+            _damage = 20;
             _cooldown = 1;
             _hitBox = new Rectangle(1500,700 , 100, 100);
         }
         public override void Update(GameTime gameTime, Player player)
         {
-            if (this._hitBox.Intersects(player._hitBox))
+            if (_hitBox.Intersects(player._hitBox))
             {
-                if (gameTime.TotalGameTime.TotalSeconds > lastTimeHitPlayer + (double)_cooldown
+                if (gameTime.TotalGameTime.TotalSeconds > lastTimeHitPlayer + _cooldown
                     && player._hp > 0
                     && !player._isDead
-                    || lastTimeHitPlayer == null 
                     )
                 {
-                    player._hp -= 20;
+                    player._hp -= (_damage);
                     lastTimeHitPlayer = gameTime.TotalGameTime.TotalSeconds;
                 }
             }
@@ -38,6 +38,11 @@ namespace Game1.Class.Entity
             {
                 spriteBatch.Draw(_sprite, _hitBox, Color.White);
             }
+        }
+
+        public void ForwardPlayer(Player player)
+        {
+            
         }
     }
 }

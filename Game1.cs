@@ -34,6 +34,7 @@ namespace Game1
         public Menu.Menu _restartMenu;
         
         public Player _player;
+        public HUD _hud;
         public Enemy _enemy;
         public Camera _camera;
         public Fps _fps;
@@ -70,11 +71,11 @@ namespace Game1
         protected override void LoadContent()
         {
             _player = new Player(Content.Load<Texture2D>("Hero"));
+            _hud = new HUD(_player);
             _entities = new List<Entity>()
             {
                 new Enemy(Content.Load<Texture2D>("Enemy"))
             };
-            
             _font = Content.Load<SpriteFont>("Minecraft");
             
             // Creating Main Menu 
@@ -203,7 +204,7 @@ namespace Game1
             if (_mouseState.LeftButton == ButtonState.Released) isLeftMouseButtonPressed = false;
             
             _entities.ForEach(entity => entity.Update(gameTime, _player));
-            _fps.Update(gameTime);
+            _hud.Update(gameTime);
             _player.Update(gameTime);
             if (_player._isDead)
             {
@@ -220,12 +221,11 @@ namespace Game1
             
             _spriteBatch.Begin(transformMatrix: _camera.Transform);
             _entities.ForEach(entity => entity.Draw(_spriteBatch));
-            _player.Draw(_spriteBatch, _font);
+            _player.Draw(_spriteBatch);
             _spriteBatch.End();
             
             _spriteBatch.Begin();
-            _fps.DrawFps(_spriteBatch, _font, new Vector2(0, 0), Color.Black);
-            _spriteBatch.DrawString(_font, $"HP: {_player._hp}", new Vector2(0,_screenHeight - 100), Color.Red);
+            _hud.Draw(_spriteBatch,_font);
             if (_player._isDead) _restartMenu.Draw();
             _mainMenu.Draw();
             _spriteBatch.End();

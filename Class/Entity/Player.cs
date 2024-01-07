@@ -9,13 +9,8 @@ namespace Game1.Class.Entity
 {
     public class Player: Entity 
     {
-        public Rectangle _hitBox;
         public Texture2D _sprite;
-        public HUD _hud;
-        
         public bool _isDead;
-        
-        public int _rotX = 500;
         SpriteEffects s = SpriteEffects.FlipHorizontally;
         
         public Player(Texture2D sprite)
@@ -23,9 +18,8 @@ namespace Game1.Class.Entity
             _hp = 100;
             _speed = 8;
             _sprite = sprite;
-            _hitBox = new Rectangle(_rotX, 500, 128, 128);
-
-            _hud = new HUD(this);
+            _hitBox = new Rectangle(500, 500, 128, 128);
+            
         }
         public void  Update(GameTime gameTime)
         {
@@ -42,28 +36,24 @@ namespace Game1.Class.Entity
                 if (Keyboard.GetState().IsKeyDown(Keys.A))
                 {
                    _hitBox.X -= _speed;
-                   _rotX -= 8;
                    s = SpriteEffects.FlipHorizontally;
                 }
                 if (Keyboard.GetState().IsKeyDown(Keys.D))
                 {
                     _hitBox.X += _speed;
-                    _rotX += 2;
                     s = SpriteEffects.None;
                 }
                 if (_hp <= 0)
                 {
                     _isDead = true;
                 }
-                _hud.Update(gameTime);
             }
         }
-        public void Draw(SpriteBatch spriteBatch, SpriteFont font)
+        public override void Draw(SpriteBatch spriteBatch)
         {
             if (Game1._state == State.State.Playing && !_isDead)
             {
                spriteBatch.Draw(_sprite, _hitBox, null, Color.White, 0, new Vector2(50, 50), s, 0f);
-               _hud.Draw(spriteBatch,font);
             }
 
         }
@@ -76,11 +66,6 @@ namespace Game1.Class.Entity
             _hitBox.Y = 500;
         }
         public override void Update(GameTime gameTime, Player player)
-        {
-            
-        }
-
-        public override void Draw(SpriteBatch spriteBatch)
         {
             
         }

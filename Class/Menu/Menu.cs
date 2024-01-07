@@ -15,20 +15,12 @@ namespace Menu
 
         public void Update()
         {
-            foreach (var button in _buttons)
-            {
-                button.Update();
-            }
-            // _buttons.ForEach(button => button.Update());
+            _buttons.ForEach(button => button.Update());
         }
 
         public void Draw()
         {
-            foreach (var button in _buttons)
-            {
-                button.Draw();
-            }
-            // _buttons.ForEach(button => button.Draw());
+            _buttons.ForEach(button => button.Draw());
         }
     }
     

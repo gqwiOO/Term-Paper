@@ -27,6 +27,7 @@ public class HUD
         if (Game1.Game1._state == State.Playing)
         {
             _spriteBatch.DrawString(_font, $"HP: {_player._hp}", new Vector2(Game1.Game1._screenWidth - 200, 20), Color.Red);
+            _spriteBatch.DrawString(_font, $"Pos: {_player._hitBox.X}  {_player._hitBox.Y}", new Vector2(10,100), Color.Black);
             _fps.DrawFps(_spriteBatch, _font,new Vector2(10, 10), Color.Black );
         }
     }
