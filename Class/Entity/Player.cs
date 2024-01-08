@@ -18,7 +18,7 @@ namespace Game1.Class.Entity
             _hp = 100;
             _speed = 8;
             _sprite = sprite;
-            _hitBox = new Rectangle(500, 500, 128, 128);
+            _hitBox = new Rectangle(3200, 2748, 128, 128);
             
         }
         public void  Update(GameTime gameTime)
@@ -55,15 +55,14 @@ namespace Game1.Class.Entity
             {
                spriteBatch.Draw(_sprite, _hitBox, null, Color.White, 0, new Vector2(50, 50), s, 0f);
             }
-
         }
 
         public void Revive()
         {
             _isDead = false;
             _hp = 100;
-            _hitBox.X = 500;
-            _hitBox.Y = 500;
+            _hitBox.X = 3200;
+            _hitBox.Y = 2748;
         }
         public override void Update(GameTime gameTime, Player player)
         {

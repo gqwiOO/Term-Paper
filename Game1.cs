@@ -1,15 +1,21 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Net.Mime;
 using Game1.Class;
 using Game1.Class.Camera;
 using Game1.Class.Entity;
+using Game1.Class.Item;
 using Game1.Class.State;
+using Game1.Level;
 using Menu;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGame.Extended.Content;
 using MonoGame.Extended.Tiled;
 using MonoGame.Extended.Tiled.Renderers;
+using TiledSharp;
 using Button = Menu.Button;
 
 namespace Game1
@@ -34,10 +40,21 @@ namespace Game1
         public Menu.Menu _restartMenu;
         
         public Player _player;
-        public HUD _hud;
         public Enemy _enemy;
         public Camera _camera;
         public Fps _fps;
+
+        public TmxMap _map;
+        public Texture2D _tileSet;
+        public int _tileWidth;
+        public int _tileHeight;
+        public int tileSetTilesSize;
+        
+        public HUD _hud;
+        public Texture2D inventorySlot;
+
+        public Dictionary<int, Item> allItems;
+        
 
         public List<Entity> _entities;
         
@@ -70,13 +87,23 @@ namespace Game1
         }
         protected override void LoadContent()
         {
+            _font = Content.Load<SpriteFont>("Fonts/Minecraft");
+            _map = new TmxMap("Content/map1.tmx");
+            _tileSet = Content.Load<Texture2D>(_map.Tilesets[0].Name.ToString());
+            _tileWidth = _map.Tilesets[0].TileWidth;
+            _tileHeight = _map.Tilesets[0].TileHeight;
+            tileSetTilesSize = _tileSet.Width / _tileWidth;
+            
             _player = new Player(Content.Load<Texture2D>("Hero"));
-            _hud = new HUD(_player);
             _entities = new List<Entity>()
             {
                 new Enemy(Content.Load<Texture2D>("Enemy"))
             };
-            _font = Content.Load<SpriteFont>("Minecraft");
+            
+            _hud = new HUD(_player);
+            inventorySlot = Content.Load<Texture2D>("inventorySlot");
+            
+            
             
             // Creating Main Menu 
             _menu = new Menu.Menu(new List<Button>
@@ -220,17 +247,47 @@ namespace Game1
             GraphicsDevice.Clear(Color.CornflowerBlue);
             
             _spriteBatch.Begin(transformMatrix: _camera.Transform);
+             for (var i = 0; i < _map.Layers[0].Tiles.Count ; i++)
+             {
+                 int gid = _map.Layers[0].Tiles[i].Gid;
+                 if (!(gid == 0))
+                 {
+                     float x = (i % _map.Width) * _map.TileWidth;
+                     float y = (float)Math.Floor(i / (double)_map.Width) * _map.TileHeight;
+                     if (Math.Abs(_player._hitBox.X - x) < 1200 && Math.Abs(_player._hitBox.Y - y) < 1200)
+                     {
+                         int tileFrame = gid - 1;
+                         int column = tileFrame % tileSetTilesSize;
+                         int row = (int)Math.Floor((double)tileFrame / (double)tileSetTilesSize);
+            
+                         _spriteBatch.Draw(_tileSet,
+                             new Rectangle((int)x, (int)y, _tileWidth, _tileHeight),
+                             new Rectangle(_tileWidth * column, _tileHeight * row , _tileWidth, _tileHeight),
+                             Color.White);
+                     }
+                 }
+            }
             _entities.ForEach(entity => entity.Draw(_spriteBatch));
             _player.Draw(_spriteBatch);
+            
             _spriteBatch.End();
             
-            _spriteBatch.Begin();
-            _hud.Draw(_spriteBatch,_font);
+            _spriteBatch.Begin(SpriteSortMode.Deferred, null,SamplerState.PointClamp);
+            _hud.Draw(_spriteBatch,_font, inventorySlot);
             if (_player._isDead) _restartMenu.Draw();
             _mainMenu.Draw();
             _spriteBatch.End();
 
             base.Draw(gameTime);
+        }
+
+
+        public void LoadItems()
+        {
+            allItems = new Dictionary<int, Item>();
+
+            var sword = new Item(false, 1, Content.Load<Texture2D>(""));
+            
         }
     }
 }
