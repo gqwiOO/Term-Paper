@@ -1,5 +1,4 @@
-﻿bin/
-.vs/
+﻿.vs/
 .config/
 .idea/
 obj/
