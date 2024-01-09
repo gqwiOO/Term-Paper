@@ -5,7 +5,6 @@ using Game1.Class.Camera;
 using Game1.Class.Entity;
 using Game1.Class.Item;
 using Game1.Class.State;
-using Game1.Level;
 using Menu;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -216,12 +215,12 @@ namespace Game1
         }
         protected override void Update(GameTime gameTime)
         {
-            if(Keyboard.GetState().IsKeyDown(Keys.Escape)) Exit();
+            if(Microsoft.Xna.Framework.Input.Keyboard.GetState().IsKeyDown(Keys.Escape)) Exit();
             _mouseState = Mouse.GetState(); // gives _mouseState state each frame
             if (_mouseState.LeftButton == ButtonState.Released) isLeftMouseButtonPressed = false;
             
             _entities.ForEach(entity => entity.Update(gameTime, _player));
-            _hud.Update(gameTime, _state);
+            _hud.Update(gameTime);
             _player.Update(gameTime);
             if (_player._isDead)
             {
@@ -251,6 +250,8 @@ namespace Game1
 
             base.Draw(gameTime);
         }
+
+
         public void LoadItems()
         {
             allItems = new Dictionary<int, Item>();

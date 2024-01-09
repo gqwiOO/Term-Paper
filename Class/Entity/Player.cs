@@ -13,14 +13,18 @@ namespace Game1.Class.Entity
         public bool _isDead;
         public Inventory inventory;
         SpriteEffects s = SpriteEffects.FlipHorizontally;
-        
+        public uint _balance = 0;
+        public Vector2 Position;
+        public float _cooldown;
         public Player(Texture2D sprite)
         {
             _hp = 100;
-            _speed = 8;
+            _speed = 4;
             _sprite = sprite;
-            _hitBox = new Rectangle(3200, 2748, 128, 128);
-
+            _damage = 20;
+            _cooldown = 1f;
+            _hitBox = new Rectangle(4864, 3220, 64, 64);
+            
         }
         public void  Update(GameTime gameTime)
         {
@@ -62,8 +66,8 @@ namespace Game1.Class.Entity
         {
             _isDead = false;
             _hp = 100;
-            _hitBox.X = 3200;
-            _hitBox.Y = 2748;
+            _hitBox.X = 4864;
+            _hitBox.Y = 3220;
         }
         public override void Update(GameTime gameTime, Player player)
         {
