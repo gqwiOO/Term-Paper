@@ -15,16 +15,17 @@ namespace Game1.Class.Item
         public byte _stackCapacity;
         public Texture2D _icon;
         public int _price;
+        public string _name;
 
 
-        public Item(bool isStackable, byte stackCapacity, Texture2D icon)
+        public Item(string name, Texture2D icon, bool isStackable, byte stackCapacity)
         {
             _isStackable = isStackable;
             _stackCapacity = stackCapacity;
             _icon = icon;
+            _name = name;
         }
-
-
+        
         public void Sell()
         {
             

@@ -11,6 +11,7 @@ namespace Game1.Class.Entity
     {
         public Texture2D _sprite;
         public bool _isDead;
+        public Inventory inventory;
         SpriteEffects s = SpriteEffects.FlipHorizontally;
         
         public Player(Texture2D sprite)
@@ -19,7 +20,7 @@ namespace Game1.Class.Entity
             _speed = 8;
             _sprite = sprite;
             _hitBox = new Rectangle(3200, 2748, 128, 128);
-            
+
         }
         public void  Update(GameTime gameTime)
         {
