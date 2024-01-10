@@ -39,8 +39,6 @@ namespace Game1.Class.Entity
                     lastTimeHitPlayer = gameTime.TotalGameTime.TotalSeconds;
                 }
             }
-            Console.WriteLine(_hp);
-            Console.WriteLine(Game1._mouseState.X > _hitBox.X);
             if (Game1._mouseState.LeftButton == ButtonState.Pressed &&
                 Game1._mouseState.X < _hitBox.X + _hitBox.Width &&
                 Game1._mouseState.Y < _hitBox.Y + _hitBox.Height &&

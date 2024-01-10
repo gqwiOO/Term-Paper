@@ -1,7 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
-using System.Net.Mime;
 using Game1.Class;
 using Game1.Class.Camera;
 using Game1.Class.Entity;
@@ -11,12 +9,9 @@ using Menu;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using MonoGame.Extended.Content;
-using MonoGame.Extended.Tiled;
-using MonoGame.Extended.Tiled.Renderers;
 using TiledSharp;
-using Button = Menu.Button;
 using Game1.Level;
+using Button = Menu.Button;
 
 namespace Game1
 {
@@ -88,7 +83,10 @@ namespace Game1
             _font = Content.Load<SpriteFont>("Fonts/Minecraft");
 
             
-            _player = new Player(Content.Load<Texture2D>("Hero"));
+            _player = new Player(Content.Load<Texture2D>("Player/DOWN_WALK"),
+                                 Content.Load<Texture2D>("Player/UP_WALK"),
+                                 Content.Load<Texture2D>("Player/LEFT_WALK"),
+                                 Content.Load<Texture2D>("Player/RIGHT_WALK"));
             _entities = new List<Entity>()
             {
                 new Enemy(Content.Load<Texture2D>("Enemy"))
@@ -98,7 +96,9 @@ namespace Game1
             currentInventorySlot = Content.Load<Texture2D>("HUD/currentInventorySlot");
             _hud = new HUD(_player);
 
-            map = new Map(new TmxMap("Content/map1.tmx"), Content.Load<Texture2D>("TX Tileset Grass"), _player);
+
+            TmxMap mapObject = new TmxMap("Content/NewMap.tmx");
+            map = new Map(mapObject, Content.Load<Texture2D>(mapObject.Tilesets[0].Name), _player);
             
             // Creating Main Menu 
             _menu = new Menu.Menu(new List<Button>
@@ -225,9 +225,9 @@ namespace Game1
             _mouseState = Mouse.GetState(); // gives _mouseState state each frame
             if (_mouseState.LeftButton == ButtonState.Released) isLeftMouseButtonPressed = false;
             
-            _player.Update(gameTime);
-            _hud.Update(gameTime, _state);
             _entities.ForEach(entity => entity.Update(gameTime, _player));
+            _hud.Update(gameTime, _state);
+            _player.Update(gameTime);
             if (_player._isDead)
             {
                 _restartMenu.Update();
@@ -241,7 +241,7 @@ namespace Game1
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             
-            _spriteBatch.Begin(transformMatrix: _camera.Transform);
+            _spriteBatch.Begin(SpriteSortMode.Deferred, null,SamplerState.PointClamp,transformMatrix: _camera.Transform);
             map.Draw(_spriteBatch);
             _entities.ForEach(entity => entity.Draw(_spriteBatch));
             _player.Draw(_spriteBatch);

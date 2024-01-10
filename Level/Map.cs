@@ -32,7 +32,6 @@ public class Map
     public void Draw(SpriteBatch spriteBatch)
     {
         for (var i = 0; i < map.Layers[0].Tiles.Count ; i++)
-                 
         {
             int gid = map.Layers[0].Tiles[i].Gid;
             if (!(gid == 0))

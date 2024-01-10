@@ -1,0 +1,24 @@
+{
+  "textureAtlas": {
+    "texture": "NinjaAdventure\\Actor\\Characters\\Knight\\SpriteSheet.png",
+    "regionWidth": 16,
+    "regionHeight": 16
+  },
+  "cycles": {
+    "": {
+      "frames": [0],
+      "isLooping": false,
+      "frameDuration": 0.2
+    },
+    "left": {
+      "frames": [2,6,10],
+      "isLooping": false,
+      "frameDuration": 0.2
+    },
+    "right": {
+      "frames": [3,7,11],
+      "isLooping": false,
+      "frameDuration": 0.2
+    }
+  }
+}

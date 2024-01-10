@@ -16,67 +16,74 @@ namespace Game1.Class.Entity
         public int _balance = 0;
         public Vector2 Position;
         public float _cooldown;
-        public Player(Texture2D sprite)
+
+        private Animation downWalk;
+        private Animation upWalk;
+        private Animation leftWalk;
+        private Animation rightWalk;
+        private Animation idle;
+        private Movement direction;
+        public Player(Texture2D downWalkTexture, Texture2D upWalkTexture,
+                      Texture2D leftWalkTexture, Texture2D rightWalkTexture
+                      )
         {
             _hp = 100;
             _speed = 4;
-            _sprite = sprite;
             _damage = 20;
             _cooldown = 1f;
-            _hitBox = new Rectangle(4864, 3220, 64, 64);
             
+            
+            _hitBox = new Rectangle(4864, 3220, 64, 64);
+            downWalk = new Animation(downWalkTexture, new Vector2(16, 16), 3);
+            upWalk = new Animation(upWalkTexture, new Vector2(16, 16), 4);
+            leftWalk = new Animation(leftWalkTexture, new Vector2(16, 16), 4);
+            rightWalk = new Animation(rightWalkTexture, new Vector2(16, 16), 4);
+            // idle = new Animation(rightWalkTexture, new Vector2(16, 16), 4);
         }
         public void  Update(GameTime gameTime)
         {
             if (Game1._state == State.State.Playing && _isDead != true)
             {
-                if (Keyboard.GetState().IsKeyDown(Keys.W)) //Movement
-                {
-                    _hitBox.Y -= _speed;
-                }
-                if (Keyboard.GetState().IsKeyDown(Keys.S))
-                {
-                    _hitBox.Y += _speed;
-                }
-                if (Keyboard.GetState().IsKeyDown(Keys.A))
-                {
-                   _hitBox.X -= _speed;
-                   s = SpriteEffects.FlipHorizontally;
-                }
-                if (Keyboard.GetState().IsKeyDown(Keys.D))
-                {
-                    _hitBox.X += _speed;
-                    s = SpriteEffects.None;
-                }
                 if (_hp <= 0)
                 {
                     _isDead = true;
                 }
-                // switch ( inventory.currentItem)
-                // {
-                //     case 1:
-                //     {
-                //         _damage += 7;
-                //         break;
-                //     }
-                //     case 2:
-                //     {
-                //         _damage += 70;
-                //         break;
-                //     }
-                //     default:
-                //     {
-                //         _damage = _damage;
-                //         break;
-                //     }
-                // }
+                // Movement 
+                if (Keyboard.GetState().IsKeyDown(Keys.W))
+                {
+                    direction = Movement.Up;
+                    _hitBox.Y -= _speed;
+                    upWalk.Update(gameTime);
+                }
+                if (Keyboard.GetState().IsKeyDown(Keys.S))
+                {
+                    direction = Movement.Down;
+                    _hitBox.Y += _speed;
+                    downWalk.Update(gameTime);
+
+                }
+                if (Keyboard.GetState().IsKeyDown(Keys.A))
+                {
+                    direction = Movement.Left;
+                    leftWalk.Update(gameTime);
+                   _hitBox.X -= _speed;
+                }
+                if (Keyboard.GetState().IsKeyDown(Keys.D))
+                {
+                    direction = Movement.Right;
+                    rightWalk.Update(gameTime);
+                    _hitBox.X += _speed;
+                }
             }
         }
         public override void Draw(SpriteBatch spriteBatch)
         {
             if (Game1._state == State.State.Playing && !_isDead)
             {
-               spriteBatch.Draw(_sprite, _hitBox, null, Color.White, 0, new Vector2(50, 50), s, 0f);
+                if(direction == Movement.Down)downWalk.Draw(spriteBatch, this._hitBox);
+                else if(direction == Movement.Up)upWalk.Draw(spriteBatch, this._hitBox);
+                else if(direction == Movement.Left)leftWalk.Draw(spriteBatch, this._hitBox);
+                else if(direction == Movement.Right)rightWalk.Draw(spriteBatch, this._hitBox);
             }
         }
 
@@ -92,9 +99,19 @@ namespace Game1.Class.Entity
             
         }
 
-        public void Sell(int summ)
+        public void Sell(int cost)
         {
-            _balance += summ;
+            _balance += cost;
         }
+    }
+
+
+    public enum Movement
+    {
+        Left,
+        Right,
+        Up,
+        Down,
+        Idle
     }
 }
