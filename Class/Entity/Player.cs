@@ -13,7 +13,7 @@ namespace Game1.Class.Entity
         public bool _isDead;
         public Inventory inventory;
         SpriteEffects s = SpriteEffects.FlipHorizontally;
-        public uint _balance = 0;
+        public int _balance = 0;
         public Vector2 Position;
         public float _cooldown;
         public Player(Texture2D sprite)
@@ -52,6 +52,24 @@ namespace Game1.Class.Entity
                 {
                     _isDead = true;
                 }
+                // switch ( inventory.currentItem)
+                // {
+                //     case 1:
+                //     {
+                //         _damage += 7;
+                //         break;
+                //     }
+                //     case 2:
+                //     {
+                //         _damage += 70;
+                //         break;
+                //     }
+                //     default:
+                //     {
+                //         _damage = _damage;
+                //         break;
+                //     }
+                // }
             }
         }
         public override void Draw(SpriteBatch spriteBatch)
@@ -72,6 +90,11 @@ namespace Game1.Class.Entity
         public override void Update(GameTime gameTime, Player player)
         {
             
+        }
+
+        public void Sell(int summ)
+        {
+            _balance += summ;
         }
     }
 }

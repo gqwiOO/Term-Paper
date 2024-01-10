@@ -43,7 +43,6 @@ namespace Game1.Class.Entity
             Console.WriteLine(Game1._mouseState.X > _hitBox.X);
             if (Game1._mouseState.LeftButton == ButtonState.Pressed &&
                 Game1._mouseState.X < _hitBox.X + _hitBox.Width &&
-                Game1._mouseState.X > _hitBox.X &&
                 Game1._mouseState.Y < _hitBox.Y + _hitBox.Height &&
                 gameTime.TotalGameTime.TotalSeconds > lastTimeHitEnemy + _cooldown
                 && _hp > 0

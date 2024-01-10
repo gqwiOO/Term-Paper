@@ -18,7 +18,7 @@ public class HUD
     {
         _player = player;
         _fps = new Fps();
-        _inventory = new Inventory();
+        _inventory = new Inventory(player);
     }
 
     public void Update(GameTime gameTime, State gameState)
@@ -32,6 +32,8 @@ public class HUD
     {
         if (Game1.Game1._state == State.Playing)
         {
+            
+            _spriteBatch.DrawString(_font, $"Balance: {_player._balance}", new Vector2(Game1.Game1._screenWidth - 200, 60), Color.Gold);
             _spriteBatch.DrawString(_font, $"HP: {_player._hp}", new Vector2(Game1.Game1._screenWidth - 200, 20), Color.Red);
             _spriteBatch.DrawString(_font, $"Pos: {_player._hitBox.X}  {_player._hitBox.Y}", new Vector2(10,250), Color.Black);
             _fps.DrawFps(_spriteBatch, _font,new Vector2(10, 150), Color.Black );
@@ -42,19 +44,23 @@ public class HUD
 
 public class Inventory
 {
+    public Player _player;
+    public Potion _potion;
+    
     public List<Item> inventory = new List<Item>
     {
         Game1.Game1.allItems[0],
+        Game1.Game1.allItems[1],
         null,
-        null,
-        null,
+        Game1.Game1.allItems[3],
         null
     };
 
     public int currentItem;
 
-    public Inventory()
+    public Inventory( Player player)
     {
+        _player = player;
     }
 
     public bool addItem(Item item)
@@ -77,10 +83,15 @@ public class Inventory
     public void removeItem(int index)
     {
         inventory.Remove(inventory[index]);
+        
     }
 
     public void dropItem(int index)
     {
+        if (inventory[index] != null)
+        {
+            _player.Sell(10);
+        }
         inventory[index] = null;
     }
 
@@ -113,6 +124,11 @@ public class Inventory
         {
             dropItem(currentItem);
         }
+        if (Keyboard.GetState().IsKeyDown(Keys.H) && gameState == State.Playing &&
+            currentItem != null && _player._hp < 100)
+        {
+            _player._hp += 40;
+        }
     }
 
     public void Draw(SpriteBatch spriteBatch, Texture2D inventorySlot, Texture2D currentInventorySlot)
@@ -121,18 +137,24 @@ public class Inventory
         {
             if (i != currentItem)
             {
-                spriteBatch.Draw(inventorySlot, new Rectangle(i * 64, 5, 64, 64), Color.White);
+                spriteBatch.Draw(inventorySlot, new Rectangle(i * 80, 5, 80, 80), Color.White);
             }
             else
             {
-                spriteBatch.Draw(currentInventorySlot, new Rectangle(i * 64, 5, 64, 64), Color.White);
-
+                spriteBatch.Draw(currentInventorySlot, new Rectangle(i * 80, 9, 80, 80), Color.White);
+                
             }
-            
             
             if (inventory[i] != null)
             {
-                inventory[i].DrawInInventory( new Rectangle(i*64 - 2,15,64,64), spriteBatch);
+                if (i != currentItem)
+                {
+                    inventory[i].DrawInInventory(new Rectangle(i * 83, 18, 64, 64), spriteBatch);
+                }
+                else
+                {
+                    inventory[i].DrawInInventory(new Rectangle(i * 83, 23, 64, 64), spriteBatch);
+                }
             }
         }
         

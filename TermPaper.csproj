@@ -21,6 +21,7 @@
   <ItemGroup>
     <Compile Remove="Level\Generating\**" />
     <Compile Remove="Class\Entity\Component.cs" />
+    <Compile Remove="Class\Invertory.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Level\Generating\**" />
@@ -30,6 +31,7 @@
     <None Update="Content\animation.sf">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Remove="Content\inventorySlot.png" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="C:\Users\zeite\.nuget\packages\monogame.extended\3.8.0\contentFiles\any\netstandard2.0\SharpDX.D3DCompiler.xml" />

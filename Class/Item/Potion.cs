@@ -1,12 +1,31 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Game1.Class.Entity;
+using Microsoft.Xna.Framework.Graphics;
 
 namespace Game1.Class.Item
 {
-    internal class Potion
+    public class Potion: Item
     {
+        public Player player;
+        public Potion(string name, Texture2D icon, bool isStackable, byte stackCapacity)
+        {
+            _name = name;
+            _icon = icon;
+            _isStackable = isStackable;
+            _stackCapacity = stackCapacity;
+        }
+
+        public void Heal()
+        {
+            if (player._hp < 100)
+            {
+                player._hp += 40;
+            }
+        }
     }
 }

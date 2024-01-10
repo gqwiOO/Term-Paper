@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Net.Mime;
 using Game1.Class;
 using Game1.Class.Camera;
 using Game1.Class.Entity;
@@ -9,8 +11,12 @@ using Menu;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using MonoGame.Extended.Content;
+using MonoGame.Extended.Tiled;
+using MonoGame.Extended.Tiled.Renderers;
 using TiledSharp;
 using Button = Menu.Button;
+using Game1.Level;
 
 namespace Game1
 {
@@ -219,9 +225,9 @@ namespace Game1
             _mouseState = Mouse.GetState(); // gives _mouseState state each frame
             if (_mouseState.LeftButton == ButtonState.Released) isLeftMouseButtonPressed = false;
             
-            _entities.ForEach(entity => entity.Update(gameTime, _player));
-            _hud.Update(gameTime);
             _player.Update(gameTime);
+            _hud.Update(gameTime, _state);
+            _entities.ForEach(entity => entity.Update(gameTime, _player));
             if (_player._isDead)
             {
                 _restartMenu.Update();
@@ -255,8 +261,9 @@ namespace Game1
         public void LoadItems()
         {
             allItems = new Dictionary<int, Item>();
-            allItems[0] = new Item("Start Sword", Content.Load<Texture2D>("Items/Sword"),  false, 1);
-            
+            allItems[0] = new Weapon("Start Sword", Content.Load<Texture2D>("Items/Sword"),  false, 1);
+            allItems[1] = new Weapon("Redeemer", Content.Load<Texture2D>("Items/Redeemer"),  false, 1);
+            allItems[3] = new Potion("Healing Potion", Content.Load<Texture2D>("Items/HealingPotion"),  false, 1);
         }
     }
 }
