@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework;
+﻿using Game1;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using SpriteBatch = Microsoft.Xna.Framework.Graphics.SpriteBatch;
@@ -13,8 +14,6 @@ namespace Menu
         public delegate void onClickDelegate();
         public onClickDelegate _onClick { get; set; }
         public Vector2 _position;
-
-        public SpriteBatch _spriteBatch = Game1.Game1._spriteBatch;
         
         public Button(SpriteFont font, string text, Vector2 position) 
         {
@@ -31,11 +30,11 @@ namespace Menu
 
         public void Update()
         {
-            if (Game1.Game1._mouseState.LeftButton == ButtonState.Pressed &&
-                Game1.Game1._mouseState.X < _position.X + _font.MeasureString(_text).X &&
-                Game1.Game1._mouseState.X > _position.X &&
-                Game1.Game1._mouseState.Y < _position.Y + _font.MeasureString(_text).Y &&
-                Game1.Game1._mouseState.Y > _position.Y &&
+            if (Globals.mouseState.LeftButton == ButtonState.Pressed &&
+                Globals.mouseState.X < _position.X + _font.MeasureString(_text).X &&
+                Globals.mouseState.X > _position.X &&
+                Globals.mouseState.Y < _position.Y + _font.MeasureString(_text).Y &&
+                Globals.mouseState.Y > _position.Y &&
                 !Game1.Game1.isLeftMouseButtonPressed
                 )
             {
@@ -45,7 +44,7 @@ namespace Menu
         }
         public void Draw()
         {
-            _spriteBatch.DrawString(_font, _text, _position, Color.Black);
+            Globals.spriteBatch.DrawString(_font, _text, _position, Color.Black);
         }
     }
     

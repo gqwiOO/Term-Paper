@@ -12,12 +12,12 @@ namespace Game1.Class.Entity
     {
         public string _name;
         
-        public override void Update(GameTime gameTime, Player player)
+        public override void Update()
         {
             
         }
 
-        public override void Draw(SpriteBatch spriteBatch)
+        public override void Draw()
         {
             
         }

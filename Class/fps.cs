@@ -16,9 +16,9 @@ public class Fps
     /// <summary>
     /// The msgFrequency here is the reporting time to update the message.
     /// </summary>
-    public void Update(GameTime gameTime)
+    public void Update()
     {
-        now = gameTime.TotalGameTime.TotalSeconds;
+        now = Globals.gameTime.TotalGameTime.TotalSeconds;
         elapsed = (now - last);
         if (elapsed > msgFrequency)
         {
@@ -31,9 +31,9 @@ public class Fps
         updates++;
     }
 
-    public void DrawFps(SpriteBatch spriteBatch, SpriteFont font, Vector2 fpsDisplayPosition, Color fpsTextColor)
+    public void DrawFps(SpriteFont font, Vector2 fpsDisplayPosition, Color fpsTextColor)
     {
-        spriteBatch.DrawString(font, msg, fpsDisplayPosition, fpsTextColor);
+        Globals.spriteBatch.DrawString(font, msg, fpsDisplayPosition, fpsTextColor);
         frames++;
     }
 }

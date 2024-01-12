@@ -39,10 +39,10 @@ public class Animation
         isActive = false;
     }
 
-    public void Update(GameTime gameTime)
+    public void Update()
     {
         if (!isActive) return;
-        _frameTimeLeft -=(float)gameTime.ElapsedGameTime.TotalSeconds;;
+        _frameTimeLeft -=(float)Globals.gameTime.ElapsedGameTime.TotalSeconds;
 
         if (_frameTimeLeft <= 0)
         {
@@ -51,9 +51,9 @@ public class Animation
         }
     }
 
-    public void Draw(SpriteBatch spriteBatch, Rectangle position)
+    public void Draw(Rectangle position)
     {
-        spriteBatch.Draw(animationTexture,position,rectangles[_frame],
+        Globals.spriteBatch.Draw(animationTexture,position,rectangles[_frame],
              Color.White);
     }
 

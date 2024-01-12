@@ -22,9 +22,9 @@ namespace Game1.Class.Item
             
         }
 
-        public void DrawInInventory(Rectangle _position, SpriteBatch spriteBatch)
+        public void DrawInInventory(Rectangle _position)
         {
-            spriteBatch.Draw(_icon, _position, Color.White);
+            Globals.spriteBatch.Draw(_icon, _position, Color.White);
         }
 
 

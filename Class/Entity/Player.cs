@@ -40,9 +40,9 @@ namespace Game1.Class.Entity
             rightWalk = new Animation(rightWalkTexture, new Vector2(16, 16), 4);
             // idle = new Animation(rightWalkTexture, new Vector2(16, 16), 4);
         }
-        public void  Update(GameTime gameTime)
+        public override void Update()
         {
-            if (Game1._state == State.State.Playing && _isDead != true)
+            if (Globals.gameState == State.State.Playing && _isDead != true)
             {
                 if (_hp <= 0)
                 {
@@ -53,37 +53,37 @@ namespace Game1.Class.Entity
                 {
                     direction = Movement.Up;
                     _hitBox.Y -= _speed;
-                    upWalk.Update(gameTime);
+                    upWalk.Update();
                 }
                 if (Keyboard.GetState().IsKeyDown(Keys.S))
                 {
                     direction = Movement.Down;
                     _hitBox.Y += _speed;
-                    downWalk.Update(gameTime);
+                    downWalk.Update();
 
                 }
                 if (Keyboard.GetState().IsKeyDown(Keys.A))
                 {
                     direction = Movement.Left;
-                    leftWalk.Update(gameTime);
+                    leftWalk.Update();
                    _hitBox.X -= _speed;
                 }
                 if (Keyboard.GetState().IsKeyDown(Keys.D))
                 {
                     direction = Movement.Right;
-                    rightWalk.Update(gameTime);
+                    rightWalk.Update();
                     _hitBox.X += _speed;
                 }
             }
         }
-        public override void Draw(SpriteBatch spriteBatch)
+        public override void Draw()
         {
-            if (Game1._state == State.State.Playing && !_isDead)
+            if (Globals.gameState == State.State.Playing && !_isDead)
             {
-                if(direction == Movement.Down)downWalk.Draw(spriteBatch, this._hitBox);
-                else if(direction == Movement.Up)upWalk.Draw(spriteBatch, this._hitBox);
-                else if(direction == Movement.Left)leftWalk.Draw(spriteBatch, this._hitBox);
-                else if(direction == Movement.Right)rightWalk.Draw(spriteBatch, this._hitBox);
+                if(direction == Movement.Down)downWalk.Draw(this._hitBox);
+                else if(direction == Movement.Up)upWalk.Draw(this._hitBox);
+                else if(direction == Movement.Left)leftWalk.Draw(this._hitBox);
+                else if(direction == Movement.Right)rightWalk.Draw(this._hitBox);
             }
         }
 
@@ -93,10 +93,6 @@ namespace Game1.Class.Entity
             _hp = 100;
             _hitBox.X = 4864;
             _hitBox.Y = 3220;
-        }
-        public override void Update(GameTime gameTime, Player player)
-        {
-            
         }
 
         public void Sell(int cost)

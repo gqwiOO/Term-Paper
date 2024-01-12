@@ -17,9 +17,9 @@ namespace Game1.Class.Entity
         public Texture2D _sprite;
         public Rectangle _hitBox;
         
-        public abstract void Update(GameTime gameTime, Player player);
+        public abstract void Update();
 
-        public abstract void Draw(SpriteBatch spriteBatch);
+        public abstract void Draw();
 
     }
 }

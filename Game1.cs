@@ -18,12 +18,9 @@ namespace Game1
     public class Game1 : Game
     {
         private GraphicsDeviceManager _graphics;
-        public static SpriteBatch _spriteBatch;
 
         public static int _screenWidth;
         public static int _screenHeight;
-        public static State _state;
-        public static MouseState _mouseState;
         public static bool isLeftMouseButtonPressed = false;
         
         private SpriteFont _font;
@@ -34,7 +31,6 @@ namespace Game1
         public Menu.Menu _resolutionMenu;
         public Menu.Menu _restartMenu;
         
-        public Player _player;
         public Enemy _enemy;
         public Camera _camera;
         public Fps _fps;
@@ -43,7 +39,6 @@ namespace Game1
         public Texture2D currentInventorySlot;
 
         public Map map;
-        
         
         public static Dictionary<int, Item> allItems;
         
@@ -58,9 +53,9 @@ namespace Game1
         }
         protected override void Initialize()
         {
-            _state = State.MainMenu;
+            Globals.gameState = State.MainMenu;
             _camera = new Camera();
-            _spriteBatch = new SpriteBatch(GraphicsDevice);
+            Globals.spriteBatch = new SpriteBatch(GraphicsDevice);
             
             // FPS
             IsFixedTimeStep = true;
@@ -83,22 +78,22 @@ namespace Game1
             _font = Content.Load<SpriteFont>("Fonts/Minecraft");
 
             
-            _player = new Player(Content.Load<Texture2D>("Player/DOWN_WALK"),
+            Globals.player = new Player(Content.Load<Texture2D>("Player/DOWN_WALK"),
                                  Content.Load<Texture2D>("Player/UP_WALK"),
                                  Content.Load<Texture2D>("Player/LEFT_WALK"),
                                  Content.Load<Texture2D>("Player/RIGHT_WALK"));
             _entities = new List<Entity>()
             {
-                new Enemy(Content.Load<Texture2D>("Enemy"))
+                new Enemy(Content.Load<Texture2D>("Enemy/Axolot/AxolotWalk"))
             };
             
             inventorySlot = Content.Load<Texture2D>("inventorySlot");
             currentInventorySlot = Content.Load<Texture2D>("HUD/currentInventorySlot");
-            _hud = new HUD(_player);
+            _hud = new HUD();
 
 
             TmxMap mapObject = new TmxMap("Content/NewMap.tmx");
-            map = new Map(mapObject, Content.Load<Texture2D>(mapObject.Tilesets[0].Name), _player);
+            map = new Map(mapObject, Content.Load<Texture2D>(mapObject.Tilesets[0].Name));
             
             // Creating Main Menu 
             _menu = new Menu.Menu(new List<Button>
@@ -107,13 +102,13 @@ namespace Game1
                 {
                     _onClick = () =>
                     {
-                        _state = State.Playing;
-                        _player.Revive();
+                        Globals.gameState = State.Playing;
+                        Globals.player.Revive();
                     }
                 },
                 new Button(_font, "Settings", new Vector2(_screenWidth / 2, _screenHeight / 2 - 100))
                 {
-                    _onClick = () => { _state = State.Settings; }
+                    _onClick = () => { Globals.gameState = State.Settings; }
                 },
                 new Button(_font, "Quit", new Vector2(_screenWidth / 2, _screenHeight / 2))
                 {
@@ -126,7 +121,7 @@ namespace Game1
             {
                 new Button(_font, "Resolution", new Vector2(_screenWidth / 2,_screenHeight / 2 - 200))
                 {
-                    _onClick = () => { _state = State.Resolution; },
+                    _onClick = () => { Globals.gameState = State.Resolution; },
                 },
                 new Button(_font, "Sound", new Vector2(_screenWidth / 2,_screenHeight / 2 - 100))
                 {
@@ -134,7 +129,7 @@ namespace Game1
                 },
                 new Button(_font, "Back", new Vector2(_screenWidth / 2,_screenHeight / 2))
                 {
-                    _onClick = () => { _state = State.MainMenu; },
+                    _onClick = () => { Globals.gameState = State.MainMenu; },
                 }
             }, State.Settings);
             
@@ -185,7 +180,7 @@ namespace Game1
                 },
                 new Button(_font, "Back", new Vector2(_screenWidth / 2,_screenHeight / 2))
                 {
-                    _onClick = () => { _state = State.Settings; },
+                    _onClick = () => { Globals.gameState = State.Settings; },
                 }
             }, State.Resolution);
             
@@ -195,16 +190,16 @@ namespace Game1
                 {
                     _onClick = () =>
                     {
-                        _state = State.Playing;
-                        _player.Revive();
+                        Globals.gameState = State.Playing;
+                        Globals.player.Revive();
                     }
                 },
                 new Button(_font, "Main menu", new Vector2(_screenWidth / 2,_screenHeight / 2 - 200))
                 {
                     _onClick = () => 
                     {
-                        _state = State.MainMenu;
-                        _player._isDead = false;
+                        Globals.gameState = State.MainMenu;
+                        Globals.player._isDead = false;
                     }
                 }
             },State.Playing);
@@ -221,19 +216,20 @@ namespace Game1
         }
         protected override void Update(GameTime gameTime)
         {
+            Globals.gameTime = gameTime;
             if(Microsoft.Xna.Framework.Input.Keyboard.GetState().IsKeyDown(Keys.Escape)) Exit();
-            _mouseState = Mouse.GetState(); // gives _mouseState state each frame
-            if (_mouseState.LeftButton == ButtonState.Released) isLeftMouseButtonPressed = false;
+            Globals.mouseState = Mouse.GetState(); // gives _mouseState state each frame
+            if (Globals.mouseState.LeftButton == ButtonState.Released) isLeftMouseButtonPressed = false;
             
-            _entities.ForEach(entity => entity.Update(gameTime, _player));
-            _hud.Update(gameTime, _state);
-            _player.Update(gameTime);
-            if (_player._isDead)
+            _entities.ForEach(entity => entity.Update());
+            _hud.Update();
+            Globals.player.Update();
+            if (Globals.player._isDead)
             {
                 _restartMenu.Update();
             }
             _mainMenu.Update();
-            _camera.Follow(_player);
+            _camera.Follow(Globals.player);
             base.Update(gameTime);
         }
 
@@ -241,18 +237,18 @@ namespace Game1
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             
-            _spriteBatch.Begin(SpriteSortMode.Deferred, null,SamplerState.PointClamp,transformMatrix: _camera.Transform);
-            map.Draw(_spriteBatch);
-            _entities.ForEach(entity => entity.Draw(_spriteBatch));
-            _player.Draw(_spriteBatch);
+            Globals.spriteBatch.Begin(SpriteSortMode.Deferred, null,SamplerState.PointClamp,transformMatrix: _camera.Transform);
+            map.Draw();
+            _entities.ForEach(entity => entity.Draw());
+            Globals.player.Draw();
             
-            _spriteBatch.End();
+            Globals.spriteBatch.End();
             
-            _spriteBatch.Begin(SpriteSortMode.Deferred, null,SamplerState.PointClamp);
-            _hud.Draw(_spriteBatch,_font, inventorySlot, currentInventorySlot);
-            if (_player._isDead) _restartMenu.Draw();
+            Globals.spriteBatch.Begin(SpriteSortMode.Deferred, null,SamplerState.PointClamp);
+            _hud.Draw(_font, inventorySlot, currentInventorySlot);
+            if (Globals.player._isDead) _restartMenu.Draw();
             _mainMenu.Draw();
-            _spriteBatch.End();
+            Globals.spriteBatch.End();
 
             base.Draw(gameTime);
         }

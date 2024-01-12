@@ -11,7 +11,6 @@ namespace Game1.Class.Item
 {
     public class Potion: Item
     {
-        public Player player;
         public Potion(string name, Texture2D icon, bool isStackable, byte stackCapacity)
         {
             _name = name;
@@ -22,9 +21,9 @@ namespace Game1.Class.Item
 
         public void Heal()
         {
-            if (player._hp < 100)
+            if (Globals.player._hp < 100)
             {
-                player._hp += 40;
+                Globals.player._hp += 40;
             }
         }
     }
