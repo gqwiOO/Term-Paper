@@ -89,8 +89,13 @@ namespace Game1
             
             inventorySlot = Content.Load<Texture2D>("inventorySlot");
             currentInventorySlot = Content.Load<Texture2D>("HUD/currentInventorySlot");
-            _hud = new HUD();
-
+            _hud = new HUD()
+            {
+                _fullHp = Content.Load<Texture2D>("HUD/HeartBar"),
+                _halfHp = Content.Load<Texture2D>("HUD/HeartBarDamaged"),
+                _emptyHp = Content.Load<Texture2D>("HUD/HeartBarEmpty"),
+            };
+                
 
             TmxMap mapObject = new TmxMap("Content/NewMap.tmx");
             map = new Map(mapObject, Content.Load<Texture2D>(mapObject.Tilesets[0].Name));

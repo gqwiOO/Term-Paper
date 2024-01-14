@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Game1.Class.Entity;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
 namespace Game1.Class.Item
@@ -21,7 +22,7 @@ namespace Game1.Class.Item
 
         public void Heal()
         {
-            if (Globals.player._hp < 100)
+            if (Globals.player._hp < 200 &&  !Globals.player._isDead)
             {
                 Globals.player._hp += 40;
             }

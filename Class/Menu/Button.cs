@@ -12,7 +12,7 @@ namespace Menu
         private SpriteFont _font;
         public string _text;
         public delegate void onClickDelegate();
-        public onClickDelegate _onClick { get; set; }
+        public Button.onClickDelegate _onClick { get; set; }
         public Vector2 _position;
         
         public Button(SpriteFont font, string text, Vector2 position) 

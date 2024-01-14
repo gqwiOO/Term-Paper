@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using Game1;
 using Game1.Class;
@@ -14,6 +15,10 @@ public class HUD
 {
     private Fps _fps;
     private Inventory _inventory;
+    private List<Byte> _hp = new List<byte>{0,0,0,0,0,0,0,0,0,0};
+    public Texture2D _fullHp { get; set; }
+    public Texture2D _halfHp { get; set; }
+    public Texture2D _emptyHp { get; set; }
     public HUD()
     {
         _fps = new Fps();
@@ -25,6 +30,24 @@ public class HUD
         
         _fps.Update();
         _inventory.Update();
+        int playerHp = Globals.player._hp;
+        for(int i = 0; i < _hp.Count; i++)
+        {
+            if (playerHp >= 20)
+            {
+                _hp[i] = 2;
+                playerHp -= 20;
+            }
+            else if (playerHp % 20 > 0)
+            {
+                _hp[i] = 1;
+                playerHp -= playerHp % 20;
+            }
+            else
+            {
+                _hp[i] = 0;
+            }
+        }
     }
 
     public void Draw(SpriteFont _font, Texture2D inventorySlot, Texture2D currentInventorySlot)
@@ -33,17 +56,33 @@ public class HUD
         {
             
             Globals.spriteBatch.DrawString(_font, $"Balance: {Globals.player._balance}", new Vector2(Game1.Game1._screenWidth - 200, 60), Color.Gold);
-            Globals.spriteBatch.DrawString(_font, $"HP: {Globals.player._hp}", new Vector2(Game1.Game1._screenWidth - 200, 20), Color.Red);
             Globals.spriteBatch.DrawString(_font, $"Pos: {Globals.player._hitBox.X}  {Globals.player._hitBox.Y}", new Vector2(10,250), Color.Black);
             _fps.DrawFps(_font,new Vector2(10, 150), Color.Black );
             _inventory.Draw(inventorySlot, currentInventorySlot);
+            
+
+            for (int i = 0; i < _hp.Count; i++)
+            {
+                if (_hp[i] == 2)
+                {
+                    Globals.spriteBatch.Draw(_fullHp, new Rectangle(Game1.Game1._screenWidth - 330 + i*30, 10, 40,40), Color.White );
+                }
+                else if (_hp[i] == 1)
+                {
+                    Globals.spriteBatch.Draw(_halfHp, new Rectangle(Game1.Game1._screenWidth + i*30 -330, 10, 40,40), Color.White );
+                }
+                else if (_hp[i] == 0)
+                {
+                    Globals.spriteBatch.Draw(_emptyHp, new Rectangle(Game1.Game1._screenWidth + i*30 - 330, 10, 40,40), Color.White );
+                }
+            }
         }
     }
 }
 
 public class Inventory
 {
-    public Potion _potion;
+    public Player _player;
     
     public List<Item> inventory = new List<Item>
     {
@@ -120,11 +159,6 @@ public class Inventory
            currentItem != null)
         {
             dropItem(currentItem);
-        }
-        if (Keyboard.GetState().IsKeyDown(Keys.H) && Globals.gameState == State.Playing &&
-            currentItem != null && Globals.player._hp < 100)
-        {
-            Globals.player._hp += 40;
         }
     }
 

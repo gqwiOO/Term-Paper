@@ -27,7 +27,7 @@ namespace Game1.Class.Entity
                       Texture2D leftWalkTexture, Texture2D rightWalkTexture
                       )
         {
-            _hp = 100;
+            _hp = 200;
             _speed = 4;
             _damage = 20;
             _cooldown = 1f;
@@ -54,25 +54,41 @@ namespace Game1.Class.Entity
                     direction = Movement.Up;
                     _hitBox.Y -= _speed;
                     upWalk.Update();
+                    if (Keyboard.GetState().IsKeyDown(Keys.LeftShift))
+                    {
+                        _hitBox.Y -= _speed + 1;
+                    }
                 }
                 if (Keyboard.GetState().IsKeyDown(Keys.S))
                 {
                     direction = Movement.Down;
                     _hitBox.Y += _speed;
+                    if (Keyboard.GetState().IsKeyDown(Keys.LeftShift))
+                    {
+                        _hitBox.Y += _speed + 1;
+                    }
                     downWalk.Update();
 
                 }
-                if (Keyboard.GetState().IsKeyDown(Keys.A))
+                if (Keyboard.GetState().IsKeyDown(Keys.A) )
                 {
                     direction = Movement.Left;
                     leftWalk.Update();
                    _hitBox.X -= _speed;
+                   if (Keyboard.GetState().IsKeyDown(Keys.LeftShift))
+                   {
+                       _hitBox.X -= _speed + 1;
+                   }
                 }
                 if (Keyboard.GetState().IsKeyDown(Keys.D))
                 {
                     direction = Movement.Right;
                     rightWalk.Update();
                     _hitBox.X += _speed;
+                    if (Keyboard.GetState().IsKeyDown(Keys.LeftShift))
+                    {
+                      _hitBox.X += _speed + 1;
+                    }
                 }
             }
         }
@@ -90,7 +106,7 @@ namespace Game1.Class.Entity
         public void Revive()
         {
             _isDead = false;
-            _hp = 100;
+            _hp = 200;
             _hitBox.X = 4864;
             _hitBox.Y = 3220;
         }
