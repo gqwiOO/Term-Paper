@@ -1,5 +1,7 @@
 ﻿using System;
+using System.DirectoryServices.ActiveDirectory;
 using System.Windows.Forms;
+using Game1.Class.Item;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -12,7 +14,7 @@ namespace Game1.Class.Entity
         public Rectangle _hitBox;
         public float _cooldown;
         private double lastTimeHitPlayer;
-        public bool isDead = false;
+        public bool isDead;
         private double lastTimeHitEnemy;
         private Animation animation;
         
@@ -25,7 +27,7 @@ namespace Game1.Class.Entity
             _damage = 20;
             _cooldown = 1;
             _hitBox = new Rectangle(4600,3000 , 100, 100);
-            animation = new Animation(EnemySprite, new Vector2(16, 16), 4);
+            animation = new Animation(EnemySprite, new Vector2(16, 16), 4, 0.3f);
         }
         public override void Update()
         {
@@ -41,12 +43,28 @@ namespace Game1.Class.Entity
                     lastTimeHitPlayer = Globals.gameTime.TotalGameTime.TotalSeconds;
                 }
             }
+            Console.WriteLine($"X : {_hitBox.X} - {_hitBox.X + _hitBox.Width} \n" +
+                              $"Y : {_hitBox.Y} - {_hitBox.Y + _hitBox.Height}");
+            Console.WriteLine($"Mouse : X = {Globals.mouseState.X} Y = {Globals.mouseState.Y}");
+            // if (Globals.mouseState.LeftButton == ButtonState.Pressed &&
+            //     Globals.mouseState.X < _hitBox.X + _hitBox.Width &&
+            //     Globals.mouseState.Y < _hitBox.Y + _hitBox.Height &&
+            //     Globals.mouseState.X > _hitBox.X &&
+            //     Globals.mouseState.X > _hitBox.Y &&
+            //     Globals.gameTime.TotalGameTime.TotalSeconds > lastTimeHitEnemy + _cooldown
+            //     && _hp > 0
+            //     && isDead == false)
+            // {
+            //     _hp -= Globals.player._damage;
+            //     lastTimeHitEnemy = Globals.gameTime.TotalGameTime.TotalSeconds;
+            // }
+            Console.WriteLine(_hitBox.Intersects(new Rectangle(new Point(Globals.mouseState.X,Globals.mouseState.Y),
+                new Point(10,10))));
             if (Globals.mouseState.LeftButton == ButtonState.Pressed &&
-                Globals.mouseState.X < _hitBox.X + _hitBox.Width &&
-                Globals.mouseState.Y < _hitBox.Y + _hitBox.Height &&
-                Globals.gameTime.TotalGameTime.TotalSeconds > lastTimeHitEnemy + _cooldown
-                && _hp > 0
-                && isDead == false)
+                new Rectangle(Globals.mouseState.X, Globals.mouseState.Y, 10,10).Intersects(_hitBox) &&
+                Globals.gameTime.TotalGameTime.TotalSeconds > lastTimeHitEnemy + _cooldown &&
+                 _hp > 0 &&
+                isDead == false)
             {
                 _hp -= Globals.player._damage;
                 lastTimeHitEnemy = Globals.gameTime.TotalGameTime.TotalSeconds;
@@ -64,7 +82,6 @@ namespace Game1.Class.Entity
         {
             if (Globals.gameState == State.State.Playing && isDead == false)
             {
-                // Globals.spriteBatch.Draw(_sprite, _hitBox, Color.White);
                 animation.Draw(_hitBox);
             }
             

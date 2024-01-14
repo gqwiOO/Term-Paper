@@ -7,6 +7,7 @@ public enum State
     Resolution,
     Sound,
     Playing,
+    Pause
     
 }
 

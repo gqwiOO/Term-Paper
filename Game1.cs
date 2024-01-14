@@ -12,6 +12,8 @@ using Microsoft.Xna.Framework.Input;
 using TiledSharp;
 using Game1.Level;
 using Button = Menu.Button;
+using Movement;
+using Keyboard = Microsoft.Xna.Framework.Input.Keyboard;
 
 namespace Game1
 {
@@ -30,6 +32,7 @@ namespace Game1
         public Menu.Menu _settingsMenu;
         public Menu.Menu _resolutionMenu;
         public Menu.Menu _restartMenu;
+        public Menu.Menu _pauseMenu;
         
         public Enemy _enemy;
         public Camera _camera;
@@ -81,13 +84,14 @@ namespace Game1
             Globals.player = new Player(Content.Load<Texture2D>("Player/DOWN_WALK"),
                                  Content.Load<Texture2D>("Player/UP_WALK"),
                                  Content.Load<Texture2D>("Player/LEFT_WALK"),
-                                 Content.Load<Texture2D>("Player/RIGHT_WALK"));
+                                 Content.Load<Texture2D>("Player/RIGHT_WALK"),
+                                 Content.Load<Texture2D>("Player/IDLE"));
             _entities = new List<Entity>()
             {
                 new Enemy(Content.Load<Texture2D>("Enemy/Axolot/AxolotWalk"))
             };
             
-            inventorySlot = Content.Load<Texture2D>("inventorySlot");
+            inventorySlot = Content.Load<Texture2D>("HUD/inventorySlot");
             currentInventorySlot = Content.Load<Texture2D>("HUD/currentInventorySlot");
             _hud = new HUD()
             {
@@ -98,7 +102,7 @@ namespace Game1
                 
 
             TmxMap mapObject = new TmxMap("Content/NewMap.tmx");
-            map = new Map(mapObject, Content.Load<Texture2D>(mapObject.Tilesets[0].Name));
+            map = new Map(mapObject, Content.Load<Texture2D>("Map/" + mapObject.Tilesets[0].Name));
             
             // Creating Main Menu 
             _menu = new Menu.Menu(new List<Button>
@@ -209,20 +213,54 @@ namespace Game1
                 }
             },State.Playing);
 
+
+            _pauseMenu = new Menu.Menu(new List<Button>
+            {
+                new Button(_font, "Back", new Vector2(_screenWidth / 2,_screenHeight / 2 - 300))
+                {
+                    _onClick = () =>
+                    {
+                        Globals.gameState = State.Playing;
+                    }
+                },
+                new Button(_font, "Save", new Vector2(_screenWidth / 2,_screenHeight / 2 - 200))
+                {
+                    _onClick = () => 
+                    {
+                        // TODO: Save player and world info 
+                    }
+                },
+                new Button(_font, "Main menu", new Vector2(_screenWidth / 2, _screenHeight / 2 - 100))
+                {
+                    _onClick = () =>
+                    {
+                        Globals.gameState = State.MainMenu;
+                    }
+                }
+            },State.Pause);
+
             _mainMenu = new MainMenu
             {
                 _menus = new List<Menu.Menu>
                 { 
                   _menu,
                   _settingsMenu,
-                  _resolutionMenu
+                  _resolutionMenu,
+                  _pauseMenu
                 },
             };
         }
         protected override void Update(GameTime gameTime)
         {
             Globals.gameTime = gameTime;
-            if(Microsoft.Xna.Framework.Input.Keyboard.GetState().IsKeyDown(Keys.Escape)) Exit();
+            Movement.Keyboard.GetState();
+            if(Movement.Keyboard.hasBeenPressed(Keys.Escape))
+            {
+                if (Globals.gameState == State.Pause) Globals.gameState = State.Playing;
+                else if(Globals.gameState == State.Playing)Globals.gameState = State.Pause;
+                else Exit();
+            }
+            
             Globals.mouseState = Mouse.GetState(); // gives _mouseState state each frame
             if (Globals.mouseState.LeftButton == ButtonState.Released) isLeftMouseButtonPressed = false;
             

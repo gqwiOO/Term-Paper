@@ -13,7 +13,7 @@ namespace Game1.Class.Entity
         public bool _isDead;
         public Inventory inventory;
         SpriteEffects s = SpriteEffects.FlipHorizontally;
-        public int _balance = 0;
+        public int _balance ;
         public Vector2 Position;
         public float _cooldown;
 
@@ -21,10 +21,10 @@ namespace Game1.Class.Entity
         private Animation upWalk;
         private Animation leftWalk;
         private Animation rightWalk;
-        private Animation idle;
+        private Texture2D idle;
         private Movement direction;
         public Player(Texture2D downWalkTexture, Texture2D upWalkTexture,
-                      Texture2D leftWalkTexture, Texture2D rightWalkTexture
+                      Texture2D leftWalkTexture, Texture2D rightWalkTexture, Texture2D idleTexture
                       )
         {
             _hp = 200;
@@ -34,11 +34,11 @@ namespace Game1.Class.Entity
             
             
             _hitBox = new Rectangle(4864, 3220, 64, 64);
-            downWalk = new Animation(downWalkTexture, new Vector2(16, 16), 3);
-            upWalk = new Animation(upWalkTexture, new Vector2(16, 16), 4);
-            leftWalk = new Animation(leftWalkTexture, new Vector2(16, 16), 4);
-            rightWalk = new Animation(rightWalkTexture, new Vector2(16, 16), 4);
-            // idle = new Animation(rightWalkTexture, new Vector2(16, 16), 4);
+            downWalk = new Animation(downWalkTexture, new Vector2(16, 16), 4, 0.2f);
+            upWalk = new Animation(upWalkTexture, new Vector2(16, 16), 4, 0.2f);
+            leftWalk = new Animation(leftWalkTexture, new Vector2(16, 16), 4, 0.2f);
+            rightWalk = new Animation(rightWalkTexture, new Vector2(16, 16), 4, 0.2f);
+            idle = idleTexture;
         }
         public override void Update()
         {
@@ -59,7 +59,7 @@ namespace Game1.Class.Entity
                         _hitBox.Y -= _speed + 1;
                     }
                 }
-                if (Keyboard.GetState().IsKeyDown(Keys.S))
+                if (Microsoft.Xna.Framework.Input.Keyboard.GetState().IsKeyDown(Keys.S))
                 {
                     direction = Movement.Down;
                     _hitBox.Y += _speed;
@@ -90,6 +90,12 @@ namespace Game1.Class.Entity
                       _hitBox.X += _speed + 1;
                     }
                 }
+
+                if (Keyboard.GetState().IsKeyUp(Keys.D) && Keyboard.GetState().IsKeyUp(Keys.A) &&
+                    Keyboard.GetState().IsKeyUp(Keys.S) && Keyboard.GetState().IsKeyUp(Keys.W))
+                {
+                    direction = Movement.Idle;
+                }
             }
         }
         public override void Draw()
@@ -100,6 +106,7 @@ namespace Game1.Class.Entity
                 else if(direction == Movement.Up)upWalk.Draw(this._hitBox);
                 else if(direction == Movement.Left)leftWalk.Draw(this._hitBox);
                 else if(direction == Movement.Right)rightWalk.Draw(this._hitBox);
+                else if (direction == Movement.Idle) Globals.spriteBatch.Draw(idle, _hitBox, Color.White);
             }
         }
 

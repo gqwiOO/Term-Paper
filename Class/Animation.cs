@@ -17,12 +17,13 @@ public class Animation
     private readonly float _frameTime = 0.2f;
     private float _frameTimeLeft;
 
-    public Animation(Texture2D texture,Vector2 res, int count)
+    public Animation(Texture2D texture,Vector2 res, int count, float frameTime)
     {
         this.animationTexture = texture;
         this._frames = count;
         this.res = res;
         rectangles = new List<Rectangle>();
+        this._frameTime = frameTime;
         for (int i = 0; i < _frames; i++)
         {
             rectangles.Add(new Rectangle(i*(int)this.res.X,0, (int)this.res.X, (int)this.res.Y));
