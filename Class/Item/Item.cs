@@ -9,14 +9,16 @@ using Microsoft.Xna.Framework.Graphics;
 
 namespace Game1.Class.Item
 {
-   public class Item
+   public abstract class Item
     {
         public bool _isStackable;
         public byte _stackCapacity;
         public Texture2D _icon;
         public int _price;
         public string _name;
-        
+
+
+        public abstract void Use();
         public void Sell()
         {
             

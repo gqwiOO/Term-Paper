@@ -1,12 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Game1.Class.Entity;
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+﻿using Microsoft.Xna.Framework.Graphics;
 
 namespace Game1.Class.Item
 {
@@ -20,11 +12,15 @@ namespace Game1.Class.Item
             _stackCapacity = stackCapacity;
         }
 
-        public void Heal()
+        public override void Use()
         {
             if (Globals.player._hp < 200 &&  !Globals.player._isDead)
             {
                 Globals.player._hp += 40;
+                if (Globals.player._hp > 200)
+                {
+                    Globals.player._hp = 200;
+                }
             }
         }
     }

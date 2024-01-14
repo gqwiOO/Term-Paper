@@ -32,6 +32,7 @@ public class HUD
         _fps.Update();
         _inventory.Update();
         int playerHp = Globals.player._hp;
+        
         for(int i = 0; i < _hp.Count; i++)
         {
             if (playerHp >= 20)
@@ -93,13 +94,8 @@ public class Inventory
         Game1.Game1.allItems[3],
         null
     };
-
     public int currentItem;
-
-    public Inventory()
-    {
-    }
-
+    
     public bool addItem(Item item)
     {
         if (inventory.Count > 5)
@@ -131,8 +127,6 @@ public class Inventory
         }
         inventory[index] = null;
     }
-
-
     public void Update()
     {
         if (Keyboard.GetState().IsKeyDown(Keys.D1) && Globals.gameState == State.Playing)
@@ -160,6 +154,16 @@ public class Inventory
            currentItem != null)
         {
             dropItem(currentItem);
+        }
+        if (Movement.Keyboard.hasBeenPressed(Keys.H))
+        {
+            for (int i = 0; i < inventory.Count; i++)
+            {
+                if (inventory[i] is Potion)
+                {
+                    inventory[i].Use();
+                }
+            }
         }
     }
 
@@ -189,7 +193,5 @@ public class Inventory
                 }
             }
         }
-        
     }
-
 }
