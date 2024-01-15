@@ -31,7 +31,7 @@ namespace Game1.Class.Entity
         }
         public override void Update()
         {
-            if (_hitBox.Intersects(Globals.player._hitBox))
+            if (_hitBox.Intersects(Globals.player._hitBox) && Globals.gameState == State.State.Playing)
             {
                 if (Globals.gameTime.TotalGameTime.TotalSeconds > lastTimeHitPlayer + _cooldown
                     && Globals.player._hp > 0
@@ -57,14 +57,14 @@ namespace Game1.Class.Entity
             if (_hp <= 0)
             {
                 isDead = true;
-            }        
-            animation.Update();
+            }    
+            if(Globals.gameState == State.State.Playing) animation.Update();
         }
         
         
         public override void Draw()
         {
-            if (Globals.gameState == State.State.Playing && isDead == false)
+            if (Globals.gameState == State.State.Playing  || Globals.gameState == State.State.Inventory)
             {
                 animation.Draw(_hitBox);
             }

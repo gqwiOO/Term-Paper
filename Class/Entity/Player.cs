@@ -100,7 +100,7 @@ namespace Game1.Class.Entity
         }
         public override void Draw()
         {
-            if (Globals.gameState == State.State.Playing && !_isDead)
+            if (Globals.gameState == State.State.Playing && !_isDead ||Globals.gameState == State.State.Inventory)
             {
                 if(direction == Movement.Down)downWalk.Draw(this._hitBox);
                 else if(direction == Movement.Up)upWalk.Draw(this._hitBox);

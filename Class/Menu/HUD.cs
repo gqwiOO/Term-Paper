@@ -54,7 +54,7 @@ public class HUD
 
     public void Draw(SpriteFont _font, Texture2D inventorySlot, Texture2D currentInventorySlot, Texture2D helmetFrame, Texture2D chestPlateFrame,Texture2D  bootsFrame)
     {
-        if (Globals.gameState == State.Playing)
+        if (Globals.gameState == State.Playing || Globals.gameState == State.Inventory)
         {
             
             Globals.spriteBatch.DrawString(_font, $"Balance: {Globals.player._balance}", new Vector2(Game1.Game1._screenWidth - 200, 60), Color.Gold);
@@ -149,7 +149,6 @@ public class Inventory
         {
             currentItem = 4;
         }
-        
         if (Keyboard.GetState().IsKeyDown(Keys.G) && Globals.gameState == State.Playing &&
            currentItem != null)
         {
@@ -165,17 +164,28 @@ public class Inventory
                 }
             }
         }
+        Console.WriteLine(Movement.Keyboard.hasBeenPressed(Keys.E));
+        if (Movement.Keyboard.hasBeenPressed(Keys.E) && Globals.gameState == State.Playing)
+        {
+                Globals.gameState = State.Inventory;
+            
+        }
+        else if (Movement.Keyboard.hasBeenPressed(Keys.E) && Globals.gameState == State.Inventory)
+        {
+            Globals.gameState = State.Playing;
+        }
     }
 
     public void Draw(Texture2D inventorySlot, Texture2D currentInventorySlot)
     {
+        
         for (int i = 0; i < inventory.Count; i++)
         {
-            if (i != currentItem)
+            if (i != currentItem && Globals.gameState == State.Playing || Globals.gameState == State.Inventory)
             {
                 Globals.spriteBatch.Draw(inventorySlot, new Rectangle(i * 80, 5, 80, 80), Color.White);
             }
-            else
+            else if(i == currentItem && Globals.gameState == State.Playing || Globals.gameState == State.Inventory)
             {
                 Globals.spriteBatch.Draw(currentInventorySlot, new Rectangle(i * 80, 9, 80, 80), Color.White);
                 
@@ -196,8 +206,14 @@ public class Inventory
     }
     public void DrawInInventory(Texture2D helmetFrame,Texture2D chestPlateFrame,Texture2D bootsFrame)
     {
-        Globals.spriteBatch.Draw(helmetFrame, new Rectangle(Game1.Game1._screenWidth-100, 400, 80, 80), Color.White);
-        Globals.spriteBatch.Draw(chestPlateFrame, new Rectangle(Game1.Game1._screenWidth-100, 480, 80, 80), Color.White);
-        Globals.spriteBatch.Draw(bootsFrame, new Rectangle(Game1.Game1._screenWidth-100, 560, 80, 80), Color.White);
+        if (Globals.gameState == State.Inventory)
+        {
+            Globals.spriteBatch.Draw(helmetFrame, new Rectangle(Game1.Game1._screenWidth - 100, 400, 80, 80),
+                Color.White);
+            Globals.spriteBatch.Draw(chestPlateFrame, new Rectangle(Game1.Game1._screenWidth - 100, 480, 80, 80),
+                Color.White);
+            Globals.spriteBatch.Draw(bootsFrame, new Rectangle(Game1.Game1._screenWidth - 100, 560, 80, 80),
+                Color.White);
+        }
     }
 }
