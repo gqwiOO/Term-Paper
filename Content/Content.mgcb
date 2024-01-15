@@ -14,30 +14,6 @@
 
 #---------------------------------- Content ---------------------------------#
 
-#begin ../data/worldTileSet.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:../data/worldTileSet.png;Map/worldTileSet.png
-
-#begin C:/Users/USER/Desktop/IDLE.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:C:/Users/USER/Desktop/IDLE.png;Player/IDLE.png
-
 #begin Enemy/Axolot/AxolotWalk.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -153,7 +129,7 @@
 /processorParam:TextureFormat=Color
 /build:Items/Sword.png
 
-#begin Items/Weapon/Sword/SwordAnimation.png
+#begin Map/worldTileSet.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -163,7 +139,19 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Items/Weapon/Sword/SwordAnimation.png
+/build:Map/worldTileSet.png
+
+#begin Player/IDLE.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Player/IDLE.png
 
 #begin Player/LEFT_WALK.png
 /importer:TextureImporter
