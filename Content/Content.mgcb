@@ -24,7 +24,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Player/IDLE.png
+/build:C:/Users/USER/Desktop/IDLE.png;Player/IDLE.png
 
 #begin Enemy/Axolot/AxolotWalk.png
 /importer:TextureImporter
@@ -45,6 +45,30 @@
 /processorParam:TextureFormat=Compressed
 /build:Fonts/Minecraft.spritefont
 
+#begin HUD/BootsFrame.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:HUD/BootsFrame.png
+
+#begin HUD/ChestPlateFrame.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:HUD/ChestPlateFrame.png
+
 #begin HUD/currentInventorySlot.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -57,6 +81,18 @@
 /processorParam:TextureFormat=Color
 /build:HUD/currentInventorySlot.png
 
+#begin HUD/HelmetFrame.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:HUD/HelmetFrame.png
+
 #begin HUD/inventorySlot.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -67,7 +103,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:HUD/inventorySlot.png;HUD/inventorySlot.png
+/build:HUD/inventorySlot.png
 
 #begin Items/HealingPotion.png
 /importer:TextureImporter

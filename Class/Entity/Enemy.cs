@@ -43,23 +43,7 @@ namespace Game1.Class.Entity
                     lastTimeHitPlayer = Globals.gameTime.TotalGameTime.TotalSeconds;
                 }
             }
-            Console.WriteLine($"X : {_hitBox.X} - {_hitBox.X + _hitBox.Width} \n" +
-                              $"Y : {_hitBox.Y} - {_hitBox.Y + _hitBox.Height}");
-            Console.WriteLine($"Mouse : X = {Globals.mouseState.X} Y = {Globals.mouseState.Y}");
-            // if (Globals.mouseState.LeftButton == ButtonState.Pressed &&
-            //     Globals.mouseState.X < _hitBox.X + _hitBox.Width &&
-            //     Globals.mouseState.Y < _hitBox.Y + _hitBox.Height &&
-            //     Globals.mouseState.X > _hitBox.X &&
-            //     Globals.mouseState.X > _hitBox.Y &&
-            //     Globals.gameTime.TotalGameTime.TotalSeconds > lastTimeHitEnemy + _cooldown
-            //     && _hp > 0
-            //     && isDead == false)
-            // {
-            //     _hp -= Globals.player._damage;
-            //     lastTimeHitEnemy = Globals.gameTime.TotalGameTime.TotalSeconds;
-            // }
-            Console.WriteLine(_hitBox.Intersects(new Rectangle(new Point(Globals.mouseState.X,Globals.mouseState.Y),
-                new Point(10,10))));
+            
             if (Globals.mouseState.LeftButton == ButtonState.Pressed &&
                 new Rectangle(Globals.mouseState.X, Globals.mouseState.Y, 10,10).Intersects(_hitBox) &&
                 Globals.gameTime.TotalGameTime.TotalSeconds > lastTimeHitEnemy + _cooldown &&

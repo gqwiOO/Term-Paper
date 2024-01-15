@@ -40,6 +40,10 @@ namespace Game1
         public HUD _hud;
         public Texture2D inventorySlot;
         public Texture2D currentInventorySlot;
+        public Texture2D _helmetFrame;
+        public Texture2D _chestPlateFrame;
+        public Texture2D _bootsFrame;
+        
 
         public Map map;
         
@@ -99,6 +103,10 @@ namespace Game1
                 _halfHp = Content.Load<Texture2D>("HUD/HeartBarDamaged"),
                 _emptyHp = Content.Load<Texture2D>("HUD/HeartBarEmpty"),
             };
+            
+            _helmetFrame = Content.Load<Texture2D>("HUD/HelmetFrame");
+            _chestPlateFrame = Content.Load<Texture2D>("HUD/ChestPlateFrame");
+            _bootsFrame = Content.Load<Texture2D>("HUD/BootsFrame");
                 
 
             TmxMap mapObject = new TmxMap("Content/NewMap.tmx");
@@ -288,7 +296,7 @@ namespace Game1
             Globals.spriteBatch.End();
             
             Globals.spriteBatch.Begin(SpriteSortMode.Deferred, null,SamplerState.PointClamp);
-            _hud.Draw(_font, inventorySlot, currentInventorySlot);
+            _hud.Draw(_font, inventorySlot, currentInventorySlot, _helmetFrame, _chestPlateFrame, _bootsFrame);
             if (Globals.player._isDead) _restartMenu.Draw();
             _mainMenu.Draw();
             Globals.spriteBatch.End();

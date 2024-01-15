@@ -15,6 +15,11 @@ namespace Game1.Class.Item
             _stackCapacity = stackCapacity;
             _icon = icon;
             _name = name;
-        }   
+        }
+
+        public override void Use()
+        {
+            
+        }
     }
 }

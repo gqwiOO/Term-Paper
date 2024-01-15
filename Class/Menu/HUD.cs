@@ -52,7 +52,7 @@ public class HUD
         }
     }
 
-    public void Draw(SpriteFont _font, Texture2D inventorySlot, Texture2D currentInventorySlot)
+    public void Draw(SpriteFont _font, Texture2D inventorySlot, Texture2D currentInventorySlot, Texture2D helmetFrame, Texture2D chestPlateFrame,Texture2D  bootsFrame)
     {
         if (Globals.gameState == State.Playing)
         {
@@ -61,7 +61,7 @@ public class HUD
             Globals.spriteBatch.DrawString(_font, $"Pos: {Globals.player._hitBox.X}  {Globals.player._hitBox.Y}", new Vector2(10,250), Color.Black);
             _fps.DrawFps(_font,new Vector2(10, 150), Color.Black );
             _inventory.Draw(inventorySlot, currentInventorySlot);
-            
+            _inventory.DrawInInventory(helmetFrame, chestPlateFrame, bootsFrame);
 
             for (int i = 0; i < _hp.Count; i++)
             {
@@ -193,5 +193,11 @@ public class Inventory
                 }
             }
         }
+    }
+    public void DrawInInventory(Texture2D helmetFrame,Texture2D chestPlateFrame,Texture2D bootsFrame)
+    {
+        Globals.spriteBatch.Draw(helmetFrame, new Rectangle(Game1.Game1._screenWidth-100, 400, 80, 80), Color.White);
+        Globals.spriteBatch.Draw(chestPlateFrame, new Rectangle(Game1.Game1._screenWidth-100, 480, 80, 80), Color.White);
+        Globals.spriteBatch.Draw(bootsFrame, new Rectangle(Game1.Game1._screenWidth-100, 560, 80, 80), Color.White);
     }
 }
