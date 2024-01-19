@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using Game1.Class.Entity;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
@@ -30,6 +29,8 @@ public class Map
 
     public void Draw()
     {
+        for (int j = 0; j < map.Layers.Count; j++)
+        {
             for (var i = 0; i < map.Layers[0].Tiles.Count; i++)
             {
                 int gid = map.Layers[0].Tiles[i].Gid;
@@ -50,5 +51,6 @@ public class Map
                     }
                 }
             }
+        }
     }
 }

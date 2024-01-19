@@ -16,13 +16,13 @@
     <PackageReference Include="MonoGame.Extended.Tiled" Version="3.8.0" />
     <PackageReference Include="MonoGame.Framework.WindowsDX" Version="3.8.0.1641" />
     <PackageReference Include="MonoGame.Content.Builder.Task" Version="3.8.1.303" />
-    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" />
     <PackageReference Include="TiledSharp" Version="0.15.0" />
   </ItemGroup>
   <ItemGroup>
     <Compile Remove="Level\Generating\**" />
     <Compile Remove="Class\Entity\Component.cs" />
     <Compile Remove="Class\Invertory.cs" />
+    <Compile Remove="Class\Music.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Level\Generating\**" />
@@ -48,7 +48,7 @@
     <Content Remove="C:\Users\zeite\.nuget\packages\monogame.extended\3.8.0\contentFiles\any\netstandard2.0\libmojoshader_64.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="data\map\" />
+    <Folder Include="Class\Audio\" />
   </ItemGroup>
   <Target Name="RestoreDotnetTools" BeforeTargets="Restore">
     <Message Text="Restoring dotnet tools" Importance="High" />
