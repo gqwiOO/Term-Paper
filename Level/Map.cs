@@ -29,23 +29,26 @@ public class Map
 
     public void Draw()
     {
-        for (var i = 0; i < map.Layers[0].Tiles.Count ; i++)
+        for (int j = 0; j < map.Layers.Count; j++)
         {
-            int gid = map.Layers[0].Tiles[i].Gid;
-            if (!(gid == 0))
+            for (var i = 0; i < map.Layers[0].Tiles.Count; i++)
             {
-                float x = (i % map.Width) * map.TileWidth;
-                float y = (float)Math.Floor(i / (double)map.Width) * map.TileHeight;
-                if (Math.Abs(Globals.player._hitBox.X - x) < 1200 && Math.Abs(Globals.player._hitBox.Y - y) < 1200)
+                int gid = map.Layers[0].Tiles[i].Gid;
+                if (!(gid == 0))
                 {
-                    int tileFrame = gid - 1;
-                     int column = tileFrame % tilesetTilesWide;
-                     int row = (int)Math.Floor((double)tileFrame / tilesetTilesHigh);
-            
-                     Globals.spriteBatch.Draw(tileSet,
-                        new Rectangle((int)x, (int)y, tileWidth, tileHeight),
-                        new Rectangle(tileWidth * column, tileHeight * row , tileWidth, tileHeight),
-                        Color.White);
+                    float x = (i % map.Width) * map.TileWidth;
+                    float y = (float)Math.Floor(i / (double)map.Width) * map.TileHeight;
+                    if (Math.Abs(Globals.player._hitBox.X - x) < 1200 && Math.Abs(Globals.player._hitBox.Y - y) < 1200)
+                    {
+                        int tileFrame = gid - 1;
+                        int column = tileFrame % tilesetTilesWide;
+                        int row = (int)Math.Floor((double)tileFrame / tilesetTilesHigh);
+
+                        Globals.spriteBatch.Draw(tileSet,
+                            new Rectangle((int)x, (int)y, tileWidth, tileHeight),
+                            new Rectangle(tileWidth * column, tileHeight * row, tileWidth, tileHeight),
+                            Color.White);
+                    }
                 }
             }
         }

@@ -1,4 +1,5 @@
-﻿using Menu;
+﻿using System;
+using Menu;
 using Microsoft.Xna.Framework.Graphics;
 using SpriteBatch = Microsoft.Xna.Framework.Graphics.SpriteBatch;
 using Microsoft.Xna.Framework;
@@ -11,11 +12,14 @@ namespace Game1.Class.Entity
     {
         public Texture2D _sprite;
         public bool _isDead;
-        public Inventory inventory;
         SpriteEffects s = SpriteEffects.FlipHorizontally;
         public int _balance ;
         public Vector2 Position;
         public float _cooldown;
+        public float _stamina;
+        private double lastTimeSprint;
+        public float _sprintCooldown;
+        public int _runningSpeed;
 
         private Animation downWalk;
         private Animation upWalk;
@@ -31,6 +35,10 @@ namespace Game1.Class.Entity
             _speed = 4;
             _damage = 20;
             _cooldown = 1f;
+            _stamina = 100;
+            _sprintCooldown = 0.1f;
+            _runningSpeed = 5;
+            
             
             
             _hitBox = new Rectangle(4864, 3220, 64, 64);
@@ -54,19 +62,19 @@ namespace Game1.Class.Entity
                     direction = Movement.Up;
                     _hitBox.Y -= _speed;
                     upWalk.Update();
-                    if (Keyboard.GetState().IsKeyDown(Keys.LeftShift))
+                    if (Keyboard.GetState().IsKeyDown(Keys.LeftShift)&& _stamina > 0 )
                     {
-                        _hitBox.Y -= _speed + 1;
-                    }
+                        _hitBox.Y -= _runningSpeed;
+                        _stamina -= 20 * (float)Globals.gameTime.ElapsedGameTime.TotalSeconds;                    }
                 }
                 if (Microsoft.Xna.Framework.Input.Keyboard.GetState().IsKeyDown(Keys.S))
                 {
                     direction = Movement.Down;
                     _hitBox.Y += _speed;
-                    if (Keyboard.GetState().IsKeyDown(Keys.LeftShift))
+                    if (Keyboard.GetState().IsKeyDown(Keys.LeftShift)&& _stamina > 0)
                     {
-                        _hitBox.Y += _speed + 1;
-                    }
+                        _hitBox.Y += _runningSpeed;
+                        _stamina -= 20 * (float)Globals.gameTime.ElapsedGameTime.TotalSeconds;                    }
                     downWalk.Update();
 
                 }
@@ -75,9 +83,10 @@ namespace Game1.Class.Entity
                     direction = Movement.Left;
                     leftWalk.Update();
                    _hitBox.X -= _speed;
-                   if (Keyboard.GetState().IsKeyDown(Keys.LeftShift))
+                   if (Keyboard.GetState().IsKeyDown(Keys.LeftShift)&& _stamina > 0)
                    {
-                       _hitBox.X -= _speed + 1;
+                       _hitBox.X -= _runningSpeed;
+                       _stamina -= 20 * (float)Globals.gameTime.ElapsedGameTime.TotalSeconds;
                    }
                 }
                 if (Keyboard.GetState().IsKeyDown(Keys.D))
@@ -85,16 +94,21 @@ namespace Game1.Class.Entity
                     direction = Movement.Right;
                     rightWalk.Update();
                     _hitBox.X += _speed;
-                    if (Keyboard.GetState().IsKeyDown(Keys.LeftShift))
+                    if (Keyboard.GetState().IsKeyDown(Keys.LeftShift) && _stamina > 0)
                     {
-                      _hitBox.X += _speed + 1;
-                    }
+                      _hitBox.X += _runningSpeed;
+                      _stamina -= 20 * (float)Globals.gameTime.ElapsedGameTime.TotalSeconds;                    }
                 }
-
                 if (Keyboard.GetState().IsKeyUp(Keys.D) && Keyboard.GetState().IsKeyUp(Keys.A) &&
                     Keyboard.GetState().IsKeyUp(Keys.S) && Keyboard.GetState().IsKeyUp(Keys.W))
                 {
                     direction = Movement.Idle;
+                }
+
+                if (Keyboard.GetState().IsKeyUp(Keys.LeftShift) && Globals.gameTime.TotalGameTime.TotalSeconds > lastTimeSprint + _sprintCooldown)
+                {
+                    _stamina += 1;
+                    lastTimeSprint = Globals.gameTime.TotalGameTime.TotalSeconds;
                 }
             }
         }

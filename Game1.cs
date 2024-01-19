@@ -11,6 +11,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using TiledSharp;
 using Game1.Level;
+using Microsoft.Xna.Framework.Media;
+using MonoGame.Extended.Content;
 using Button = Menu.Button;
 using Movement;
 using Keyboard = Microsoft.Xna.Framework.Input.Keyboard;
@@ -43,12 +45,14 @@ namespace Game1
         public Texture2D _helmetFrame;
         public Texture2D _chestPlateFrame;
         public Texture2D _bootsFrame;
+        public Texture2D _arrowFrame;
         
-
         public Map map;
         
         public static Dictionary<int, Item> allItems;
         
+        public Song key;
+        public Song sweden;
 
         public List<Entity> _entities;
         
@@ -83,7 +87,6 @@ namespace Game1
         {
             LoadItems();
             _font = Content.Load<SpriteFont>("Fonts/Minecraft");
-
             
             Globals.player = new Player(Content.Load<Texture2D>("Player/DOWN_WALK"),
                                  Content.Load<Texture2D>("Player/UP_WALK"),
@@ -94,7 +97,16 @@ namespace Game1
             {
                 new Enemy(Content.Load<Texture2D>("Enemy/Axolot/AxolotWalk"))
             };
+
+            key = Content.Load<Song>("Sound/key");
+            sweden = Content.Load<Song>("Sound/Sweden");
+                
+            MediaPlayer.Volume = 0.8f;
+            MediaPlayer.IsRepeating = true;
             
+            MediaPlayer.Play(sweden);
+            
+
             inventorySlot = Content.Load<Texture2D>("HUD/inventorySlot");
             currentInventorySlot = Content.Load<Texture2D>("HUD/currentInventorySlot");
             _hud = new HUD()
@@ -102,14 +114,18 @@ namespace Game1
                 _fullHp = Content.Load<Texture2D>("HUD/HeartBar"),
                 _halfHp = Content.Load<Texture2D>("HUD/HeartBarDamaged"),
                 _emptyHp = Content.Load<Texture2D>("HUD/HeartBarEmpty"),
+                
+                _fullStam = Content.Load<Texture2D>("HUD/staminaBar"),
+                _emptyStam = Content.Load<Texture2D>("HUD/staminaBarUsed"),
             };
             
             _helmetFrame = Content.Load<Texture2D>("HUD/HelmetFrame");
             _chestPlateFrame = Content.Load<Texture2D>("HUD/ChestPlateFrame");
             _bootsFrame = Content.Load<Texture2D>("HUD/BootsFrame");
+            _arrowFrame = Content.Load<Texture2D>("HUD/ArrowFrame");
                 
 
-            TmxMap mapObject = new TmxMap("Content/NewMap.tmx");
+            TmxMap mapObject = new TmxMap("Content/EndMap.tmx");
             map = new Map(mapObject, Content.Load<Texture2D>("Map/" + mapObject.Tilesets[0].Name));
             
             // Creating Main Menu 
@@ -296,7 +312,7 @@ namespace Game1
             Globals.spriteBatch.End();
             
             Globals.spriteBatch.Begin(SpriteSortMode.Deferred, null,SamplerState.PointClamp);
-            _hud.Draw(_font, inventorySlot, currentInventorySlot, _helmetFrame, _chestPlateFrame, _bootsFrame);
+            _hud.Draw(_font, inventorySlot, currentInventorySlot, _helmetFrame, _chestPlateFrame, _bootsFrame, _arrowFrame);
             if (Globals.player._isDead) _restartMenu.Draw();
             _mainMenu.Draw();
             Globals.spriteBatch.End();
