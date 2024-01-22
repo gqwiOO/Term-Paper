@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using Game1.Class;
 using Game1.Class.Camera;
 using Game1.Class.Entity;
@@ -15,8 +16,10 @@ using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Media;
 using MonoGame.Extended.Content;
+using Microsoft.Xna.Framework.Media;
 using Button = Menu.Button;
 using Movement;
+using Newtonsoft.Json;
 using TermPaper.Class.Audio;
 using Keyboard = Microsoft.Xna.Framework.Input.Keyboard;
 
@@ -28,7 +31,6 @@ namespace Game1
 
         public static int _screenWidth;
         public static int _screenHeight;
-        public static bool isLeftMouseButtonPressed = false;
         
         private SpriteFont _font;
 
@@ -70,20 +72,27 @@ namespace Game1
         }
         protected override void Initialize()
         {
+            Globals.Content = Content;
+            Globals.project_path =  Directory.GetParent(
+                Directory.GetParent(
+                    Directory.GetParent(
+                        Environment.CurrentDirectory).ToString()).ToString()).ToString();
+            
             Globals.gameState = State.MainMenu;
+            
             _camera = new Camera();
             Globals.spriteBatch = new SpriteBatch(GraphicsDevice);
             
             // FPS
-            IsFixedTimeStep = true;
-            TargetElapsedTime = TimeSpan.FromSeconds(1d / 60d);
             _fps = new Fps();
             
-            _screenWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+            // Screen properties
+            _screenWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;  
             _screenHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
 
             _graphics.PreferredBackBufferWidth = _screenWidth;
             _graphics.PreferredBackBufferHeight = _screenHeight;
+            _graphics.HardwareModeSwitch = false;
             _graphics.IsFullScreen = true;
             _graphics.ApplyChanges();
             
@@ -93,7 +102,7 @@ namespace Game1
         {
             LoadItems();
             _font = Content.Load<SpriteFont>("Fonts/Minecraft");
-
+            
             Globals.player = new Player(Content.Load<Texture2D>("Player/DOWN_WALK"),
                 Content.Load<Texture2D>("Player/UP_WALK"),
                 Content.Load<Texture2D>("Player/LEFT_WALK"),
@@ -104,14 +113,16 @@ namespace Game1
             {
                 new Enemy(Content.Load<Texture2D>("Enemy/Axolot/AxolotWalk"))
             };
-           // _hurt = Content.Load<SoundEffect>("Sound/SlavicSound");
             
-            sweden = Content.Load<Song>("Sound/Sweden");
-                
-            MediaPlayer.Volume = 0.8f;
-            MediaPlayer.IsRepeating = true;
-            MediaPlayer.Play(sweden);
-
+            inventorySlot = Content.Load<Texture2D>("HUD/inventorySlot");
+            currentInventorySlot = Content.Load<Texture2D>("HUD/currentInventorySlot");
+            _hud = new HUD()
+            {
+                _fullHp = Content.Load<Texture2D>("HUD/HeartBar"),
+                _halfHp = Content.Load<Texture2D>("HUD/HeartBarDamaged"),
+                _emptyHp = Content.Load<Texture2D>("HUD/HeartBarEmpty"),
+            };
+            
             soundDict = new Dictionary<string, SoundEffect>
             {
                 ["hurt"] = Content.Load<SoundEffect>("Sound/SlavicSound"),
@@ -121,11 +132,22 @@ namespace Game1
             Sound.Load(soundDict);
 
             LoadHUD();
-
-
-            TmxMap mapObject = new TmxMap("Content/EndMap.tmx");
-            map = new Map(mapObject, Content.Load<Texture2D>("Map/" + mapObject.Tilesets[0].Name));
             
+            sweden = Content.Load<Song>("Sound/Sweden");
+                
+            MediaPlayer.Volume = 0.8f;
+            MediaPlayer.IsRepeating = true;
+            MediaPlayer.Play(sweden);
+            
+            
+            
+            _helmetFrame = Content.Load<Texture2D>("HUD/HelmetFrame");
+            _chestPlateFrame = Content.Load<Texture2D>("HUD/ChestPlateFrame");
+            _bootsFrame = Content.Load<Texture2D>("HUD/BootsFrame");
+                
+
+            TmxMap mapObject = new TmxMap("Content/NewMap.tmx");
+            map = new Map(mapObject, Content.Load<Texture2D>("Map/" + mapObject.Tilesets[0].Name));
             
             // Creating Main Menu 
             _menu = new Menu.Menu(new List<Button>
@@ -174,12 +196,16 @@ namespace Game1
                     {
                         _screenWidth = 1920;
                         _screenHeight = 1080;
-
+                        _graphics.HardwareModeSwitch = true;
                         _graphics.PreferredBackBufferWidth = _screenWidth;
                         _graphics.PreferredBackBufferHeight = _screenHeight;
                         _graphics.IsFullScreen = true;
                         _graphics.ApplyChanges();
                         LoadContent();
+                        _graphics.HardwareModeSwitch = false;
+                        _graphics.ApplyChanges();
+
+
                     }
                 },
                 new Button(_font, "1600x900", new Vector2(_screenWidth / 2,_screenHeight / 2 - 200))
@@ -188,12 +214,16 @@ namespace Game1
                     {
                         _screenWidth = 1600;
                         _screenHeight = 900;
-
+                        _graphics.HardwareModeSwitch = true;
                         _graphics.PreferredBackBufferWidth = _screenWidth;
                         _graphics.PreferredBackBufferHeight = _screenHeight;
+                        LoadMenu();
+
                         _graphics.IsFullScreen = true;
                         _graphics.ApplyChanges();
-                        LoadContent();
+                        // _graphics.HardwareModeSwitch = false;
+                        // _graphics.ApplyChanges();
+
                     },
                 },
                 new Button(_font, "1024x768", new Vector2(_screenWidth / 2,_screenHeight / 2 - 100))
@@ -203,11 +233,13 @@ namespace Game1
                         _screenWidth = 1024;
                         _screenHeight = 768;
 
+                        _graphics.HardwareModeSwitch = true;
                         _graphics.PreferredBackBufferWidth = _screenWidth;
                         _graphics.PreferredBackBufferHeight = _screenHeight;
+                        LoadMenu();
+
                         _graphics.IsFullScreen = true;
                         _graphics.ApplyChanges();
-                        LoadContent();
                     },
                 },
                 new Button(_font, "Back", new Vector2(_screenWidth / 2,_screenHeight / 2))
@@ -231,12 +263,11 @@ namespace Game1
                     _onClick = () => 
                     {
                         Globals.gameState = State.MainMenu;
-                        Globals.player._isDead = false;
+                        Globals.player.isDead = false;
                     }
                 }
             },State.Playing);
-
-
+            
             _pauseMenu = new Menu.Menu(new List<Button>
             {
                 new Button(_font, "Back", new Vector2(_screenWidth / 2,_screenHeight / 2 - 300))
@@ -266,13 +297,14 @@ namespace Game1
             {
                 _menus = new List<Menu.Menu>
                 { 
-                  _menu,
-                  _settingsMenu,
-                  _resolutionMenu,
-                  _pauseMenu
+                    _menu,
+                    _settingsMenu,
+                    _resolutionMenu,
+                    _pauseMenu
                 },
             };
         }
+
 
         private void LoadHUD()
         {
@@ -297,21 +329,23 @@ namespace Game1
         protected override void Update(GameTime gameTime)
         {
             Globals.gameTime = gameTime;
-            Movement.Keyboard.GetState();
-            if(Movement.Keyboard.hasBeenPressed(Keys.Escape))
+            Movement.Input.GetKeyboardState();
+            Movement.Input.GetMouseState();
+            
+            // Pause or Exit button
+            if(Movement.Input.hasBeenPressed(Keys.Escape))
             {
                 if (Globals.gameState == State.Pause) Globals.gameState = State.Playing;
                 else if(Globals.gameState == State.Playing)Globals.gameState = State.Pause;
                 else Exit();
             }
-            
-            Globals.mouseState = Mouse.GetState(); // gives _mouseState state each frame
-            if (Globals.mouseState.LeftButton == ButtonState.Released) isLeftMouseButtonPressed = false;
+            // Gives _mouseState state each frame
+            Globals.mouseState = Mouse.GetState(); 
             
             _entities.ForEach(entity => entity.Update());
             _hud.Update();
             Globals.player.Update();
-            if (Globals.player._isDead)
+            if (Globals.player.isDead)
             {
                 _restartMenu.Update();
             }
@@ -333,7 +367,8 @@ namespace Game1
             
             Globals.spriteBatch.Begin(SpriteSortMode.Deferred, null,SamplerState.PointClamp);
             _hud.Draw(_font, inventorySlot, currentInventorySlot, _helmetFrame, _chestPlateFrame, _bootsFrame, _arrowFrame);
-            if (Globals.player._isDead) _restartMenu.Draw();
+            if (Globals.player.isDead) _restartMenu.Draw();
+            
             _mainMenu.Draw();
             Globals.spriteBatch.End();
 
@@ -343,10 +378,14 @@ namespace Game1
 
         public void LoadItems()
         {
-            allItems = new Dictionary<int, Item>();
-            allItems[0] = new Weapon("Start Sword", Content.Load<Texture2D>("Items/Sword"),  false, 1);
-            allItems[1] = new Weapon("Redeemer", Content.Load<Texture2D>("Items/Redeemer"),  false, 1);
-            allItems[3] = new Potion("Healing Potion", Content.Load<Texture2D>("Items/HealingPotion"),  false, 1);
+            using StreamReader reader = new StreamReader(Path.Combine(Globals.project_path + "/data/items.json"));
+            var json = reader.ReadToEnd();
+            Data.Items.Weapons = JsonConvert.DeserializeObject<List<Weapon>>(json);
+
+        }
+        
+        private void DebugDraw()
+        {
         }
     }
 }
