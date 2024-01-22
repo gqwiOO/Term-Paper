@@ -1,0 +1,17 @@
+﻿[
+    {
+      "name": "sword1",
+        "id" : 1,
+        "type" : "sword",
+        "damage" : 20,
+        "cooldown" : 0.4,
+        "frameCount": 9,
+        "frameTime": 0.07,
+        "animationFrameWidth": 32,
+        "animationFrameHeight": 32,
+        "iconPath" : "Items/Sword",
+        "attackAnimationPath": "Items/Weapon/Sword/SwordAnimation"
+        
+        
+    }
+]

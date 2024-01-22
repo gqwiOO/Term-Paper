@@ -1,8 +1,9 @@
-﻿using Game1;
+﻿using System;
+using Game1;
+using MathL;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using SpriteBatch = Microsoft.Xna.Framework.Graphics.SpriteBatch;
+using Movement;
 
 
 namespace Menu
@@ -12,39 +13,42 @@ namespace Menu
         private SpriteFont _font;
         public string _text;
         public delegate void onClickDelegate();
-        public Button.onClickDelegate _onClick { get; set; }
+        public onClickDelegate _onClick { get; set; }
         public Vector2 _position;
+        private RectangleF _hitboxCenter;
+        private RectangleF _hitBoxDefault;
         
         public Button(SpriteFont font, string text, Vector2 position) 
         {
             _font = font;
             _text = text;
-            _position = position;
-            changePosWithMeasureString();
+            _hitboxCenter = new RectangleF(position.X, position.Y, _font.MeasureString(_text).X,
+                _font.MeasureString(_text).Y);
+            _hitBoxDefault = new RectangleF(position.X - _font.MeasureString(_text).X / 2,
+                                            position.Y - _font.MeasureString(_text).Y / 2,
+                                            _font.MeasureString(_text).X,
+                                            _font.MeasureString(_text).Y);
         }
+        
 
-        private void changePosWithMeasureString()
-        {
-            _position = new Vector2(_position.X - _font.MeasureString(_text).X / 2, _position.Y - _font.MeasureString(_text).Y / 2 );
-        }
 
         public void Update()
         {
-            if (Globals.mouseState.LeftButton == ButtonState.Pressed &&
-                Globals.mouseState.X < _position.X + _font.MeasureString(_text).X &&
-                Globals.mouseState.X > _position.X &&
-                Globals.mouseState.Y < _position.Y + _font.MeasureString(_text).Y &&
-                Globals.mouseState.Y > _position.Y &&
-                !Game1.Game1.isLeftMouseButtonPressed
+            if (Input.hasBeenLeftMouseButtonPressed() &&
+                Globals.mouseState.X <= _hitBoxDefault.Right &&
+                Globals.mouseState.X >= _hitBoxDefault.Left &&
+                Globals.mouseState.Y <= _hitBoxDefault.Bottom&&
+                Globals.mouseState.Y >= _hitBoxDefault.Top
                 )
             {
                 _onClick.Invoke();
-                Game1.Game1.isLeftMouseButtonPressed = true;
             }
+
         }
         public void Draw()
         {
-            Globals.spriteBatch.DrawString(_font, _text, _position, Color.Black);
+            Globals.spriteBatch.DrawString(_font, _text,
+                new Vector2(_hitBoxDefault.X, _hitBoxDefault.Y), Color.Black);
         }
     }
     

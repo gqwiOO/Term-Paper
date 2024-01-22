@@ -1,7 +1,6 @@
 ﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using SharpDX.Direct3D9;
 
 namespace Game1.Class;
 
@@ -12,7 +11,6 @@ public class Animation
     private int _frames;
     private int _frame;
     private Vector2 res;
-    private bool isActive = true;
     private List<Rectangle> rectangles;
     private readonly float _frameTime = 0.2f;
     private float _frameTimeLeft;
@@ -29,20 +27,9 @@ public class Animation
             rectangles.Add(new Rectangle(i*(int)this.res.X,0, (int)this.res.X, (int)this.res.Y));
         }
     }
-
-    public void Start()
-    {
-        isActive = true;
-    }
-
-    public void Stop()
-    {
-        isActive = false;
-    }
-
+    
     public void Update()
     {
-        if (!isActive) return;
         _frameTimeLeft -=(float)Globals.gameTime.ElapsedGameTime.TotalSeconds;
 
         if (_frameTimeLeft <= 0)
@@ -56,6 +43,11 @@ public class Animation
     {
         Globals.spriteBatch.Draw(animationTexture,position,rectangles[_frame],
              Color.White);
+    }
+
+    public int getFrame()
+    {
+        return _frame;
     }
 
 }

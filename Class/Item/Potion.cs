@@ -14,7 +14,7 @@ namespace Game1.Class.Item
 
         public override void Use()
         {
-            if (Globals.player._hp < 200 &&  !Globals.player._isDead)
+            if (Globals.player._hp < 200 &&  !Globals.player.isDead)
             {
                 Globals.player._hp += 40;
                 if (Globals.player._hp > 200)
@@ -22,6 +22,14 @@ namespace Game1.Class.Item
                     Globals.player._hp = 200;
                 }
             }
+        }
+        public override void Update()
+        {
+            
+        }
+        public override void Draw()
+        {
+            
         }
     }
 }

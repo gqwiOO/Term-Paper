@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MathL;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
@@ -26,8 +22,7 @@ namespace Game1.Class.Entity
             _speed = 4;
             _damage = 20;
             
-            
-            _hitBox = new Rectangle(4864, 3220, 64, 64);
+            _hitBox = new RectangleF(4864, 3220, 64, 64);
             downWalk = new Animation(downWalkTexture, new Vector2(16, 16), 3, 0.2f);
             upWalk = new Animation(upWalkTexture, new Vector2(16, 16), 4, 0.2f);
             leftWalk = new Animation(leftWalkTexture, new Vector2(16, 16), 4, 0.2f);
@@ -35,9 +30,12 @@ namespace Game1.Class.Entity
             idle = idleTexture;
         }
         
-        
-        
         public override void Update()
+        {
+            
+        }
+
+        public void SelectDirection()
         {
             
         }
