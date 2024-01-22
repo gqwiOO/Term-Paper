@@ -8,6 +8,7 @@ using Game1.Class.State;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using TermPaper.Class.Audio;
 using Keyboard = Microsoft.Xna.Framework.Input.Keyboard;
 
 namespace Menu;
@@ -212,8 +213,6 @@ public class HUD
                     }
                 }
             }
-
-            Console.WriteLine(Movement.Keyboard.hasBeenPressed(Keys.E));
             if (Movement.Keyboard.hasBeenPressed(Keys.E) && Globals.gameState == State.Playing)
             {
                 Globals.gameState = State.Inventory;

@@ -2,10 +2,15 @@
 using System.DirectoryServices.ActiveDirectory;
 using System.Windows.Forms;
 using Game1.Class.Item;
+using GeoWar;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Media;
+using TermPaper.Class.Audio;
 
 namespace Game1.Class.Entity
 {
@@ -17,7 +22,6 @@ namespace Game1.Class.Entity
         public bool isDead;
         private double lastTimeHitEnemy;
         private Animation animation;
-        
 
         public Enemy(Texture2D EnemySprite)
         {
@@ -29,6 +33,7 @@ namespace Game1.Class.Entity
             _hitBox = new Rectangle(4600,3000 , 100, 100);
             animation = new Animation(EnemySprite, new Vector2(16, 16), 4, 0.3f);
         }
+
         public override void Update()
         {
             if (_hitBox.Intersects(Globals.player._hitBox) && Globals.gameState == State.State.Playing)
@@ -40,6 +45,7 @@ namespace Game1.Class.Entity
                     )
                 {
                     Globals.player._hp -= (_damage);
+                    Sound._hurt.Play();
                     lastTimeHitPlayer = Globals.gameTime.TotalGameTime.TotalSeconds;
                 }
             }
@@ -70,6 +76,5 @@ namespace Game1.Class.Entity
             }
             
         }
-
     }
 }

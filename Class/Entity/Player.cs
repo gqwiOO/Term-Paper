@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Graphics;
 using SpriteBatch = Microsoft.Xna.Framework.Graphics.SpriteBatch;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
+using TermPaper.Class.Audio;
 
 
 namespace Game1.Class.Entity
@@ -26,7 +27,8 @@ namespace Game1.Class.Entity
         private Animation leftWalk;
         private Animation rightWalk;
         private Texture2D idle;
-        private Movement direction;
+        private Movement currentDirection;
+        private Movement previousDirection;
         public Player(Texture2D downWalkTexture, Texture2D upWalkTexture,
                       Texture2D leftWalkTexture, Texture2D rightWalkTexture, Texture2D idleTexture
                       )
@@ -59,7 +61,8 @@ namespace Game1.Class.Entity
                 // Movement 
                 if (Keyboard.GetState().IsKeyDown(Keys.W))
                 {
-                    direction = Movement.Up;
+                    previousDirection = currentDirection;
+                    currentDirection = Movement.Up;
                     _hitBox.Y -= _speed;
                     upWalk.Update();
                     if (Keyboard.GetState().IsKeyDown(Keys.LeftShift)&& _stamina > 0 )
@@ -69,7 +72,8 @@ namespace Game1.Class.Entity
                 }
                 if (Microsoft.Xna.Framework.Input.Keyboard.GetState().IsKeyDown(Keys.S))
                 {
-                    direction = Movement.Down;
+                    previousDirection = currentDirection;
+                    currentDirection = Movement.Down;
                     _hitBox.Y += _speed;
                     if (Keyboard.GetState().IsKeyDown(Keys.LeftShift)&& _stamina > 0)
                     {
@@ -80,7 +84,8 @@ namespace Game1.Class.Entity
                 }
                 if (Keyboard.GetState().IsKeyDown(Keys.A) )
                 {
-                    direction = Movement.Left;
+                    previousDirection = currentDirection;
+                    currentDirection = Movement.Left;
                     leftWalk.Update();
                    _hitBox.X -= _speed;
                    if (Keyboard.GetState().IsKeyDown(Keys.LeftShift)&& _stamina > 0)
@@ -91,7 +96,8 @@ namespace Game1.Class.Entity
                 }
                 if (Keyboard.GetState().IsKeyDown(Keys.D))
                 {
-                    direction = Movement.Right;
+                    previousDirection = currentDirection;
+                    currentDirection = Movement.Right;
                     rightWalk.Update();
                     _hitBox.X += _speed;
                     if (Keyboard.GetState().IsKeyDown(Keys.LeftShift) && _stamina > 0)
@@ -102,9 +108,8 @@ namespace Game1.Class.Entity
                 if (Keyboard.GetState().IsKeyUp(Keys.D) && Keyboard.GetState().IsKeyUp(Keys.A) &&
                     Keyboard.GetState().IsKeyUp(Keys.S) && Keyboard.GetState().IsKeyUp(Keys.W))
                 {
-                    direction = Movement.Idle;
+                    currentDirection = Movement.Idle;
                 }
-
                 if (Keyboard.GetState().IsKeyUp(Keys.LeftShift) && Globals.gameTime.TotalGameTime.TotalSeconds > lastTimeSprint + _sprintCooldown)
                 {
                     _stamina += 1;
@@ -116,11 +121,11 @@ namespace Game1.Class.Entity
         {
             if (Globals.gameState == State.State.Playing && !_isDead ||Globals.gameState == State.State.Inventory)
             {
-                if(direction == Movement.Down)downWalk.Draw(this._hitBox);
-                else if(direction == Movement.Up)upWalk.Draw(this._hitBox);
-                else if(direction == Movement.Left)leftWalk.Draw(this._hitBox);
-                else if(direction == Movement.Right)rightWalk.Draw(this._hitBox);
-                else if (direction == Movement.Idle) Globals.spriteBatch.Draw(idle, _hitBox, Color.White);
+                if(currentDirection == Movement.Down)downWalk.Draw(this._hitBox);
+                else if(currentDirection == Movement.Up)upWalk.Draw(this._hitBox);
+                else if(currentDirection == Movement.Left)leftWalk.Draw(this._hitBox);
+                else if(currentDirection == Movement.Right)rightWalk.Draw(this._hitBox);
+                else if (currentDirection == Movement.Idle) Globals.spriteBatch.Draw(idle, _hitBox, Color.White);
             }
         }
 
@@ -130,6 +135,7 @@ namespace Game1.Class.Entity
             _hp = 200;
             _hitBox.X = 4864;
             _hitBox.Y = 3220;
+            Sound._spawnSound.Play();
         }
 
         public void Sell(int cost)
