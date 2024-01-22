@@ -11,10 +11,13 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using TiledSharp;
 using Game1.Level;
+using Microsoft.Xna.Framework.Audio;
+using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Media;
 using MonoGame.Extended.Content;
 using Button = Menu.Button;
 using Movement;
+using TermPaper.Class.Audio;
 using Keyboard = Microsoft.Xna.Framework.Input.Keyboard;
 
 namespace Game1
@@ -53,6 +56,9 @@ namespace Game1
         
         public Song key;
         public Song sweden;
+        public SoundEffect _hurt;
+        public Dictionary<string, SoundEffect> soundDict;
+
 
         public List<Entity> _entities;
         
@@ -78,7 +84,7 @@ namespace Game1
 
             _graphics.PreferredBackBufferWidth = _screenWidth;
             _graphics.PreferredBackBufferHeight = _screenHeight;
-            _graphics.IsFullScreen = false;
+            _graphics.IsFullScreen = true;
             _graphics.ApplyChanges();
             
             base.Initialize();
@@ -87,46 +93,39 @@ namespace Game1
         {
             LoadItems();
             _font = Content.Load<SpriteFont>("Fonts/Minecraft");
-            
+
             Globals.player = new Player(Content.Load<Texture2D>("Player/DOWN_WALK"),
-                                 Content.Load<Texture2D>("Player/UP_WALK"),
-                                 Content.Load<Texture2D>("Player/LEFT_WALK"),
-                                 Content.Load<Texture2D>("Player/RIGHT_WALK"),
-                                 Content.Load<Texture2D>("Player/IDLE"));
+                Content.Load<Texture2D>("Player/UP_WALK"),
+                Content.Load<Texture2D>("Player/LEFT_WALK"),
+                Content.Load<Texture2D>("Player/RIGHT_WALK"),
+                Content.Load<Texture2D>("Player/IDLE"));
+
             _entities = new List<Entity>()
             {
                 new Enemy(Content.Load<Texture2D>("Enemy/Axolot/AxolotWalk"))
             };
-
-            key = Content.Load<Song>("Sound/key");
+           // _hurt = Content.Load<SoundEffect>("Sound/SlavicSound");
+            
             sweden = Content.Load<Song>("Sound/Sweden");
                 
             MediaPlayer.Volume = 0.8f;
             MediaPlayer.IsRepeating = true;
-            
             MediaPlayer.Play(sweden);
-            
 
-            inventorySlot = Content.Load<Texture2D>("HUD/inventorySlot");
-            currentInventorySlot = Content.Load<Texture2D>("HUD/currentInventorySlot");
-            _hud = new HUD()
+            soundDict = new Dictionary<string, SoundEffect>
             {
-                _fullHp = Content.Load<Texture2D>("HUD/HeartBar"),
-                _halfHp = Content.Load<Texture2D>("HUD/HeartBarDamaged"),
-                _emptyHp = Content.Load<Texture2D>("HUD/HeartBarEmpty"),
-                
-                _fullStam = Content.Load<Texture2D>("HUD/staminaBar"),
-                _emptyStam = Content.Load<Texture2D>("HUD/staminaBarUsed"),
+                ["hurt"] = Content.Load<SoundEffect>("Sound/SlavicSound"),
+                ["spawnSound"] = Content.Load<SoundEffect>("Sound/spawn-01"),
+                ["walkingSound"] = Content.Load<SoundEffect>("Sound/WalkSound"),
             };
-            
-            _helmetFrame = Content.Load<Texture2D>("HUD/HelmetFrame");
-            _chestPlateFrame = Content.Load<Texture2D>("HUD/ChestPlateFrame");
-            _bootsFrame = Content.Load<Texture2D>("HUD/BootsFrame");
-            _arrowFrame = Content.Load<Texture2D>("HUD/ArrowFrame");
-                
+            Sound.Load(soundDict);
+
+            LoadHUD();
+
 
             TmxMap mapObject = new TmxMap("Content/EndMap.tmx");
             map = new Map(mapObject, Content.Load<Texture2D>("Map/" + mapObject.Tilesets[0].Name));
+            
             
             // Creating Main Menu 
             _menu = new Menu.Menu(new List<Button>
@@ -274,6 +273,27 @@ namespace Game1
                 },
             };
         }
+
+        private void LoadHUD()
+        {
+            inventorySlot = Content.Load<Texture2D>("HUD/inventorySlot");
+            currentInventorySlot = Content.Load<Texture2D>("HUD/currentInventorySlot");
+            _hud = new HUD()
+            {
+                _fullHp = Content.Load<Texture2D>("HUD/HeartBar"),
+                _halfHp = Content.Load<Texture2D>("HUD/HeartBarDamaged"),
+                _emptyHp = Content.Load<Texture2D>("HUD/HeartBarEmpty"),
+                
+                _fullStam = Content.Load<Texture2D>("HUD/staminaBar"),
+                _emptyStam = Content.Load<Texture2D>("HUD/staminaBarUsed"),
+            };
+            
+            _helmetFrame = Content.Load<Texture2D>("HUD/HelmetFrame");
+            _chestPlateFrame = Content.Load<Texture2D>("HUD/ChestPlateFrame");
+            _bootsFrame = Content.Load<Texture2D>("HUD/BootsFrame");
+            _arrowFrame = Content.Load<Texture2D>("HUD/ArrowFrame");
+        }
+
         protected override void Update(GameTime gameTime)
         {
             Globals.gameTime = gameTime;
