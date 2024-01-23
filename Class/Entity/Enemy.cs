@@ -1,6 +1,7 @@
 using MathL;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using TermPaper.Class.Audio;
 using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
 
 
@@ -89,5 +90,6 @@ namespace Game1.Class.Entity
                 animation.Draw(_hitBox.ToRectangle());
             }
         }
+        
     }
 }

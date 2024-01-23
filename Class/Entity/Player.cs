@@ -1,10 +1,10 @@
 using MathL;
 using Menu;
 using Microsoft.Xna.Framework.Graphics;
-using SpriteBatch = Microsoft.Xna.Framework.Graphics.SpriteBatch;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Movement;
+using TermPaper.Class.Audio;
 
 
 namespace Game1.Class.Entity
@@ -78,29 +78,30 @@ namespace Game1.Class.Entity
                 {
                     _hitBox.Y -= _runningSpeed * (float)Globals.gameTime.ElapsedGameTime.TotalSeconds;
                     upWalk.Update();
-                    _stamina -= 20 * (float)Globals.gameTime.ElapsedGameTime.TotalSeconds;                    }
-
+                    _stamina -= 20 * (float)Globals.gameTime.ElapsedGameTime.TotalSeconds;
                 }
                 else
                 {
                     _hitBox.Y -= _speed * (float)Globals.gameTime.ElapsedGameTime.TotalSeconds;
                 }
-                direction = Movement.Up;
-                upWalk.Update();
             }
+            
+            direction = Movement.Up;
+            upWalk.Update();
+            
             if (Keyboard.GetState().IsKeyDown(Keys.S))
             {
                 if (Keyboard.GetState().IsKeyDown(Keys.LeftShift))
                 {
                     _hitBox.Y += _runningSpeed * (float)Globals.gameTime.ElapsedGameTime.TotalSeconds;
                     downWalk.Update();
-                    _stamina -= 20 * (float)Globals.gameTime.ElapsedGameTime.TotalSeconds;                    }
-
+                    _stamina -= 20 * (float)Globals.gameTime.ElapsedGameTime.TotalSeconds;
                 }
                 else
                 {
                     _hitBox.Y += _speed * (float)Globals.gameTime.ElapsedGameTime.TotalSeconds;
                 }
+                
                 direction = Movement.Down;
                 downWalk.Update();
             }
@@ -110,8 +111,7 @@ namespace Game1.Class.Entity
                 {
                     _hitBox.X -= _runningSpeed * (float)Globals.gameTime.ElapsedGameTime.TotalSeconds;
                     leftWalk.Update();
-                    _stamina -= 20 * (float)Globals.gameTime.ElapsedGameTime.TotalSeconds;                    }
-
+                    _stamina -= 20 * (float)Globals.gameTime.ElapsedGameTime.TotalSeconds;
                 }
                 else
                 {
@@ -126,8 +126,7 @@ namespace Game1.Class.Entity
                 {
                     _hitBox.X += _runningSpeed * (float)Globals.gameTime.ElapsedGameTime.TotalSeconds;
                     rightWalk.Update();
-                    _stamina -= 20 * (float)Globals.gameTime.ElapsedGameTime.TotalSeconds;                    }
-
+                    _stamina -= 20 * (float)Globals.gameTime.ElapsedGameTime.TotalSeconds;
                 }
                 else
                 {
@@ -157,10 +156,8 @@ namespace Game1.Class.Entity
                 else if(direction == Movement.Left)leftWalk.Draw(this._hitBox.ToRectangle());
                 else if(direction == Movement.Right)rightWalk.Draw(this._hitBox.ToRectangle());
                 else if (direction == Movement.Idle) Globals.spriteBatch.Draw(idle, _hitBox.ToRectangle(), Color.White);
-                
             }
             if(inventory.getCurrentItem() != null)inventory.getCurrentItem().Draw();
-            
         }
 
         public void Revive()
@@ -169,7 +166,7 @@ namespace Game1.Class.Entity
             _hp = 200;
             _hitBox.X = 4864;
             _hitBox.Y = 3220;
-            Sound._spawnSound.Play();
+            // Sound._spawnSound.Play();
         }
 
         public void Sell(int cost)
@@ -182,7 +179,4 @@ namespace Game1.Class.Entity
             return direction;
         }
     }
-
-
-    
 }

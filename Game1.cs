@@ -101,6 +101,7 @@ namespace Game1
         protected override void LoadContent()
         {
             LoadItems();
+            LoadHUD();
             _font = Content.Load<SpriteFont>("Fonts/Minecraft");
             
             Globals.player = new Player(Content.Load<Texture2D>("Player/DOWN_WALK"),
@@ -116,11 +117,14 @@ namespace Game1
             
             inventorySlot = Content.Load<Texture2D>("HUD/inventorySlot");
             currentInventorySlot = Content.Load<Texture2D>("HUD/currentInventorySlot");
+
             _hud = new HUD()
             {
                 _fullHp = Content.Load<Texture2D>("HUD/HeartBar"),
                 _halfHp = Content.Load<Texture2D>("HUD/HeartBarDamaged"),
                 _emptyHp = Content.Load<Texture2D>("HUD/HeartBarEmpty"),
+                _fullStam = Content.Load<Texture2D>("HUD/staminaBar"),
+                _emptyStam = Content.Load<Texture2D>("HUD/staminaBarUsed")
             };
             
             soundDict = new Dictionary<string, SoundEffect>
@@ -130,25 +134,26 @@ namespace Game1
                 ["walkingSound"] = Content.Load<SoundEffect>("Sound/WalkSound"),
             };
             Sound.Load(soundDict);
-
-            LoadHUD();
-            
-            sweden = Content.Load<Song>("Sound/Sweden");
-                
-            MediaPlayer.Volume = 0.8f;
-            MediaPlayer.IsRepeating = true;
-            MediaPlayer.Play(sweden);
-            
-            
-            
             _helmetFrame = Content.Load<Texture2D>("HUD/HelmetFrame");
             _chestPlateFrame = Content.Load<Texture2D>("HUD/ChestPlateFrame");
             _bootsFrame = Content.Load<Texture2D>("HUD/BootsFrame");
+            _arrowFrame = Content.Load<Texture2D>("HUD/ArrowFrame");
+            
+            sweden = Content.Load<Song>("Sound/Sweden");
                 
+            MediaPlayer.Volume = 0.1f;
+            SoundEffect.MasterVolume = 0.01f;
+            MediaPlayer.IsRepeating = true;
+            MediaPlayer.Play(sweden);
 
             TmxMap mapObject = new TmxMap("Content/NewMap.tmx");
             map = new Map(mapObject, Content.Load<Texture2D>("Map/" + mapObject.Tilesets[0].Name));
             
+            LoadMenu();
+        }
+
+        private void LoadMenu()
+        {
             // Creating Main Menu 
             _menu = new Menu.Menu(new List<Button>
             {
@@ -320,10 +325,6 @@ namespace Game1
                 _emptyStam = Content.Load<Texture2D>("HUD/staminaBarUsed"),
             };
             
-            _helmetFrame = Content.Load<Texture2D>("HUD/HelmetFrame");
-            _chestPlateFrame = Content.Load<Texture2D>("HUD/ChestPlateFrame");
-            _bootsFrame = Content.Load<Texture2D>("HUD/BootsFrame");
-            _arrowFrame = Content.Load<Texture2D>("HUD/ArrowFrame");
         }
 
         protected override void Update(GameTime gameTime)
@@ -336,7 +337,7 @@ namespace Game1
             if(Movement.Input.hasBeenPressed(Keys.Escape))
             {
                 if (Globals.gameState == State.Pause) Globals.gameState = State.Playing;
-                else if(Globals.gameState == State.Playing)Globals.gameState = State.Pause;
+                else if(Globals.gameState == State.Playing || Globals.gameState == State.Inventory)Globals.gameState = State.Pause;
                 else Exit();
             }
             // Gives _mouseState state each frame

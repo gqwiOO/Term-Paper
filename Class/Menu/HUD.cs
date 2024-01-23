@@ -17,7 +17,6 @@ namespace Menu;
 public class HUD
 {
     private Fps _fps;
-    private Inventory _inventory;
     private List<Byte> _hp = new List<byte> { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
     private List<Byte> _stam = new List<byte> { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
     public Texture2D _fullHp { get; set; }
@@ -65,11 +64,10 @@ public class HUD
             Globals.spriteBatch.DrawString(_font, $"Pos: {Globals.player._hitBox.X}  {Globals.player._hitBox.Y}",
                 new Vector2(10, 250), Color.Black);
             _fps.DrawFps(_font, new Vector2(10, 150), Color.Black);
-            _inventory.Draw(inventorySlot, currentInventorySlot);
-            _inventory.DrawInInventory(helmetFrame, chestPlateFrame, bootsFrame, arrowFrame);
-
+             Globals.player.inventory.Draw(inventorySlot, currentInventorySlot,helmetFrame, chestPlateFrame, bootsFrame, arrowFrame);
             DrawHPBar();
-        }
+            DrawStaminaBar();
+        }   
     }
 
     private void DrawStaminaBar()
@@ -187,8 +185,10 @@ public class Inventory
     public void Update()
     {
         UpdateKeyboard();
-        
-        inventory[currentItem].Update();
+        if (inventory[currentItem] != null)
+        {
+            inventory[currentItem].Update();
+        }
         
     }
 
@@ -230,15 +230,16 @@ public class Inventory
                 }
             }
         }
-        if (Movement.Keyboard.hasBeenPressed(Keys.E) && Globals.gameState == State.Playing)
+        if (Movement.Input.hasBeenPressed(Keys.E) && Globals.gameState == State.Playing)
         {
             Globals.gameState = State.Inventory;
 
         }
-        else if (Movement.Keyboard.hasBeenPressed(Keys.E) && Globals.gameState == State.Inventory)
+        else if (Movement.Input.hasBeenPressed(Keys.E) && Globals.gameState == State.Inventory)
         {
             Globals.gameState = State.Playing;
         }
+        
     }
 
     public void Draw(Texture2D inventorySlot, Texture2D currentInventorySlot, Texture2D helmetFrame, Texture2D chestPlateFrame, Texture2D bootsFrame, Texture2D arrowFrame)
@@ -253,7 +254,6 @@ public class Inventory
             else
             {
                 Globals.spriteBatch.Draw(currentInventorySlot, new Rectangle(i * 80, 9, 80, 80), Color.White);
-                
             }
             
             if (inventory[i] != null)
@@ -269,7 +269,6 @@ public class Inventory
                 }
             }
         }
-
         DrawInInventory(helmetFrame, chestPlateFrame, bootsFrame, arrowFrame);
 
     }
