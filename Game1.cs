@@ -127,13 +127,6 @@ namespace Game1
                 _emptyStam = Content.Load<Texture2D>("HUD/staminaBarUsed")
             };
             
-            soundDict = new Dictionary<string, SoundEffect>
-            {
-                ["hurt"] = Content.Load<SoundEffect>("Sound/SlavicSound"),
-                ["spawnSound"] = Content.Load<SoundEffect>("Sound/spawn-01"),
-                ["walkingSound"] = Content.Load<SoundEffect>("Sound/WalkSound"),
-            };
-            Sound.Load(soundDict);
             _helmetFrame = Content.Load<Texture2D>("HUD/HelmetFrame");
             _chestPlateFrame = Content.Load<Texture2D>("HUD/ChestPlateFrame");
             _bootsFrame = Content.Load<Texture2D>("HUD/BootsFrame");

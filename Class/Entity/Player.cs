@@ -1,3 +1,4 @@
+using System;
 using MathL;
 using Menu;
 using Microsoft.Xna.Framework.Graphics;
@@ -12,6 +13,8 @@ namespace Game1.Class.Entity
     public class Player: Entity 
     {
         public Texture2D _sprite;
+
+        private bool _isRunning;
         public bool _isDead;
         public Inventory inventory;
         public int _balance ;
@@ -60,15 +63,15 @@ namespace Game1.Class.Entity
         }
         public override void Update()
         {
-            if (Globals.gameState == State.State.Playing && isDead != true)
+            if (Globals.gameState == State.State.Playing && !isDead)
             {
                 if (_hp <= 0)
                 {
                     isDead = true;
                 }
                 UpdateMovement();
-                inventory.Update();
             }
+            inventory.Update();
         }
         private void UpdateMovement()
         {
@@ -78,24 +81,28 @@ namespace Game1.Class.Entity
                 {
                     _hitBox.Y -= _runningSpeed * (float)Globals.gameTime.ElapsedGameTime.TotalSeconds;
                     upWalk.Update();
-                    _stamina -= 20 * (float)Globals.gameTime.ElapsedGameTime.TotalSeconds;
+                    if (direction != Movement.Left && direction != Movement.Right)
+                    {
+                        _stamina -= 20 * (float)Globals.gameTime.ElapsedGameTime.TotalSeconds;
+                    }
                 }
                 else
                 {
                     _hitBox.Y -= _speed * (float)Globals.gameTime.ElapsedGameTime.TotalSeconds;
                 }
+                direction = Movement.Up;
+                upWalk.Update();
             }
-            
-            direction = Movement.Up;
-            upWalk.Update();
-            
             if (Keyboard.GetState().IsKeyDown(Keys.S))
             {
                 if (Keyboard.GetState().IsKeyDown(Keys.LeftShift))
                 {
                     _hitBox.Y += _runningSpeed * (float)Globals.gameTime.ElapsedGameTime.TotalSeconds;
                     downWalk.Update();
-                    _stamina -= 20 * (float)Globals.gameTime.ElapsedGameTime.TotalSeconds;
+                    if (direction != Movement.Left && direction != Movement.Right)
+                    {
+                        _stamina -= 20 * (float)Globals.gameTime.ElapsedGameTime.TotalSeconds;
+                    }
                 }
                 else
                 {
@@ -140,9 +147,14 @@ namespace Game1.Class.Entity
             {
                 direction = Movement.Idle;
             }
-            if (Keyboard.GetState().IsKeyUp(Keys.LeftShift) && Globals.gameTime.TotalGameTime.TotalSeconds > lastTimeSprint + _sprintCooldown)
+            if (Keyboard.GetState().IsKeyUp(Keys.LeftShift))
             {
-                _stamina += 1;
+                _stamina += 30f * (float)Globals.gameTime.ElapsedGameTime.TotalSeconds;
+
+                if (_stamina > 100f)
+                {
+                    _stamina = 100f;
+                }
                 lastTimeSprint = Globals.gameTime.TotalGameTime.TotalSeconds;
             }
         }

@@ -184,15 +184,25 @@ public class Inventory
     }
     public void Update()
     {
-        UpdateKeyboard();
-        if (inventory[currentItem] != null)
+        if (Globals.gameState == State.Playing && !Globals.player.isDead)
         {
-            inventory[currentItem].Update();
+            UpdateKeyboardHotBar();
+            if (inventory[currentItem] != null)
+            {
+                inventory[currentItem].Update();
+            }
+            if (Movement.Input.hasBeenPressed(Keys.E))
+            {
+                Globals.gameState = State.Inventory;
+            }
         }
-        
+        else if (Globals.gameState == State.Inventory && !Globals.player.isDead)
+        {
+            UpdateInventory();
+        }
     }
 
-    private void UpdateKeyboard()
+    private void UpdateKeyboardHotBar()
     {
         if (Keyboard.GetState().IsKeyDown(Keys.D1) && Globals.gameState == State.Playing)
         {
@@ -230,16 +240,14 @@ public class Inventory
                 }
             }
         }
-        if (Movement.Input.hasBeenPressed(Keys.E) && Globals.gameState == State.Playing)
-        {
-            Globals.gameState = State.Inventory;
+    }
 
-        }
-        else if (Movement.Input.hasBeenPressed(Keys.E) && Globals.gameState == State.Inventory)
+    private static void UpdateInventory()
+    {
+        if (Movement.Input.hasBeenPressed(Keys.E))
         {
             Globals.gameState = State.Playing;
         }
-        
     }
 
     public void Draw(Texture2D inventorySlot, Texture2D currentInventorySlot, Texture2D helmetFrame, Texture2D chestPlateFrame, Texture2D bootsFrame, Texture2D arrowFrame)
