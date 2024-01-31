@@ -4,6 +4,7 @@ using MathL;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Movement;
+using TermPaper.Class.Audio;
 
 
 namespace Menu
@@ -42,6 +43,7 @@ namespace Menu
                 )
             {
                 _onClick.Invoke();
+                Sound.PlaySoundEffect("ClickSound", 0.6f);
             }
 
         }

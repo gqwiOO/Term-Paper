@@ -132,13 +132,6 @@ namespace Game1
             _bootsFrame = Content.Load<Texture2D>("HUD/BootsFrame");
             _arrowFrame = Content.Load<Texture2D>("HUD/ArrowFrame");
             
-            sweden = Content.Load<Song>("Sound/Sweden");
-                
-            MediaPlayer.Volume = 0.1f;
-            SoundEffect.MasterVolume = 0.01f;
-            MediaPlayer.IsRepeating = true;
-            MediaPlayer.Play(sweden);
-
             TmxMap mapObject = new TmxMap("Content/NewMap.tmx");
             map = new Map(mapObject, Content.Load<Texture2D>("Map/" + mapObject.Tilesets[0].Name));
             

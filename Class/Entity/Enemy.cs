@@ -77,8 +77,8 @@ namespace Game1.Class.Entity
                     && !Globals.player.isDead
                    )
                 {
-                    Globals.player._hp -= (_damage);
-                    Sound.PlaySoundEffect("hurt");
+                    Globals.player._hp -= _damage;
+                    Sound.PlaySoundEffect("hurt", 1.0f);
                     lastTimeHitPlayer = Globals.gameTime.TotalGameTime.TotalSeconds;
                 }
             }

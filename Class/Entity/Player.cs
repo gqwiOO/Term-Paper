@@ -12,8 +12,6 @@ namespace Game1.Class.Entity
 {
     public class Player: Entity 
     {
-        public Texture2D _sprite;
-
         private bool _isRunning;
         public bool _isDead;
         public Inventory inventory;
@@ -32,7 +30,7 @@ namespace Game1.Class.Entity
         private Movement direction;
         
         private float _runningSpeed = 400;
-
+        
         private Vector2 _weaponPosLeft;
         private Vector2 _weaponPosright;
         public Player(Texture2D downWalkTexture, Texture2D upWalkTexture,
@@ -45,9 +43,7 @@ namespace Game1.Class.Entity
 
             inventory = new Inventory();
             _hitBox = new RectangleF(4864, 3220, 64, 64);
-
-            _weaponPosLeft = new Vector2(_hitBox.X + 0.2f * _hitBox.Width, _hitBox.Y + 0.7f * _hitBox.Height);
-            _weaponPosright = new Vector2(_hitBox.X + 0.8f * _hitBox.Width, _hitBox.Y + 0.7f * _hitBox.Height);
+            
             _cooldown = 1f;
             _stamina = 100;
             _sprintCooldown = 0.1f;
@@ -92,6 +88,7 @@ namespace Game1.Class.Entity
                 }
                 direction = Movement.Up;
                 upWalk.Update();
+                Sound.PlaySoundEffect("walkingSound", 0.1f);
             }
             if (Keyboard.GetState().IsKeyDown(Keys.S))
             {
@@ -111,6 +108,7 @@ namespace Game1.Class.Entity
                 
                 direction = Movement.Down;
                 downWalk.Update();
+                Sound.PlaySoundEffect("walkingSound", 0.1f);
             }
             if (Keyboard.GetState().IsKeyDown(Keys.A))
             {
@@ -126,6 +124,7 @@ namespace Game1.Class.Entity
                 }
                 direction = Movement.Left;
                 leftWalk.Update();
+                Sound.PlaySoundEffect("walkingSound", 0.1f);
             }
             if (Keyboard.GetState().IsKeyDown(Keys.D))
             {
@@ -141,6 +140,7 @@ namespace Game1.Class.Entity
                 }
                 direction = Movement.Right;
                 rightWalk.Update();
+                Sound.PlaySoundEffect("walkingSound", 0.1f);
             }
             if (Keyboard.GetState().IsKeyUp(Keys.D) && Keyboard.GetState().IsKeyUp(Keys.A) &&
                 Keyboard.GetState().IsKeyUp(Keys.S) && Keyboard.GetState().IsKeyUp(Keys.W))

@@ -17,7 +17,6 @@ public static class Globals
     
     public static State gameState;
     public static MouseState mouseState;
-    public static Input Input;
 
     public static ContentManager Content;
     
