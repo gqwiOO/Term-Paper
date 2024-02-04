@@ -204,29 +204,28 @@ public class Inventory
 
     private void UpdateKeyboardHotBar()
     {
-        if (Keyboard.GetState().IsKeyDown(Keys.D1) && Globals.gameState == State.Playing)
+        if (Keyboard.GetState().IsKeyDown(Keys.D1))
         {
             currentItem = 0;
         }
-        if (Keyboard.GetState().IsKeyDown(Keys.D2) && Globals.gameState == State.Playing)
+        if (Keyboard.GetState().IsKeyDown(Keys.D2))
         {
             currentItem = 1;
         }
-        if (Keyboard.GetState().IsKeyDown(Keys.D3) && Globals.gameState == State.Playing)
+        if (Keyboard.GetState().IsKeyDown(Keys.D3))
         {
             currentItem = 2;
         }
-        if (Keyboard.GetState().IsKeyDown(Keys.D4) && Globals.gameState == State.Playing)
+        if (Keyboard.GetState().IsKeyDown(Keys.D4))
         {
             currentItem = 3;
         }
-        if (Keyboard.GetState().IsKeyDown(Keys.D5) && Globals.gameState == State.Playing)
+        if (Keyboard.GetState().IsKeyDown(Keys.D5))
         {
             currentItem = 4;
         }
         
-        if (Keyboard.GetState().IsKeyDown(Keys.G) && Globals.gameState == State.Playing &&
-            currentItem != null)
+        if (Keyboard.GetState().IsKeyDown(Keys.G) && currentItem != null)
         {
             dropItem(currentItem);
         }

@@ -7,7 +7,7 @@ using Microsoft.Xna.Framework.Media;
 
 namespace TermPaper.Class.Audio;
 
-public class Sound
+public static class Sound
 {
 
     public static Song Key;
