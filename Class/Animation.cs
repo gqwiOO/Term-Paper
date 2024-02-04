@@ -7,12 +7,11 @@ namespace Game1.Class;
 public class Animation
 {
     private Texture2D animationTexture;
-    private Rectangle rec;
     private int _frames;
     private int _frame;
     private Vector2 res;
     private List<Rectangle> rectangles;
-    private readonly float _frameTime = 0.2f;
+    private readonly float _frameTime;
     private float _frameTimeLeft;
 
     public Animation(Texture2D texture,Vector2 res, int count, float frameTime)

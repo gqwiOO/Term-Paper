@@ -1,65 +1,92 @@
-﻿
+﻿using MathL;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
+using Movement;
 
 namespace Game1.Class.Item
 {
     public class Weapon : Item
     {
-
+        // Json Fields
         public int damage{ get; set; }
-        public float cooldown{ get; set; }
-        public int animationFrameWidth{ get; set; }
-        public int animationFrameHeight{ get; set; }
-        public int frameCount{ get; set; }
-        public float frameTime{ get; set; }
+        public float cooldown { get; set;}
+        public int animationTime { get; set; }
+
+        private float _currentCooldown;
+        private SwordVector _swordVector = new SwordVector(15);
         
-        public Animation attackAnimation{ get; set; }
+        // Can be only Left or Right
+        private Entity.Movement _vectorSide;
+        
+        private bool isActive;
+        public bool getACtiveStatus() => isActive;
 
-        private Vector2 _leftPosition;
-        private Vector2 _rightPosition;
-        private Vector2 _currentPosition;
-        private int attackDuration = 1;
-        private double lastTimeUsed;
-
-        private int diffX;
-        private int currDiffX;
-
-        public string iconPath
+        // By default uses angle for right side
+        private float _swordAngle = -100;
+        public override void Use()
+        {
+        }
+        public string spritePath
         {
             set
             {
-                _icon = Globals.Content.Load<Texture2D>(value);
+                _sprite = Globals.Content.Load<Texture2D>(value);
             }
         }
-
-
-        public override void Use()
-        {
-            
-        }
-        
-        public Weapon()
-        {
-        }
-
         public override void Update()
         {
-            _leftPosition = new Vector2(Globals.player._hitBox.X + 4, Globals.player._hitBox.Y - 15);
-            _rightPosition = new Vector2(Globals.player._hitBox.X + 30, Globals.player._hitBox.Y - 15);
-            diffX = (int)_rightPosition.X - (int)_leftPosition.X;
-            if (Globals.player.getDirection() == Entity.Movement.Right)
+            _swordVector.UpdatePosition();
+            _hitbox = new RectangleF(_swordVector.getSecondPointVector().X,_swordVector.getSecondPointVector().Y,100,100);
+            if (_currentCooldown < cooldown)
             {
-                currDiffX = (int)_rightPosition.X - (int)_currentPosition.X;
+                _currentCooldown += (float)Globals.gameTime.ElapsedGameTime.TotalMilliseconds;
+            }
+            if (_currentCooldown < animationTime)
+            {
+                isActive = true;
+                if (_vectorSide == Entity.Movement.Right)
+                {
+                    _swordVector.RightSideUpdate();
+                    _swordAngle += 7;
+                }
+                else
+                {
+                    _swordVector.LeftSideUpdate();
+                    _swordAngle -= 7;
+                }
+            }
+            else
+            {
+                _swordVector.Reset();
+                if (_vectorSide == Entity.Movement.Right) _swordAngle = -100;
+                else _swordAngle = -80;
+                
+                isActive = false;
+            }
+            if (_currentCooldown > cooldown && Input.hasBeenLeftMouseButtonPressed() && !isActive ||
+                isActive && _currentCooldown - animationTime > cooldown)
+            {
+                _vectorSide = Globals.player.lastStrafeDirection;
+                _currentCooldown = 0f;
             }
         }
-
         public override void Draw()
         {
-            if (Globals.player.inventory.getCurrentItem().canUse())
+            if (isActive)
             {
-                Globals.spriteBatch.Draw(_icon,new Rectangle((int)_rightPosition.X, (int)_rightPosition.Y, 64,64), Color.White);
+                _swordVector.Draw();
+                if (_vectorSide == Entity.Movement.Right)
+                {
+                    Globals.spriteBatch.Draw(_sprite, _hitbox.ToRectangle(), null, Color.White,
+                        MathHelper.ToRadians(_swordAngle),
+                        new Vector2(0,32), SpriteEffects.None, 0f);
+                }
+                else
+                {
+                    Globals.spriteBatch.Draw(_sprite, _hitbox.ToRectangle(), null, Color.White,
+                        MathHelper.ToRadians(_swordAngle),
+                        new Vector2(0,0), SpriteEffects.FlipVertically, 0f);
+                }
             }
         }
     }

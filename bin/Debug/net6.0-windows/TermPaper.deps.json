@@ -8,6 +8,7 @@
     ".NETCoreApp,Version=v6.0": {
       "TermPaper/1.0.0": {
         "dependencies": {
+          "Halfcut.SeparatingAxisTheorem.Lib": "0.0.2",
           "MonoGame.Content.Builder.Task": "3.8.1.303",
           "MonoGame.Extended.Animations": "3.7.0",
           "MonoGame.Extended.Tiled": "3.8.0",
@@ -17,6 +18,14 @@
         },
         "runtime": {
           "TermPaper.dll": {}
+        }
+      },
+      "Halfcut.SeparatingAxisTheorem.Lib/0.0.2": {
+        "runtime": {
+          "lib/net6.0/SeparatingAxisTheorem.Lib.dll": {
+            "assemblyVersion": "0.0.2.0",
+            "fileVersion": "0.0.2.0"
+          }
         }
       },
       "Libuv/1.9.1": {
@@ -1547,6 +1556,13 @@
       "type": "project",
       "serviceable": false,
       "sha512": ""
+    },
+    "Halfcut.SeparatingAxisTheorem.Lib/0.0.2": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-KG02kLv8tNxvp1Pd6yrzgiEOtCJFHerL1NfGSBm6lIiM8cN+qXLoodTNP9yCF2NJgEfKaN2beZuPwdVIWRv1zw==",
+      "path": "halfcut.separatingaxistheorem.lib/0.0.2",
+      "hashPath": "halfcut.separatingaxistheorem.lib.0.0.2.nupkg.sha512"
     },
     "Libuv/1.9.1": {
       "type": "package",

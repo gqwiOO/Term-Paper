@@ -5,10 +5,10 @@ namespace Game1.Class.Item
 {
     public class Potion: Item
     {
-        public Potion(string name, Texture2D icon, bool isStackable, byte stackCapacity)
+        public Potion(string name, Texture2D sprite, bool isStackable, byte stackCapacity)
         {
             _name = name;
-            _icon = icon;
+            _sprite = sprite;
             _isStackable = isStackable;
             _stackCapacity = stackCapacity;
         }

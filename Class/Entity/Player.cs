@@ -1,27 +1,18 @@
-using System;
 using MathL;
 using Menu;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
-using Movement;
-using TermPaper.Class.Audio;
-
 
 namespace Game1.Class.Entity
 {
     public class Player: Entity 
     {
-        public Texture2D _sprite;
-
-        private bool _isRunning;
         public bool _isDead;
         public Inventory inventory;
-        public int _balance ;
+        public int _balance;
         public Vector2 Position;
-        public float _cooldown;
         public float _stamina;
-        private double lastTimeSprint;
         public float _sprintCooldown;
 
         private Animation downWalk;
@@ -30,30 +21,25 @@ namespace Game1.Class.Entity
         private Animation rightWalk;
         private Texture2D idle;
         private Movement direction;
+
+        private int _maxHealth = 200;
+        
+        // Can be only Left or Right, using for attack animation if idle
+        public Movement lastStrafeDirection = Movement.Right;
         
         private float _runningSpeed = 400;
-
-        private Vector2 _weaponPosLeft;
-        private Vector2 _weaponPosright;
         public Player(Texture2D downWalkTexture, Texture2D upWalkTexture,
                       Texture2D leftWalkTexture, Texture2D rightWalkTexture, Texture2D idleTexture
                       )
         {
-            _hp = 200;
+            _hp = _maxHealth;
             _speed = 300;
             _damage = 20;
 
             inventory = new Inventory();
             _hitBox = new RectangleF(4864, 3220, 64, 64);
-
-            _weaponPosLeft = new Vector2(_hitBox.X + 0.2f * _hitBox.Width, _hitBox.Y + 0.7f * _hitBox.Height);
-            _weaponPosright = new Vector2(_hitBox.X + 0.8f * _hitBox.Width, _hitBox.Y + 0.7f * _hitBox.Height);
-            _cooldown = 1f;
             _stamina = 100;
             _sprintCooldown = 0.1f;
-            _runningSpeed = 400;
-            
-            
             
             downWalk = new Animation(downWalkTexture, new Vector2(16, 16), 4, 0.2f);
             upWalk = new Animation(upWalkTexture, new Vector2(16, 16), 4, 0.2f);
@@ -77,10 +63,12 @@ namespace Game1.Class.Entity
         {
             if (Keyboard.GetState().IsKeyDown(Keys.W))
             {
-                if (Keyboard.GetState().IsKeyDown(Keys.LeftShift))
+                if (Keyboard.GetState().IsKeyDown(Keys.LeftShift) && _stamina >= 10)
                 {
                     _hitBox.Y -= _runningSpeed * (float)Globals.gameTime.ElapsedGameTime.TotalSeconds;
+                    // Double Update() for faster(x2) animation
                     upWalk.Update();
+                    // If player moves in left or right, stamina will decrease only in if statement with Left or Right but not in Up or Down
                     if (direction != Movement.Left && direction != Movement.Right)
                     {
                         _stamina -= 20 * (float)Globals.gameTime.ElapsedGameTime.TotalSeconds;
@@ -95,13 +83,15 @@ namespace Game1.Class.Entity
             }
             if (Keyboard.GetState().IsKeyDown(Keys.S))
             {
-                if (Keyboard.GetState().IsKeyDown(Keys.LeftShift))
+                if (Keyboard.GetState().IsKeyDown(Keys.LeftShift) && _stamina >= 10)
                 {
                     _hitBox.Y += _runningSpeed * (float)Globals.gameTime.ElapsedGameTime.TotalSeconds;
+                    // Double Update() for faster(x2) animation
                     downWalk.Update();
+                    // If player moves in left or right, stamina will decrease only in if statement with Left or Right but not in Up or Down
                     if (direction != Movement.Left && direction != Movement.Right)
                     {
-                        _stamina -= 20 * (float)Globals.gameTime.ElapsedGameTime.TotalSeconds;
+                        if(_stamina >= 10)_stamina -= 20 * (float)Globals.gameTime.ElapsedGameTime.TotalSeconds;
                     }
                 }
                 else
@@ -114,32 +104,36 @@ namespace Game1.Class.Entity
             }
             if (Keyboard.GetState().IsKeyDown(Keys.A))
             {
-                if (Keyboard.GetState().IsKeyDown(Keys.LeftShift))
+                if (Keyboard.GetState().IsKeyDown(Keys.LeftShift) && _stamina >= 10)
                 {
                     _hitBox.X -= _runningSpeed * (float)Globals.gameTime.ElapsedGameTime.TotalSeconds;
+                    // Double Update() for faster(x2) animation
                     leftWalk.Update();
-                    _stamina -= 20 * (float)Globals.gameTime.ElapsedGameTime.TotalSeconds;
+                    if(_stamina >= 10)_stamina -= 20 * (float)Globals.gameTime.ElapsedGameTime.TotalSeconds;
                 }
                 else
                 {
                     _hitBox.X -= _speed * (float)Globals.gameTime.ElapsedGameTime.TotalSeconds;
                 }
                 direction = Movement.Left;
+                lastStrafeDirection = Movement.Left;
                 leftWalk.Update();
             }
             if (Keyboard.GetState().IsKeyDown(Keys.D))
             {
-                if (Keyboard.GetState().IsKeyDown(Keys.LeftShift))
+                if (Keyboard.GetState().IsKeyDown(Keys.LeftShift) && _stamina >= 10)
                 {
                     _hitBox.X += _runningSpeed * (float)Globals.gameTime.ElapsedGameTime.TotalSeconds;
+                    // Double Update() for faster(x2) animation
                     rightWalk.Update();
-                    _stamina -= 20 * (float)Globals.gameTime.ElapsedGameTime.TotalSeconds;
+                    if(_stamina >= 10)_stamina -= 20 * (float)Globals.gameTime.ElapsedGameTime.TotalSeconds;
                 }
                 else
                 {
                     _hitBox.X += _speed * (float)Globals.gameTime.ElapsedGameTime.TotalSeconds;
                 }
                 direction = Movement.Right;
+                lastStrafeDirection = Movement.Right;
                 rightWalk.Update();
             }
             if (Keyboard.GetState().IsKeyUp(Keys.D) && Keyboard.GetState().IsKeyUp(Keys.A) &&
@@ -149,13 +143,11 @@ namespace Game1.Class.Entity
             }
             if (Keyboard.GetState().IsKeyUp(Keys.LeftShift))
             {
-                _stamina += 30f * (float)Globals.gameTime.ElapsedGameTime.TotalSeconds;
-
-                if (_stamina > 100f)
+                if (_stamina < 100f)
                 {
-                    _stamina = 100f;
+                    _stamina += 30f * (float)Globals.gameTime.ElapsedGameTime.TotalSeconds;
+
                 }
-                lastTimeSprint = Globals.gameTime.TotalGameTime.TotalSeconds;
             }
         }
 
@@ -175,10 +167,9 @@ namespace Game1.Class.Entity
         public void Revive()
         {
             isDead = false;
-            _hp = 200;
+            _hp = _maxHealth;
             _hitBox.X = 4864;
             _hitBox.Y = 3220;
-            // Sound._spawnSound.Play();
         }
 
         public void Sell(int cost)
