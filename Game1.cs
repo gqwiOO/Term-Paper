@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using Data;
 using Game1.Class;
 using Game1.Class.Camera;
 using Game1.Class.Entity;
@@ -55,11 +56,8 @@ namespace Game1
         public Map map;
         
         public static Dictionary<int, Item> allItems;
-        
-        public Song key;
-        public Song sweden;
+
         public SoundEffect _hurt;
-        public Dictionary<string, SoundEffect> soundDict;
 
 
         public List<Entity> _entities;
@@ -101,6 +99,7 @@ namespace Game1
         protected override void LoadContent()
         {
             LoadItems();
+            LoadEntities();
             LoadHUD();
             _font = Content.Load<SpriteFont>("Fonts/Minecraft");
             
@@ -336,6 +335,7 @@ namespace Game1
             {
                 _restartMenu.Update();
             }
+            Entities.GetById(1).Update();
             _mainMenu.Update();
             _camera.Follow(Globals.player);
             base.Update(gameTime);
@@ -349,7 +349,7 @@ namespace Game1
             map.Draw();
             _entities.ForEach(entity => entity.Draw());
             Globals.player.Draw();
-            
+            Entities.GetById(1).Draw();
             Globals.spriteBatch.End();
             
             Globals.spriteBatch.Begin(SpriteSortMode.Deferred, null,SamplerState.PointClamp);
@@ -369,6 +369,14 @@ namespace Game1
             var json = reader.ReadToEnd();
             Data.Items.Weapons = JsonConvert.DeserializeObject<List<Weapon>>(json);
 
+        }
+
+        public void LoadEntities()
+        {
+            using StreamReader entReader = new StreamReader(Path.Combine(Globals.project_path + "/data/NPC.json"));
+            var json = entReader.ReadToEnd();
+            Data.Entities.entities = JsonConvert.DeserializeObject<List<NPC>>(json);
+            Entities.LoadAnimation();
         }
         
         private void DebugDraw()

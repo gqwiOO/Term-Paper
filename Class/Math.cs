@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Runtime.CompilerServices;
 using Microsoft.Xna.Framework;
 
 namespace MathL;
@@ -13,6 +14,7 @@ public struct RectangleF
     public float Right => this.X + this.Width;
     public float Top => this.Y;
     public float Bottom => this.Y + this.Height;
+    public Vector2 Center => new Vector2(this.X + this.Width / 2, this.Y + this.Height / 2);
     public RectangleF(float x, float y, float width, float height)
     {
         this.X = x;

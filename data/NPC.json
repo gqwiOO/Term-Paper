@@ -1,0 +1,19 @@
+[
+  {
+    "name": "Jason",
+    "damage" : 20,
+    "id" : 1,
+    "speed": 200,
+    "hitboxWidth": 64,
+      "hitboxHeight": 64,
+    "frameCount": 4,
+    "frameTime": 0.28,
+    "animationFrameWidth": 16,
+    "animationFrameHeight": 16,
+    "WalkLeftAnimationPath": "NPC/Jason/JasonLeftWalk",
+    "WalkRightAnimationPath": "NPC/Jason/JasonRightWalk",
+    "WalkUpAnimationPath": "NPC/Jason/JasonUpWalk",
+    "WalkDownAnimationPath": "NPC/Jason/JasonDownWalk",
+    "IdlePath": "NPC/Jason/JasonIdle"
+  }
+]

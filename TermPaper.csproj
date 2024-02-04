@@ -24,9 +24,11 @@
     <Compile Remove="Class\Entity\Component.cs" />
     <Compile Remove="Class\Invertory.cs" />
     <Compile Remove="Class\Music.cs" />
+    <Compile Remove="Content\Jason\**" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Level\Generating\**" />
+    <EmbeddedResource Remove="Content\Jason\**" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Level\Generating\**" />
@@ -34,6 +36,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Remove="Content\inventorySlot.png" />
+    <None Remove="Content\Jason\**" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="C:\Users\zeite\.nuget\packages\monogame.extended\3.8.0\contentFiles\any\netstandard2.0\SharpDX.D3DCompiler.xml" />
@@ -49,7 +52,7 @@
     <Content Remove="C:\Users\zeite\.nuget\packages\monogame.extended\3.8.0\contentFiles\any\netstandard2.0\libmojoshader_64.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="data\map\" />
+    <Folder Include="Content\NPC\" />
   </ItemGroup>
   <Target Name="RestoreDotnetTools" BeforeTargets="Restore">
     <Message Text="Restoring dotnet tools" Importance="High" />
