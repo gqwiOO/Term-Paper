@@ -80,6 +80,7 @@ namespace Game1.Class.Entity
                 }
                 direction = Movement.Up;
                 upWalk.Update();
+                Sound.PlaySoundEffect("walkingSound", 0.1f);
             }
             if (Keyboard.GetState().IsKeyDown(Keys.S))
             {
@@ -101,6 +102,7 @@ namespace Game1.Class.Entity
                 
                 direction = Movement.Down;
                 downWalk.Update();
+                Sound.PlaySoundEffect("walkingSound", 0.1f);
             }
             if (Keyboard.GetState().IsKeyDown(Keys.A))
             {
@@ -118,6 +120,7 @@ namespace Game1.Class.Entity
                 direction = Movement.Left;
                 lastStrafeDirection = Movement.Left;
                 leftWalk.Update();
+                Sound.PlaySoundEffect("walkingSound", 0.1f);
             }
             if (Keyboard.GetState().IsKeyDown(Keys.D))
             {
@@ -135,6 +138,7 @@ namespace Game1.Class.Entity
                 direction = Movement.Right;
                 lastStrafeDirection = Movement.Right;
                 rightWalk.Update();
+                Sound.PlaySoundEffect("walkingSound", 0.1f);
             }
             if (Keyboard.GetState().IsKeyUp(Keys.D) && Keyboard.GetState().IsKeyUp(Keys.A) &&
                 Keyboard.GetState().IsKeyUp(Keys.S) && Keyboard.GetState().IsKeyUp(Keys.W))

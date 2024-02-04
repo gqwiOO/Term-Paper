@@ -26,6 +26,19 @@
 /processorParam:TextureFormat=Color
 /build:C:/Users/USER/Desktop/IDLE.png;Player/IDLE.png
 
+#begin HUD/ArrowFrame.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:HUD/ArrowFrame.png
+
+
 #begin Debug/blackRectangle.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -56,18 +69,6 @@
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:Fonts/Minecraft.spritefont
-
-#begin HUD/ArrowFrame.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:HUD/ArrowFrame.png
 
 #begin HUD/BootsFrame.png
 /importer:TextureImporter
@@ -266,6 +267,12 @@
 /processor:SongProcessor
 /processorParam:Quality=Best
 /build:Sound/Aria.mp3
+
+#begin Sound/ButtonSound.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:Sound/ButtonSound.wav
 
 #begin Sound/classic_hurt.mp3
 /importer:Mp3Importer

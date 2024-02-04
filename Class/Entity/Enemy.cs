@@ -75,7 +75,7 @@ namespace Game1.Class.Entity
                 if (_attackTime > _attackCooldown && Globals.player._hp > 0  && !Globals.player.isDead)
                 {
                     Globals.player._hp -= _damage;
-                    Sound.PlaySoundEffect("hurt");
+                    Sound.PlaySoundEffect("hurt", 1.0f);
                     _attackTime = 0;
                 }
             }

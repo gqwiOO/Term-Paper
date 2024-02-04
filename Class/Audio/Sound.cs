@@ -1,21 +1,25 @@
 using System.Collections.Generic;
 using Game1;
 using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Media;
 
 namespace TermPaper.Class.Audio;
 
-static class Sound
+public static class Sound
 {
-    public static Dictionary<string, SoundEffect> soundDict = new Dictionary<string, SoundEffect>()
+    public static Dictionary<string,SoundEffectInstance> soundDict = new Dictionary<string,SoundEffectInstance>()
     {
-        ["hurt"] = Globals.Content.Load<SoundEffect>("Sound/SlavicSound"),
-        ["spawnSound"] = Globals.Content.Load<SoundEffect>("Sound/spawn-01"),
-        ["walkingSound"] = Globals.Content.Load<SoundEffect>("Sound/WalkSound")
+        ["hurt"] = Globals.Content.Load<SoundEffect>("Sound/SlavicSound").CreateInstance(),
+        ["spawnSound"] = Globals.Content.Load<SoundEffect>("Sound/spawn-01").CreateInstance(),
+        ["walkingSound"] = Globals.Content.Load<SoundEffect>("Sound/WalkSound").CreateInstance(),
+        ["ClickSound"] = Globals.Content.Load<SoundEffect>("Sound/ButtonSound").CreateInstance()
     };
 
-    public static void PlaySoundEffect(string key)
+    public static void PlaySoundEffect(string key, float volume)
     {
-        soundDict[key].Play();
+        if (soundDict[key].State != SoundState.Playing)
+        {
+            soundDict[key].Play();
+            soundDict[key].Volume = volume;
+        }
     }
 }

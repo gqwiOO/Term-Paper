@@ -307,7 +307,6 @@ namespace Game1
 
         protected override void Update(GameTime gameTime)
         {
-            
             Globals.gameTime = gameTime;
             Input.GetKeyboardState();
             Input.GetMouseState();
