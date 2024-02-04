@@ -14,16 +14,10 @@ using Microsoft.Xna.Framework.Input;
 using TiledSharp;
 using Game1.Level;
 using Microsoft.Xna.Framework.Audio;
-using Microsoft.Xna.Framework.Content;
-using Microsoft.Xna.Framework.Media;
-using MonoGame.Extended.Content;
 using Microsoft.Xna.Framework.Media;
 using Button = Menu.Button;
 using Movement;
 using Newtonsoft.Json;
-using TermPaper.Class.Audio;
-using Keyboard = Microsoft.Xna.Framework.Input.Keyboard;
-
 namespace Game1
 {
     public class Game1 : Game
@@ -35,7 +29,7 @@ namespace Game1
         
         private SpriteFont _font;
 
-        public Menu.MainMenu _mainMenu;
+        public MainMenu _mainMenu;
         public Menu.Menu _menu;
         public Menu.Menu _settingsMenu;
         public Menu.Menu _resolutionMenu;
@@ -56,9 +50,7 @@ namespace Game1
         public Map map;
         
         public static Dictionary<int, Item> allItems;
-
-        public SoundEffect _hurt;
-
+        public Song sweden;
 
         public List<Entity> _entities;
         
@@ -131,6 +123,13 @@ namespace Game1
             _bootsFrame = Content.Load<Texture2D>("HUD/BootsFrame");
             _arrowFrame = Content.Load<Texture2D>("HUD/ArrowFrame");
             
+            sweden = Content.Load<Song>("Sound/Sweden");
+                
+            MediaPlayer.Volume = 0.1f;
+            SoundEffect.MasterVolume = 0.5f;
+            MediaPlayer.IsRepeating = true;
+            MediaPlayer.Play(sweden);
+
             TmxMap mapObject = new TmxMap("Content/NewMap.tmx");
             map = new Map(mapObject, Content.Load<Texture2D>("Map/" + mapObject.Tilesets[0].Name));
             
@@ -211,8 +210,6 @@ namespace Game1
 
                         _graphics.IsFullScreen = true;
                         _graphics.ApplyChanges();
-                        // _graphics.HardwareModeSwitch = false;
-                        // _graphics.ApplyChanges();
 
                     },
                 },
@@ -294,8 +291,6 @@ namespace Game1
                 },
             };
         }
-
-
         private void LoadHUD()
         {
             inventorySlot = Content.Load<Texture2D>("HUD/inventorySlot");
@@ -315,11 +310,11 @@ namespace Game1
         protected override void Update(GameTime gameTime)
         {
             Globals.gameTime = gameTime;
-            Movement.Input.GetKeyboardState();
-            Movement.Input.GetMouseState();
+            Input.GetKeyboardState();
+            Input.GetMouseState();
             
             // Pause or Exit button
-            if(Movement.Input.hasBeenPressed(Keys.Escape))
+            if(Input.hasBeenPressed(Keys.Escape))
             {
                 if (Globals.gameState == State.Pause) Globals.gameState = State.Playing;
                 else if(Globals.gameState == State.Playing || Globals.gameState == State.Inventory)Globals.gameState = State.Pause;
@@ -361,8 +356,7 @@ namespace Game1
 
             base.Draw(gameTime);
         }
-
-
+        
         public void LoadItems()
         {
             using StreamReader reader = new StreamReader(Path.Combine(Globals.project_path + "/data/items.json"));
@@ -377,10 +371,6 @@ namespace Game1
             var json = entReader.ReadToEnd();
             Data.Entities.entities = JsonConvert.DeserializeObject<List<NPC>>(json);
             Entities.LoadAnimation();
-        }
-        
-        private void DebugDraw()
-        {
         }
     }
 }

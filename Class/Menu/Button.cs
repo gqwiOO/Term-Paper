@@ -4,7 +4,7 @@ using MathL;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Movement;
-using TermPaper.Class.Audio;
+using Audio;
 
 
 namespace Menu

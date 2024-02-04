@@ -5,9 +5,9 @@ using Game1;
 using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Media;
 
-namespace TermPaper.Class.Audio;
+namespace Audio;
 
-public class Sound
+public static class Sound
 {
 
     public static Song Key;
@@ -16,7 +16,7 @@ public class Sound
     public static List<Song> music;
 
 
-    public void Load()
+    public static void Load()
     {
         Key = Globals.Content.Load<Song>("Sound/Key");
         sweden = Globals.Content.Load<Song>("Sound/Sweden");
