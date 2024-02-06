@@ -29,9 +29,7 @@ namespace Game1.Class.Entity
         public Movement lastStrafeDirection = Movement.Right;
         
         private float _runningSpeed = 400;
-        public Player(Texture2D downWalkTexture, Texture2D upWalkTexture,
-                      Texture2D leftWalkTexture, Texture2D rightWalkTexture, Texture2D idleTexture
-                      )
+        public Player()
         {
             _hp = _maxHealth;
             _speed = 300;
@@ -42,11 +40,11 @@ namespace Game1.Class.Entity
             _stamina = 100;
             _sprintCooldown = 0.1f;
             
-            downWalk = new Animation(downWalkTexture, new Vector2(16, 16), 4, 0.2f);
-            upWalk = new Animation(upWalkTexture, new Vector2(16, 16), 4, 0.2f);
-            leftWalk = new Animation(leftWalkTexture, new Vector2(16, 16), 4, 0.2f);
-            rightWalk = new Animation(rightWalkTexture, new Vector2(16, 16), 4, 0.2f);
-            idle = idleTexture;
+            downWalk = new Animation(Globals.Content.Load<Texture2D>("Player/DOWN_WALK"), new Vector2(16, 16), 4, 0.2f);
+            upWalk = new Animation(Globals.Content.Load<Texture2D>("Player/UP_WALK"), new Vector2(16, 16), 4, 0.2f);
+            leftWalk = new Animation(Globals.Content.Load<Texture2D>("Player/LEFT_WALK"), new Vector2(16, 16), 4, 0.2f);
+            rightWalk = new Animation(Globals.Content.Load<Texture2D>("Player/RIGHT_WALK"), new Vector2(16, 16), 4, 0.2f);
+            idle = Globals.Content.Load<Texture2D>("Player/IDLE");
         }
         public override void Update()
         {

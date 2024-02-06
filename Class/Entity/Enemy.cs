@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Audio;
 using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
+using TermPaper.Class.Font;
 
 namespace Game1.Class.Entity
 {
@@ -11,7 +12,6 @@ namespace Game1.Class.Entity
     {
         private Animation animation;
         private float _visionRange = 500;
-        private SpriteFont _font = Globals.Content.Load<SpriteFont>("Fonts/Minecraft");
         
         // Attack Time
         private int _attackCooldown;
@@ -95,7 +95,7 @@ namespace Game1.Class.Entity
             if (Globals.gameState == State.State.Playing  || Globals.gameState == State.State.Inventory)
             {
                 animation.Draw(_hitBox.ToRectangle());
-                Globals.spriteBatch.DrawString(_font, $"HP: {this._hp}",new Vector2(this._hitBox.X,this._hitBox.Y - 40),
+                Globals.spriteBatch.DrawString(Font.fonts["MainFont-16"], $"HP: {this._hp}",new Vector2(this._hitBox.X,this._hitBox.Y - 40),
                     Color.Black);
             }
         }

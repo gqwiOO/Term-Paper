@@ -1,5 +1,5 @@
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
+using TermPaper.Class.Font;
 
 namespace Game1.Class;
 
@@ -31,9 +31,9 @@ public class Fps
         updates++;
     }
 
-    public void DrawFps(SpriteFont font, Vector2 fpsDisplayPosition, Color fpsTextColor)
+    public void DrawFps( Vector2 fpsDisplayPosition, Color fpsTextColor)
     {
-        Globals.spriteBatch.DrawString(font, msg, fpsDisplayPosition, fpsTextColor);
+        Globals.spriteBatch.DrawString(Font.fonts["MainFont-24"], msg, fpsDisplayPosition, fpsTextColor);
         frames++;
     }
 }

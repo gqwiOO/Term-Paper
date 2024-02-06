@@ -18,6 +18,8 @@ using Microsoft.Xna.Framework.Media;
 using Button = Menu.Button;
 using Movement;
 using Newtonsoft.Json;
+using TermPaper.Class.Font;
+
 namespace Game1
 {
     public class Game1 : Game
@@ -27,8 +29,6 @@ namespace Game1
         public static int _screenWidth;
         public static int _screenHeight;
         
-        private SpriteFont _font;
-
         public MainMenu _mainMenu;
         public Menu.Menu _menu;
         public Menu.Menu _settingsMenu;
@@ -37,22 +37,14 @@ namespace Game1
         public Menu.Menu _pauseMenu;
         
         public Enemy _enemy;
+        public List<Entity> _entities;
+        
         public Camera _camera;
-        public Fps _fps;
         public HUD _hud;
-        public Texture2D inventorySlot;
-        public Texture2D currentInventorySlot;
-        public Texture2D _helmetFrame;
-        public Texture2D _chestPlateFrame;
-        public Texture2D _bootsFrame;
-        public Texture2D _arrowFrame;
         
         public Map map;
-        
-        public static Dictionary<int, Item> allItems;
         public Song sweden;
 
-        public List<Entity> _entities;
         
         public Game1()
         {
@@ -73,9 +65,6 @@ namespace Game1
             _camera = new Camera();
             Globals.spriteBatch = new SpriteBatch(GraphicsDevice);
             
-            // FPS
-            _fps = new Fps();
-            
             // Screen properties
             _screenWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;  
             _screenHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
@@ -92,36 +81,15 @@ namespace Game1
         {
             LoadItems();
             LoadEntities();
-            LoadHUD();
-            _font = Content.Load<SpriteFont>("Fonts/Minecraft");
             
-            Globals.player = new Player(Content.Load<Texture2D>("Player/DOWN_WALK"),
-                Content.Load<Texture2D>("Player/UP_WALK"),
-                Content.Load<Texture2D>("Player/LEFT_WALK"),
-                Content.Load<Texture2D>("Player/RIGHT_WALK"),
-                Content.Load<Texture2D>("Player/IDLE"));
+            Globals.player = new Player();
 
             _entities = new List<Entity>()
             {
                 new Enemy(Content.Load<Texture2D>("Enemy/Axolot/AxolotWalk"))
             };
             
-            inventorySlot = Content.Load<Texture2D>("HUD/inventorySlot");
-            currentInventorySlot = Content.Load<Texture2D>("HUD/currentInventorySlot");
-
-            _hud = new HUD()
-            {
-                _fullHp = Content.Load<Texture2D>("HUD/HeartBar"),
-                _halfHp = Content.Load<Texture2D>("HUD/HeartBarDamaged"),
-                _emptyHp = Content.Load<Texture2D>("HUD/HeartBarEmpty"),
-                _fullStam = Content.Load<Texture2D>("HUD/staminaBar"),
-                _emptyStam = Content.Load<Texture2D>("HUD/staminaBarUsed")
-            };
-            
-            _helmetFrame = Content.Load<Texture2D>("HUD/HelmetFrame");
-            _chestPlateFrame = Content.Load<Texture2D>("HUD/ChestPlateFrame");
-            _bootsFrame = Content.Load<Texture2D>("HUD/BootsFrame");
-            _arrowFrame = Content.Load<Texture2D>("HUD/ArrowFrame");
+            _hud = new HUD();
             
             sweden = Content.Load<Song>("Sound/Sweden");
                 
@@ -141,7 +109,7 @@ namespace Game1
             // Creating Main Menu 
             _menu = new Menu.Menu(new List<Button>
             {
-                new Button(_font, "Start", new Vector2(_screenWidth / 2, _screenHeight / 2 - 200))
+                new Button(Font.fonts["MainFont-24"], "Start", new Vector2(_screenWidth / 2, _screenHeight / 2 - 200))
                 {
                     _onClick = () =>
                     {
@@ -149,11 +117,11 @@ namespace Game1
                         Globals.player.Revive();
                     }
                 },
-                new Button(_font, "Settings", new Vector2(_screenWidth / 2, _screenHeight / 2 - 100))
+                new Button( "Settings", new Vector2(_screenWidth / 2, _screenHeight / 2 - 100))
                 {
                     _onClick = () => { Globals.gameState = State.Settings; }
                 },
-                new Button(_font, "Quit", new Vector2(_screenWidth / 2, _screenHeight / 2))
+                new Button( "Quit", new Vector2(_screenWidth / 2, _screenHeight / 2))
                 {
                     _onClick = () => { Exit(); }
                 },
@@ -162,15 +130,15 @@ namespace Game1
             // Creating Settings Menu
             _settingsMenu = new Menu.Menu(new List<Button>
             {
-                new Button(_font, "Resolution", new Vector2(_screenWidth / 2,_screenHeight / 2 - 200))
+                new Button( "Resolution", new Vector2(_screenWidth / 2,_screenHeight / 2 - 200))
                 {
                     _onClick = () => { Globals.gameState = State.Resolution; },
                 },
-                new Button(_font, "Sound", new Vector2(_screenWidth / 2,_screenHeight / 2 - 100))
+                new Button( "Sound", new Vector2(_screenWidth / 2,_screenHeight / 2 - 100))
                 {
                     _onClick = () => {  },
                 },
-                new Button(_font, "Back", new Vector2(_screenWidth / 2,_screenHeight / 2))
+                new Button( "Back", new Vector2(_screenWidth / 2,_screenHeight / 2))
                 {
                     _onClick = () => { Globals.gameState = State.MainMenu; },
                 }
@@ -179,7 +147,7 @@ namespace Game1
             // Creating Resolution Menu
             _resolutionMenu = new Menu.Menu(new List<Button>
             {
-                new Button(_font, "1920x1080", new Vector2(_screenWidth / 2,_screenHeight / 2 - 300))
+                new Button( "1920x1080", new Vector2(_screenWidth / 2,_screenHeight / 2 - 300))
                 {
                     _onClick = () =>
                     {
@@ -197,7 +165,7 @@ namespace Game1
 
                     }
                 },
-                new Button(_font, "1600x900", new Vector2(_screenWidth / 2,_screenHeight / 2 - 200))
+                new Button("1600x900", new Vector2(_screenWidth / 2,_screenHeight / 2 - 200))
                 {
                     _onClick = () =>
                     {
@@ -213,7 +181,7 @@ namespace Game1
 
                     },
                 },
-                new Button(_font, "1024x768", new Vector2(_screenWidth / 2,_screenHeight / 2 - 100))
+                new Button( "1024x768", new Vector2(_screenWidth / 2,_screenHeight / 2 - 100))
                 {
                     _onClick = () =>
                     {
@@ -229,7 +197,7 @@ namespace Game1
                         _graphics.ApplyChanges();
                     },
                 },
-                new Button(_font, "Back", new Vector2(_screenWidth / 2,_screenHeight / 2))
+                new Button( "Back", new Vector2(_screenWidth / 2,_screenHeight / 2))
                 {
                     _onClick = () => { Globals.gameState = State.Settings; },
                 }
@@ -237,7 +205,7 @@ namespace Game1
             
             _restartMenu = new Menu.Menu(new List<Button>
             {
-                new Button(_font, "Restart", new Vector2(_screenWidth / 2,_screenHeight / 2 - 300))
+                new Button( "Restart", new Vector2(_screenWidth / 2,_screenHeight / 2 - 300))
                 {
                     _onClick = () =>
                     {
@@ -245,7 +213,7 @@ namespace Game1
                         Globals.player.Revive();
                     }
                 },
-                new Button(_font, "Main menu", new Vector2(_screenWidth / 2,_screenHeight / 2 - 200))
+                new Button( "Main menu", new Vector2(_screenWidth / 2,_screenHeight / 2 - 200))
                 {
                     _onClick = () => 
                     {
@@ -257,21 +225,21 @@ namespace Game1
             
             _pauseMenu = new Menu.Menu(new List<Button>
             {
-                new Button(_font, "Back", new Vector2(_screenWidth / 2,_screenHeight / 2 - 300))
+                new Button( "Back", new Vector2(_screenWidth / 2,_screenHeight / 2 - 300))
                 {
                     _onClick = () =>
                     {
                         Globals.gameState = State.Playing;
                     }
                 },
-                new Button(_font, "Save", new Vector2(_screenWidth / 2,_screenHeight / 2 - 200))
+                new Button( "Save", new Vector2(_screenWidth / 2,_screenHeight / 2 - 200))
                 {
                     _onClick = () => 
                     {
                         // TODO: Save player and world info 
                     }
                 },
-                new Button(_font, "Main menu", new Vector2(_screenWidth / 2, _screenHeight / 2 - 100))
+                new Button( "Main menu", new Vector2(_screenWidth / 2, _screenHeight / 2 - 100))
                 {
                     _onClick = () =>
                     {
@@ -290,21 +258,6 @@ namespace Game1
                     _pauseMenu
                 },
             };
-        }
-        private void LoadHUD()
-        {
-            inventorySlot = Content.Load<Texture2D>("HUD/inventorySlot");
-            currentInventorySlot = Content.Load<Texture2D>("HUD/currentInventorySlot");
-            _hud = new HUD()
-            {
-                _fullHp = Content.Load<Texture2D>("HUD/HeartBar"),
-                _halfHp = Content.Load<Texture2D>("HUD/HeartBarDamaged"),
-                _emptyHp = Content.Load<Texture2D>("HUD/HeartBarEmpty"),
-                
-                _fullStam = Content.Load<Texture2D>("HUD/staminaBar"),
-                _emptyStam = Content.Load<Texture2D>("HUD/staminaBarUsed"),
-            };
-            
         }
 
         protected override void Update(GameTime gameTime)
@@ -348,7 +301,7 @@ namespace Game1
             Globals.spriteBatch.End();
             
             Globals.spriteBatch.Begin(SpriteSortMode.Deferred, null,SamplerState.PointClamp);
-            _hud.Draw(_font, inventorySlot, currentInventorySlot, _helmetFrame, _chestPlateFrame, _bootsFrame, _arrowFrame);
+            _hud.Draw();
             if (Globals.player.isDead) _restartMenu.Draw();
             
             _mainMenu.Draw();

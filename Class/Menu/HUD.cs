@@ -11,6 +11,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Audio;
 using Keyboard = Microsoft.Xna.Framework.Input.Keyboard;
+using TermPaper.Class.Font;
 
 namespace Menu;
 
@@ -19,12 +20,12 @@ public class HUD
     private Fps _fps;
     private List<Byte> _hp = new List<byte> { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
     private List<Byte> _stam = new List<byte> { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
-    public Texture2D _fullHp { get; set; }
-    public Texture2D _halfHp { get; set; }
-    public Texture2D _emptyHp { get; set; }
 
-    public Texture2D _fullStam { get; set; }
-    public Texture2D _emptyStam { get; set; }
+    private Texture2D _fullHp = Globals.Content.Load<Texture2D>("HUD/HeartBar");
+    private Texture2D _halfHp = Globals.Content.Load<Texture2D>("HUD/HeartBarDamaged");
+    private Texture2D _emptyHp = Globals.Content.Load<Texture2D>("HUD/HeartBarEmpty");
+    private Texture2D _fullStam = Globals.Content.Load<Texture2D>("HUD/staminaBar");
+    private Texture2D _emptyStam = Globals.Content.Load<Texture2D>("HUD/staminaBarUsed");
 
     public HUD()
     {
@@ -56,15 +57,14 @@ public class HUD
         }
     }
     
-    public void Draw(SpriteFont _font, Texture2D inventorySlot, Texture2D currentInventorySlot, Texture2D helmetFrame,
-        Texture2D chestPlateFrame, Texture2D bootsFrame,Texture2D arrowFrame)
+    public void Draw()
     {
         if (Globals.gameState == State.Playing || Globals.gameState == State.Inventory)
         {
-            Globals.spriteBatch.DrawString(_font, $"Pos: {Globals.player._hitBox.X}  {Globals.player._hitBox.Y}",
+            Globals.spriteBatch.DrawString(Font.fonts["MainFont-24"], $"Pos: {Globals.player._hitBox.X}  {Globals.player._hitBox.Y}",
                 new Vector2(10, 250), Color.Black);
-            _fps.DrawFps(_font, new Vector2(10, 150), Color.Black);
-             Globals.player.inventory.Draw(inventorySlot, currentInventorySlot,helmetFrame, chestPlateFrame, bootsFrame, arrowFrame);
+            _fps.DrawFps( new Vector2(10, 150), Color.Black);
+             Globals.player.inventory.Draw();
             DrawHPBar();
             DrawStaminaBar();
         }   
@@ -134,7 +134,13 @@ public class HUD
 public class Inventory
 {
     public Player _player;
-    private int currentItem;
+    private int _currentItem;
+    private Texture2D _inventorySlot = Globals.Content.Load<Texture2D>("HUD/inventorySlot");
+    private Texture2D _currentInventorySlot = Globals.Content.Load<Texture2D>("HUD/currentInventorySlot");
+    private Texture2D _helmetFrame = Globals.Content.Load<Texture2D>("HUD/HelmetFrame");
+    private Texture2D _chestPlateFrame = Globals.Content.Load<Texture2D>("HUD/ChestPlateFrame");
+    private Texture2D _bootsFrame = Globals.Content.Load<Texture2D>("HUD/BootsFrame");
+    private Texture2D _arrowFrame = Globals.Content.Load<Texture2D>("HUD/ArrowFrame");
     
     public List<Item> inventory = new List<Item>
     {
@@ -145,10 +151,9 @@ public class Inventory
         null
     };
 
-
     public Item getCurrentItem()
     {
-        return inventory[currentItem];
+        return inventory[_currentItem];
     }
     
     public bool addItem(Item item)
@@ -157,11 +162,9 @@ public class Inventory
         {
             return false;
         }
-        else
-        {
-            inventory.Add(item);
-            return true;
-        }
+        inventory.Add(item);
+        return true;
+        
     }
 
     public void removeItem(Item item)
@@ -171,7 +174,6 @@ public class Inventory
     public void removeItem(int index)
     {
         inventory.Remove(inventory[index]);
-        
     }
 
     public void dropItem(int index)
@@ -187,9 +189,9 @@ public class Inventory
         if (Globals.gameState == State.Playing && !Globals.player.isDead)
         {
             UpdateKeyboardHotBar();
-            if (inventory[currentItem] != null)
+            if (inventory[_currentItem] != null)
             {
-                inventory[currentItem].Update();
+                inventory[_currentItem].Update();
             }
             if (Movement.Input.hasBeenPressed(Keys.E))
             {
@@ -206,28 +208,28 @@ public class Inventory
     {
         if (Keyboard.GetState().IsKeyDown(Keys.D1))
         {
-            currentItem = 0;
+            _currentItem = 0;
         }
         if (Keyboard.GetState().IsKeyDown(Keys.D2))
         {
-            currentItem = 1;
+            _currentItem = 1;
         }
         if (Keyboard.GetState().IsKeyDown(Keys.D3))
         {
-            currentItem = 2;
+            _currentItem = 2;
         }
         if (Keyboard.GetState().IsKeyDown(Keys.D4))
         {
-            currentItem = 3;
+            _currentItem = 3;
         }
         if (Keyboard.GetState().IsKeyDown(Keys.D5))
         {
-            currentItem = 4;
+            _currentItem = 4;
         }
         
-        if (Keyboard.GetState().IsKeyDown(Keys.G) && currentItem != null)
+        if (Keyboard.GetState().IsKeyDown(Keys.G) && _currentItem != null)
         {
-            dropItem(currentItem);
+            dropItem(_currentItem);
         }
         if (Movement.Input.hasBeenPressed(Keys.H))
         {
@@ -249,23 +251,22 @@ public class Inventory
         }
     }
 
-    public void Draw(Texture2D inventorySlot, Texture2D currentInventorySlot, Texture2D helmetFrame, Texture2D chestPlateFrame, Texture2D bootsFrame, Texture2D arrowFrame)
+    public void Draw()
     {
-        
         for (int i = 0; i < inventory.Count; i++)
         {
-            if (i != currentItem)
+            if (i != _currentItem)
             {
-                Globals.spriteBatch.Draw(inventorySlot, new Rectangle(i * 80, 5, 80, 80), Color.White);
+                Globals.spriteBatch.Draw(_inventorySlot, new Rectangle(i * 80, 5, 80, 80), Color.White);
             }
             else
             {
-                Globals.spriteBatch.Draw(currentInventorySlot, new Rectangle(i * 80, 9, 80, 80), Color.White);
+                Globals.spriteBatch.Draw(_currentInventorySlot, new Rectangle(i * 80, 9, 80, 80), Color.White);
             }
             
             if (inventory[i] != null)
             {
-                if (i != currentItem)
+                if (i != _currentItem)
                 {
                     inventory[i].DrawInInventory(new Rectangle(i * 83, 18, 64, 64));
                 }
@@ -276,20 +277,20 @@ public class Inventory
                 }
             }
         }
-        DrawInInventory(helmetFrame, chestPlateFrame, bootsFrame, arrowFrame);
+        DrawInInventory();
 
     }
-    public void DrawInInventory(Texture2D helmetFrame, Texture2D chestPlateFrame, Texture2D bootsFrame, Texture2D arrowFrame)
+    public void DrawInInventory()
     {
         if (Globals.gameState == State.Inventory)
         {
-            Globals.spriteBatch.Draw(helmetFrame, new Rectangle(Game1.Game1._screenWidth - 100, 400, 80, 80),
+            Globals.spriteBatch.Draw(_helmetFrame, new Rectangle(Game1.Game1._screenWidth - 100, 400, 80, 80),
                 Color.White);
-            Globals.spriteBatch.Draw(chestPlateFrame, new Rectangle(Game1.Game1._screenWidth - 100, 480, 80, 80),
+            Globals.spriteBatch.Draw(_chestPlateFrame, new Rectangle(Game1.Game1._screenWidth - 100, 480, 80, 80),
                 Color.White);
-            Globals.spriteBatch.Draw(bootsFrame, new Rectangle(Game1.Game1._screenWidth - 100, 560, 80, 80),
+            Globals.spriteBatch.Draw(_bootsFrame, new Rectangle(Game1.Game1._screenWidth - 100, 560, 80, 80),
                 Color.White);
-            Globals.spriteBatch.Draw(arrowFrame, new Rectangle(Game1.Game1._screenWidth - 100, 660, 80, 80),
+            Globals.spriteBatch.Draw(_arrowFrame, new Rectangle(Game1.Game1._screenWidth - 100, 660, 80, 80),
                 Color.White);
         }
     }

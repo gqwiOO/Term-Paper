@@ -3,6 +3,7 @@ using MathL;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.Content;
+using TermPaper.Class.Font;
 
 namespace Game1.Class.Entity
 {
@@ -41,7 +42,6 @@ namespace Game1.Class.Entity
 
         public Vector2 directionVector;
         public Movement direction;
-        public SpriteFont font = Globals.Content.Load<SpriteFont>("Fonts/Minecraft");
 
         private Animation leftWalk;
         private Animation rightWalk;
@@ -91,8 +91,10 @@ namespace Game1.Class.Entity
                 if (direction == Movement.Up) upWalk.Draw(hitbox.ToRectangle());
                 if (direction == Movement.Down) downWalk.Draw(hitbox.ToRectangle());
                 if (direction == Movement.Idle) Globals.spriteBatch.Draw(idle, hitbox.ToRectangle(), Color.White);
-                Globals.spriteBatch.DrawString(font, name, namePos, Color.Black, 0,
-                    new Vector2(font.MeasureString(name).X / 2, font.MeasureString(name).Y / 2),
+                
+                // Draw NPC name
+                Globals.spriteBatch.DrawString(Font.fonts["MainFont-16"], name, namePos, Color.Black, 0,
+                    new Vector2(Font.fonts["MainFont-16"].MeasureString(name).X / 2, Font.fonts["MainFont-16"].MeasureString(name).Y / 2),
                     1, SpriteEffects.None, 0f);
             }
         }

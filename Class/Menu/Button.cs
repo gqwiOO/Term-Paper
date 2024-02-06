@@ -1,10 +1,10 @@
-﻿using System;
-using Game1;
+﻿using Game1;
 using MathL;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Movement;
 using Audio;
+using TermPaper.Class.Font;
 
 
 namespace Menu
@@ -29,6 +29,17 @@ namespace Menu
                                             position.Y - _font.MeasureString(_text).Y / 2,
                                             _font.MeasureString(_text).X,
                                             _font.MeasureString(_text).Y);
+        }
+        public Button(string text, Vector2 position) 
+        {
+            _font = Font.fonts["MainFont-24"];
+            _text = text;
+            _hitboxCenter = new RectangleF(position.X, position.Y, _font.MeasureString(_text).X,
+                _font.MeasureString(_text).Y);
+            _hitBoxDefault = new RectangleF(position.X - _font.MeasureString(_text).X / 2,
+                position.Y - _font.MeasureString(_text).Y / 2,
+                _font.MeasureString(_text).X,
+                _font.MeasureString(_text).Y);
         }
         
 
