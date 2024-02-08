@@ -24,7 +24,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:C:/Users/USER/Desktop/IDLE.png;Player/IDLE.png
+/build:Player/IDLE.png
 
 #begin Debug/blackRectangle.png
 /importer:TextureImporter

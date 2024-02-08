@@ -1,9 +1,11 @@
 ﻿using System;
+using System.Numerics;
 using MathL;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using MonoGame.Extended.Content;
 using TermPaper.Class.Font;
+using Vector2 = Microsoft.Xna.Framework.Vector2;
 
 namespace Game1.Class.Entity
 {
@@ -40,8 +42,15 @@ namespace Game1.Class.Entity
         public string WalkDownAnimationPath { get; set; }
         public string IdlePath { get; set; }
 
+        public Vector2 previousDir;
         public Vector2 directionVector;
+        public Vector2 spawnPoint = new Vector2(4000, 3000);
         public Movement direction;
+
+        public Vector2 leftVector = new Vector2(-1, 0);
+        public Vector2 rightVector = new Vector2(1, 0);
+        public Vector2 downVector = new Vector2(0, 1);
+        public Vector2 upVector = new Vector2(0, -1);
 
         private Animation leftWalk;
         private Animation rightWalk;
@@ -49,6 +58,7 @@ namespace Game1.Class.Entity
         private Animation downWalk;
         private Texture2D idle;
 
+        public int walkRadius = 500;
         private double totalElapsedMilliseconds;
         private const double changeDirectionTime = 5000;
         
@@ -61,7 +71,8 @@ namespace Game1.Class.Entity
                 if (totalElapsedMilliseconds >= changeDirectionTime)
                 {
                     totalElapsedMilliseconds -= changeDirectionTime;
-                    directionVector = GetRandomDirection();
+                    directionVector = GetRandomDirection(previousDir);
+                    previousDir = directionVector;
                 }
 
                 hitbox.X += directionVector.X * speed * (float)Globals.gameTime.ElapsedGameTime.TotalSeconds;
@@ -110,18 +121,40 @@ namespace Game1.Class.Entity
                 new Vector2(animationFrameHeight, animationFrameWidth), frameCount, frameTime);
             idle = Globals.Content.Load<Texture2D>(IdlePath);
         }
-        public Vector2 GetRandomDirection()
+        public Vector2 GetRandomDirection( Vector2 previousDir)
         {
             Random random = new Random();
             int chooseDir = random.Next(4);
-            switch (chooseDir)
-            {
-                case 1: return new Vector2(-1, 0);
-                case 2: return new Vector2(1, 0);
-                case 3: return new Vector2(0, -1);
-                case 4: return new Vector2(0, 1);
-                default: return new Vector2(0, 0);
-            }
+
+            if (previousDir != Vector2.Zero) return Vector2.Zero;
+            
+            if (chooseDir == 1 && hitbox.X > spawnPoint.X + walkRadius) return leftVector;
+            else if (chooseDir == 1 && hitbox.X < spawnPoint.X + walkRadius) return rightVector;
+            
+            if (chooseDir == 2 && hitbox.X < spawnPoint.X + walkRadius) return rightVector;
+            else if (chooseDir == 2 && hitbox.X > spawnPoint.X + walkRadius) return leftVector;
+            
+            if (chooseDir == 3 && hitbox.Y < spawnPoint.Y + walkRadius) return downVector;
+            else if (chooseDir == 3 && hitbox.Y > spawnPoint.Y + walkRadius) return upVector;
+            
+            if (chooseDir == 4 && hitbox.Y > spawnPoint.Y + walkRadius) return upVector;
+            else if (chooseDir == 3 && hitbox.Y < spawnPoint.Y + walkRadius) return downVector;
+
+            // if (hitbox.X < spawnPoint.X - walkRadius) return rightVector;
+            // if (hitbox.X > spawnPoint.X + walkRadius) return leftVector;
+            // if (hitbox.Y < spawnPoint.Y - walkRadius) return downVector;
+            // if (hitbox.Y > spawnPoint.Y + walkRadius) return upVector;
+
+            return Vector2.Zero;
+
+            // switch (chooseDir)
+            // {
+            //     case 1: return new Vector2(-1, 0);
+            //     case 2: return new Vector2(1, 0);
+            //     case 3: return new Vector2(0, -1);
+            //     case 4: return new Vector2(0, 1);
+            //     default: return new Vector2(0, 0);
+            // }
         }
         public Movement GetMoveDirection(Vector2 direction)
         {
