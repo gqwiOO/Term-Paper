@@ -26,19 +26,6 @@
 /processorParam:TextureFormat=Color
 /build:C:/Users/USER/Desktop/IDLE.png;Player/IDLE.png
 
-#begin HUD/ArrowFrame.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:HUD/ArrowFrame.png
-
-
 #begin Debug/blackRectangle.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -63,12 +50,31 @@
 /processorParam:TextureFormat=Color
 /build:Enemy/Axolot/AxolotWalk.png
 
-#begin Fonts/Minecraft.spritefont
+#begin Fonts/MainFont-16.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
-/build:Fonts/Minecraft.spritefont
+/build:Fonts/MainFont-16.spritefont
+
+#begin Fonts/MainFont-24.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:Fonts/MainFont-24.spritefont
+
+#begin HUD/ArrowFrame.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:HUD/ArrowFrame.png
 
 #begin HUD/BootsFrame.png
 /importer:TextureImporter
