@@ -297,7 +297,7 @@ namespace Game1
             {
                 _restartMenu.Update();
             }
-            Entities.GetById(1).Update();
+            Entities.entities.ForEach(npc => npc.Update());
             _mainMenu.Update();
             
             Globals._camera.Follow(Globals.player);
@@ -312,12 +312,12 @@ namespace Game1
             map.Draw();
             _entities.ForEach(entity => entity.Draw());
             Globals.player.Draw();
-            Entities.GetById(1).Draw();
+            Entities.entities.ForEach(npc => npc.Draw());
             Globals.spriteBatch.End();
             
             Globals.spriteBatch.Begin(SpriteSortMode.Deferred, null,SamplerState.PointClamp);
             _hud.Draw();
-            Entities.GetById(1).DrawHUD();
+            Entities.entities.ForEach(npc => npc.DrawHUD());
 
             if (Globals.player.isDead) _restartMenu.Draw();
             
@@ -328,7 +328,7 @@ namespace Game1
         }
         public void LoadItems()
         {
-            using StreamReader reader = new StreamReader(Path.Combine(Globals.project_path + "/data/items.json"));
+            using StreamReader reader = new StreamReader(Path.Combine(Globals.project_path + "/data/sword.json"));
             var json = reader.ReadToEnd();
             Data.Items.Weapons = JsonConvert.DeserializeObject<List<Weapon>>(json);
 
