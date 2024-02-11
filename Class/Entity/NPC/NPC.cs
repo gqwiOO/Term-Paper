@@ -13,7 +13,7 @@ namespace Game1.Class.Entity
 {
     public class NPC: Entity
     {
-        public RectangleF hitbox = new RectangleF(4000, 3000, 50, 50);
+        public RectangleF hitbox = new RectangleF(0, 0, 50, 50);
         public string name { get; set; }
         private Vector2 namePos;
         public int damage { get; set; }
@@ -32,6 +32,22 @@ namespace Game1.Class.Entity
             {
                  hitbox.Height = value; 
             } 
+        }
+        public int spawnX
+        {
+            set
+            {
+                hitbox.X = value;
+                spawnPoint.X = value;
+            }
+        }
+        public int spawnY
+        {
+            set
+            {
+                hitbox.Y = value;
+                spawnPoint.Y = value;
+            }
         }
         public int frameCount { get; set; }
         public float frameTime { get; set; }
@@ -62,7 +78,7 @@ namespace Game1.Class.Entity
 
         public int walkRadius = 500;
         private double totalElapsedMilliseconds;
-        private const double changeDirectionTime = 5000;
+        private double changeDirectionTime;
         
         // Buy Interface vars
         public bool isShopOpened;
@@ -140,9 +156,10 @@ namespace Game1.Class.Entity
                 new Vector2(animationFrameHeight, animationFrameWidth), frameCount, frameTime);
             idle = Globals.Content.Load<Texture2D>(IdlePath);
         }
-        public Vector2 GetRandomDirection( Vector2 previousDir)
+        public Vector2 GetRandomDirection(Vector2 previousDir)
         {
             Random random = new Random();
+            changeDirectionTime = random.Next(4000, 7000);
             int chooseDir = random.Next(4);
 
             if (previousDir != Vector2.Zero) return Vector2.Zero;

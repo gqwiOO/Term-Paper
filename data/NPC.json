@@ -16,6 +16,29 @@
     "WalkRightAnimationPath": "NPC/Jason/JasonRightWalk",
     "WalkUpAnimationPath": "NPC/Jason/JasonUpWalk",
     "WalkDownAnimationPath": "NPC/Jason/JasonDownWalk",
-    "IdlePath": "NPC/Jason/JasonIdle"
+    "IdlePath": "NPC/Jason/JasonIdle",
+    "shopItems": 
+    [
+         1
+    ]
+  },
+  {
+    "name": "Shimazu",
+    "damage" : 20,
+    "id" : 2,
+    "speed": 100,
+    "hitboxWidth": 64,
+    "hitboxHeight": 64,
+    "spawnX": 5000,
+    "spawnY": 4000,
+    "frameCount": 4,
+    "frameTime": 0.28,
+    "animationFrameWidth": 16,
+    "animationFrameHeight": 16,
+    "WalkLeftAnimationPath": "NPC/Shimazu/ShimazuLeftWalk",
+    "WalkRightAnimationPath": "NPC/Shimazu/ShimazuRightWalk",
+    "WalkUpAnimationPath": "NPC/Shimazu/ShimazuUpWalk",
+    "WalkDownAnimationPath": "NPC/Shimazu/ShimazuDownWalk",
+    "IdlePath": "NPC/Shimazu/ShimazuIdle"
   }
 ]
