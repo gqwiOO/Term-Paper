@@ -8,6 +8,7 @@ public enum State
     Sound,
     Playing,
     Pause,
-    Inventory
+    Inventory,
+    InShop,
 }
 

@@ -2,7 +2,6 @@
 using System.Collections.Generic;
 using System.IO;
 using Data;
-using Game1.Class;
 using Game1.Class.Camera;
 using Game1.Class.Entity;
 using Game1.Class.Item;
@@ -39,7 +38,7 @@ namespace Game1
         public Enemy _enemy;
         public List<Entity> _entities;
         
-        public Camera _camera;
+
         public HUD _hud;
         
         public Map map;
@@ -62,7 +61,7 @@ namespace Game1
             
             Globals.gameState = State.MainMenu;
             
-            _camera = new Camera();
+            Globals._camera = new Camera();
             Globals.spriteBatch = new SpriteBatch(GraphicsDevice);
             
             // Screen properties
@@ -267,11 +266,26 @@ namespace Game1
             Input.GetMouseState();
             
             // Pause or Exit button
-            if(Input.hasBeenPressed(Keys.Escape))
+            if (Input.hasBeenPressed(Keys.Escape))
             {
-                if (Globals.gameState == State.Pause) Globals.gameState = State.Playing;
-                else if(Globals.gameState == State.Playing || Globals.gameState == State.Inventory)Globals.gameState = State.Pause;
-                else Exit();
+                switch (Globals.gameState)
+                {
+                    case State.Pause:
+                        Globals.gameState = State.Playing;
+                        break;
+                    case State.Playing:
+                        Globals.gameState = State.Pause;
+                        break;
+                    case State.MainMenu:
+                        Exit();
+                        break;
+                    case State.Inventory:
+                        Globals.gameState = State.Playing;
+                        break;
+                    case State.InShop:
+                        Globals.gameState = State.Playing;
+                        break;
+                }
             }
             // Gives _mouseState state each frame
             Globals.mouseState = Mouse.GetState(); 
@@ -285,15 +299,16 @@ namespace Game1
             }
             Entities.GetById(1).Update();
             _mainMenu.Update();
-            _camera.Follow(Globals.player);
+            
+            Globals._camera.Follow(Globals.player);
+
             base.Update(gameTime);
         }
-
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
             
-            Globals.spriteBatch.Begin(SpriteSortMode.Deferred, null,SamplerState.PointClamp,transformMatrix: _camera.Transform);
+            Globals.spriteBatch.Begin(SpriteSortMode.Deferred, null,SamplerState.PointClamp,transformMatrix: Globals._camera.Transform);
             map.Draw();
             _entities.ForEach(entity => entity.Draw());
             Globals.player.Draw();
@@ -302,6 +317,8 @@ namespace Game1
             
             Globals.spriteBatch.Begin(SpriteSortMode.Deferred, null,SamplerState.PointClamp);
             _hud.Draw();
+            Entities.GetById(1).DrawHUD();
+
             if (Globals.player.isDead) _restartMenu.Draw();
             
             _mainMenu.Draw();
@@ -309,7 +326,6 @@ namespace Game1
 
             base.Draw(gameTime);
         }
-        
         public void LoadItems()
         {
             using StreamReader reader = new StreamReader(Path.Combine(Globals.project_path + "/data/items.json"));

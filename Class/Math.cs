@@ -106,7 +106,7 @@ class SwordVector
         _currentDegree = _currentDegree % 360;
         if (_currentDegree < _rightSideDegree)
         {
-            _currentDegree += 8;
+            _currentDegree += 5;
         }
     }
     public void LeftSideUpdate()

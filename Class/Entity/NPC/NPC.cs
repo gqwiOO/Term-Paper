@@ -3,7 +3,9 @@ using System.Numerics;
 using MathL;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended.Content;
+using Movement;
 using TermPaper.Class.Font;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
 
@@ -28,7 +30,7 @@ namespace Game1.Class.Entity
         {     
             set
             {
-                 hitbox.Width = value; 
+                 hitbox.Height = value; 
             } 
         }
         public int frameCount { get; set; }
@@ -62,6 +64,10 @@ namespace Game1.Class.Entity
         private double totalElapsedMilliseconds;
         private const double changeDirectionTime = 5000;
         
+        // Buy Interface vars
+        public bool isShopOpened;
+        private BuyInterface _buyInterface = new BuyInterface();
+        
         public override void Update()
         {
             if (Globals.gameState == State.State.Playing)
@@ -82,9 +88,14 @@ namespace Game1.Class.Entity
                 UpdateAnimation();
 
                 namePos = new Vector2(hitbox.Center.X, hitbox.Center.Y - 35);
+
+                if (Input.isMouseInRectangle(hitbox) && Input.isLeftButtonPressed())
+                {
+                    Globals.gameState = State.State.InShop;
+                    isShopOpened = true;
+                }
             }
         }
-
         private void UpdateAnimation()
         {
             if (direction == Movement.Left) leftWalk.Update();
@@ -107,6 +118,14 @@ namespace Game1.Class.Entity
                 Globals.spriteBatch.DrawString(Font.fonts["MainFont-16"], name, namePos, Color.Black, 0,
                     new Vector2(Font.fonts["MainFont-16"].MeasureString(name).X / 2, Font.fonts["MainFont-16"].MeasureString(name).Y / 2),
                     1, SpriteEffects.None, 0f);
+            }
+        }
+
+        public void DrawHUD()
+        {
+            if (isShopOpened)
+            {
+                _buyInterface.Draw();
             }
         }
         public void LoadAnimation()
@@ -139,22 +158,9 @@ namespace Game1.Class.Entity
             
             if (chooseDir == 4 && hitbox.Y > spawnPoint.Y + walkRadius) return upVector;
             else if (chooseDir == 3 && hitbox.Y < spawnPoint.Y + walkRadius) return downVector;
-
-            // if (hitbox.X < spawnPoint.X - walkRadius) return rightVector;
-            // if (hitbox.X > spawnPoint.X + walkRadius) return leftVector;
-            // if (hitbox.Y < spawnPoint.Y - walkRadius) return downVector;
-            // if (hitbox.Y > spawnPoint.Y + walkRadius) return upVector;
+            
 
             return Vector2.Zero;
-
-            // switch (chooseDir)
-            // {
-            //     case 1: return new Vector2(-1, 0);
-            //     case 2: return new Vector2(1, 0);
-            //     case 3: return new Vector2(0, -1);
-            //     case 4: return new Vector2(0, 1);
-            //     default: return new Vector2(0, 0);
-            // }
         }
         public Movement GetMoveDirection(Vector2 direction)
         {

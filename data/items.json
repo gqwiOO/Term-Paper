@@ -1,10 +1,11 @@
 ﻿[
-    {
-      "name": "sword1",
-        "id" : 1,
-        "damage" : 20,
-        "cooldown" : 1000,
-        "animationTime": 500,
-        "spritePath" : "Items/Sword"
-    }
+  {
+    "name": "sword1",
+      "id" : 1,
+      "damage" : 20,
+      "cooldown" : 1000,
+      "animationTime": 500,
+      "spritePath" : "Items/Sword"
+  }
 ]
+

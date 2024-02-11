@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Input;
 using Movement;
 using SpriteBatch = Microsoft.Xna.Framework.Graphics.SpriteBatch;
+using Game1.Class.Camera;
 
 namespace Game1;
 
@@ -20,5 +21,6 @@ public static class Globals
 
     public static ContentManager Content;
     
+    public static Camera _camera;
     public static string project_path;
 }

@@ -61,7 +61,8 @@ public class HUD
     {
         if (Globals.gameState == State.Playing || Globals.gameState == State.Inventory)
         {
-            Globals.spriteBatch.DrawString(Font.fonts["MainFont-24"], $"Pos: {Globals.player._hitBox.X}  {Globals.player._hitBox.Y}",
+            Globals.spriteBatch.DrawString(Font.fonts["MainFont-24"], $"Pos: {Globals.player._hitBox.Center.X} " +
+                                                                      $" {Globals.player._hitBox.Center.Y}",
                 new Vector2(10, 250), Color.Black);
             _fps.DrawFps( new Vector2(10, 150), Color.Black);
              Globals.player.inventory.Draw();
