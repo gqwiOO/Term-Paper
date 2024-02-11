@@ -328,10 +328,13 @@ namespace Game1
         }
         public void LoadItems()
         {
-            using StreamReader reader = new StreamReader(Path.Combine(Globals.project_path + "/data/items.json"));
-            var json = reader.ReadToEnd();
-            Data.Items.Weapons = JsonConvert.DeserializeObject<List<Weapon>>(json);
-
+            using StreamReader itemsReader = new StreamReader(Path.Combine(Globals.project_path + "/data/items.json"));
+            var itemJson = itemsReader.ReadToEnd();
+            Items.Weapons = JsonConvert.DeserializeObject<List<Weapon>>(itemJson);
+            
+            using StreamReader potionReader = new StreamReader(Path.Combine(Globals.project_path + "/data/potion.json"));
+            var potionJson = potionReader.ReadToEnd();
+            Items.Potions = JsonConvert.DeserializeObject<List<Potion>>(potionJson);
         }
 
         public void LoadEntities()

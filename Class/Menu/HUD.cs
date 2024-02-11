@@ -145,12 +145,40 @@ public class Inventory
     
     public List<Item> inventory = new List<Item>
     {
-        Data.Items.GetById(1),
-        null,
+        Data.Items.GetWeaponById(1),
+        Data.Items.GetPotionById(1),
         null,
         null,
         null
     };
+    public List<int?> slotItemAmount = new List<int?>
+    {
+        1,
+        5,
+        null,
+        null,
+        null
+    };
+
+
+    public void decreaseItemAmountByOne(int index)
+    {
+        slotItemAmount[index] -= 1;
+        if (slotItemAmount[index] == 0)
+        {
+            slotItemAmount[index] = null;
+            inventory[index] = null;
+        }
+    }
+
+    public int? getHealthPotionIndex()
+    {
+        for (int i = 0; i < inventory.Count; i++)
+        {
+            if (inventory[i].GetType().Equals(typeof(Potion))) return i;
+        }
+        return null;
+    }
 
     public Item getCurrentItem()
     {
@@ -165,7 +193,6 @@ public class Inventory
         }
         inventory.Add(item);
         return true;
-        
     }
 
     public void removeItem(Item item)
@@ -256,6 +283,7 @@ public class Inventory
     {
         for (int i = 0; i < inventory.Count; i++)
         {
+            // Draw icon for current item in inventory
             if (i != _currentItem)
             {
                 Globals.spriteBatch.Draw(_inventorySlot, new Rectangle(i * 80, 5, 80, 80), Color.White);
@@ -264,7 +292,7 @@ public class Inventory
             {
                 Globals.spriteBatch.Draw(_currentInventorySlot, new Rectangle(i * 80, 9, 80, 80), Color.White);
             }
-            
+            // Draw icons for items inventory
             if (inventory[i] != null)
             {
                 if (i != _currentItem)
@@ -274,12 +302,19 @@ public class Inventory
                 else
                 {
                     inventory[i].DrawInInventory(new Rectangle(i * 83, 23, 64, 64));
-                    
+                }
+            }
+            // Draw item's amount in inventory 
+            if (slotItemAmount[i] != null && slotItemAmount[i] != 1)
+            {
+                if (inventory[i]._isStackable)
+                {
+                    Globals.spriteBatch.DrawString(Font.fonts["MainFont-16"], slotItemAmount[i].ToString(),
+                        new Vector2(i * 130, 60), Color.Black);
                 }
             }
         }
         DrawInInventory();
-
     }
     public void DrawInInventory()
     {

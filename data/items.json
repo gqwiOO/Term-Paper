@@ -5,7 +5,7 @@
       "damage" : 20,
       "cooldown" : 1000,
       "animationTime": 500,
-      "spritePath" : "Items/Sword"
+      "spritePath" : "Items/Weapon/Sword/Sword"
   }
 ]
 

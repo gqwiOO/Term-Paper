@@ -82,15 +82,25 @@ namespace Game1.Class.Entity
         }
         private void UpdateTakenDamage()
         {
-            Weapon currentWeapon = (Weapon)Globals.player.inventory.getCurrentItem();
-            if (_hitBox.Intersects(currentWeapon._hitbox) && tookDamageTime > cooldownTookDamage &&
-                _hitBox.Intersects(currentWeapon._hitbox) && currentWeapon.getACtiveStatus())
+            if (Globals.player.inventory.getCurrentItem() != null)
             {
-                _hp -= 10;
-                tookDamageTime = 0;
+                if (Globals.player.inventory.getCurrentItem().GetType().Equals(typeof(Weapon)))
+                {
+                    Weapon currentWeapon = (Weapon)Globals.player.inventory.getCurrentItem();
+                    if (_hitBox.Intersects(currentWeapon._hitbox) && tookDamageTime > cooldownTookDamage &&
+                        _hitBox.Intersects(currentWeapon._hitbox) && currentWeapon.getACtiveStatus())
+                    {
+                        _hp -= 10;
+                        tookDamageTime = 0;
+                    }
+                }
             }
         }
         public override void Draw()
+        {
+            DrawHP();
+        }
+        private void DrawHP()
         {
             if (Globals.gameState == State.State.Playing  || Globals.gameState == State.State.Inventory)
             {

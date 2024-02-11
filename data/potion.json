@@ -1,0 +1,18 @@
+﻿[
+  {
+    "name": "Small health potion",
+    "id" : 1,
+    "restoredHealth" : 50,
+    "cooldown" : 15000,
+    "stackCapacity": 20,
+    "spritePath" : "Items/Potion/smallPotion"
+  },
+  {
+    "name": "Large health potion",
+    "id" : 2,
+    "restoredHealth" : 100,
+    "cooldown" : 30000,
+    "spritePath" : "Items/Potion/largePotion"
+  }
+]
+

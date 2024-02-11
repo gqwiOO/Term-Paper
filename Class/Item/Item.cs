@@ -9,6 +9,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Movement;
 using MathL;
+using TermPaper.Class.Font;
 
 namespace Game1.Class.Item
 {
@@ -16,7 +17,7 @@ namespace Game1.Class.Item
     {
         public int id{ get; set; }
         public bool _isStackable;
-        public byte _stackCapacity;
+        public int _stackCapacity;
         public Texture2D _sprite;
         public int _price;
         public string _name;

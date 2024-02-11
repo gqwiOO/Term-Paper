@@ -7,11 +7,16 @@ namespace Data;
 public static class Items
 {
     public static List<Weapon> Weapons;
+    public static List<Potion> Potions;
 
 
-    public static Weapon GetById(int id)
+    public static Weapon GetWeaponById(int id)
     {
         return Weapons.Where(weapon => weapon.id == id).First();
+    }
+    public static Potion GetPotionById(int id)
+    {
+        return Potions.Where(potion => potion.id == id).First();
     }
 
 }

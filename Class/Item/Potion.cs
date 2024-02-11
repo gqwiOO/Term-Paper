@@ -1,27 +1,48 @@
 ﻿using Microsoft.Xna.Framework.Graphics;
-using Audio;
 
 namespace Game1.Class.Item
 {
     public class Potion: Item
     {
-        public Potion(string name, Texture2D sprite, bool isStackable, byte stackCapacity)
+        public string name { get; set; }
+        public int id { get; set; }
+        public int restoredHealth { get; set; }
+        public int cooldown { get; set; }
+
+        public int stackCapacity
         {
-            _name = name;
-            _sprite = sprite;
-            _isStackable = isStackable;
-            _stackCapacity = stackCapacity;
+            get
+            {
+                return _stackCapacity;
+            }
+            set
+            {
+                _stackCapacity = value;
+                _isStackable = true;
+            }
+        }
+        public string spritePath
+        {
+            set
+            {
+                _sprite = Globals.Content.Load<Texture2D>(value);
+            }
         }
 
         public override void Use()
         {
             if (Globals.player._hp < 200 &&  !Globals.player.isDead)
             {
-                Globals.player._hp += 40;
+                Globals.player._hp += restoredHealth;
+                if (Globals.player.inventory.getHealthPotionIndex() != null)
+                {
+                    Globals.player.inventory.decreaseItemAmountByOne((int)Globals.player.inventory.getHealthPotionIndex());
+                }
                 if (Globals.player._hp > 200)
                 {
                     Globals.player._hp = 200;
                 }
+                
             }
         }
         public override void Update()
