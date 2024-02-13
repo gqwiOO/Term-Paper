@@ -20,7 +20,6 @@ namespace Game1.Class.Item
         public int _stackCapacity;
         public Texture2D _sprite;
         public int _price;
-        public string _name;
         public Animation _animation { get; set; }
 
         public float cooldown { get; set;}

@@ -5,7 +5,6 @@ namespace Game1.Class.Item
     public class Potion: Item
     {
         public string name { get; set; }
-        public int id { get; set; }
         public int restoredHealth { get; set; }
         public int cooldown { get; set; }
 
@@ -21,10 +20,17 @@ namespace Game1.Class.Item
                 _isStackable = true;
             }
         }
+
+        private string path;
         public string spritePath
         {
+            get
+            {
+                return path;
+            }
             set
             {
+                path = value;
                 _sprite = Globals.Content.Load<Texture2D>(value);
             }
         }

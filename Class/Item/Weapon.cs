@@ -1,4 +1,5 @@
-﻿using MathL;
+﻿using System;
+using MathL;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Movement;
@@ -69,6 +70,8 @@ namespace Game1.Class.Item
                 _vectorSide = Globals.player.lastStrafeDirection;
                 _currentCooldown = 0f;
             }
+            Console.WriteLine($"X: {_hitbox.Left} Y: {_hitbox.Bottom}");
+            _hitbox.rotateRectangleBottomLeftOrigin(45);
         }
         public override void Draw()
         {
@@ -88,6 +91,7 @@ namespace Game1.Class.Item
                         new Vector2(0,0), SpriteEffects.FlipVertically, 0f);
                 }
             }
+            _hitbox.Draw();
         }
     }
 }

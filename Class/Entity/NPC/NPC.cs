@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Numerics;
 using MathL;
 using Microsoft.Xna.Framework;
@@ -6,6 +7,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using MonoGame.Extended.Content;
 using Movement;
+using TermPaper.Class.Cursor;
 using TermPaper.Class.Font;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
 
@@ -18,6 +20,8 @@ namespace Game1.Class.Entity
         private Vector2 namePos;
         public int damage { get; set; }
         public int id { get; set; }
+        
+        public bool hasShop { get; set; }
         public int speed { get; set; }
         public int hitboxWidth
         {
@@ -49,6 +53,8 @@ namespace Game1.Class.Entity
                 spawnPoint.Y = value;
             }
         }
+        
+        public List<int> shopItems { get; set; }
         public int frameCount { get; set; }
         public float frameTime { get; set; }
         public int animationFrameWidth { get; set; }
@@ -79,13 +85,19 @@ namespace Game1.Class.Entity
         public int walkRadius = 500;
         private double totalElapsedMilliseconds;
         private double changeDirectionTime;
+        private BuyInterface _buyInterface;
         
         // Buy Interface vars
         public bool isShopOpened;
-        private BuyInterface _buyInterface = new BuyInterface();
+
+        public NPC()
+        {
+            _buyInterface = new BuyInterface(this);
+        }
         
         public override void Update()
         {
+            if(hasShop)_buyInterface.Update();
             if (Globals.gameState == State.State.Playing)
             {
                 totalElapsedMilliseconds += Globals.gameTime.ElapsedGameTime.Milliseconds;
@@ -105,12 +117,17 @@ namespace Game1.Class.Entity
 
                 namePos = new Vector2(hitbox.Center.X, hitbox.Center.Y - 35);
 
-                if (Input.isMouseInRectangle(hitbox) && Input.isLeftButtonPressed())
+                if (isMouseOnNPC() && Input.isLeftButtonPressed() && hasShop)
                 {
                     Globals.gameState = State.State.InShop;
                     isShopOpened = true;
                 }
             }
+        }
+
+        public bool isMouseOnNPC()
+        {
+            return Input.isMouseInRectangle(hitbox);
         }
         private void UpdateAnimation()
         {

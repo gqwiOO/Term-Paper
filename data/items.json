@@ -1,7 +1,17 @@
 ﻿[
   {
+    "name": "sword1",
+    "itemType": "Weapon",
+      "id" : 1,
+      "damage" : 20,
+      "cooldown" : 1000,
+      "animationTime": 500,
+      "spritePath" : "Items/Weapon/Sword/Sword"
+  },
+  {
     "name": "Small health potion",
-    "id" : 1,
+    "itemType": "Potion",
+    "id" : 2,
     "restoredHealth" : 50,
     "cooldown" : 15000,
     "stackCapacity": 20,
@@ -9,10 +19,12 @@
   },
   {
     "name": "Large health potion",
-    "id" : 2,
+    "itemType": "Potion",
+    "id" : 3,
     "restoredHealth" : 100,
     "cooldown" : 30000,
     "spritePath" : "Items/Potion/largePotion"
   }
+  
 ]
 

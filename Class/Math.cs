@@ -11,6 +11,13 @@ public struct RectangleF
     public float Y;
     public float Width;
     public float Height;
+
+    public float Angle;
+    
+    public Vector2 x1y1;
+    public Vector2 x2y2 = new Vector2(0,0);
+    public Vector2 x3y3 = new Vector2(0,0);
+    public Vector2 x4y4 = new Vector2(0,0);
     public float Left => this.X;
     public float Right => this.X + this.Width;
     public float Top => this.Y;
@@ -28,7 +35,14 @@ public struct RectangleF
         this.Y = y;
         this.Width = width;
         this.Height = height;
+        x1y1 = new Vector2(x,y);
+        x2y2 = new Vector2(x + width,y);
+        x3y3 = new Vector2(x + width,y + height);
+        x4y4 = new Vector2(x,y + height);
+        Angle = 0;
+        this.rotateRectangleBottomLeftOrigin(0);
     }
+    
     /// <summary>
     /// Works only for no rotated rectangles
     /// </summary>
@@ -70,6 +84,58 @@ public struct RectangleF
     /// <param name="rec">object the distance to which is calculated</param>
     /// <returns></returns>
     public bool isDistanceYLessZero(RectangleF rec) => rec.Y - Y < 1f;
+
+    /// <summary>
+    /// 
+    /// </summary>
+    /// <param name="angle"></param>
+    /// <param name="origin">Origin should be one of the vertexes of a rectange</param>
+    public void rotateRectangleBottomLeftOrigin(float angle)
+    {
+        Angle = MathHelper.ToRadians(angle);
+        float cos = (float)Math.Cos(MathHelper.ToRadians(angle));
+        float sin = (float)Math.Sin(MathHelper.ToRadians(angle));
+        Vector2 x1y1_ = new Vector2(Left - Left,Bottom - Top);
+        Vector2 x2y2_ = new Vector2(Right - Left,Bottom - Top);
+        Vector2 x3y3_ = new Vector2(Right - Right,Bottom - Bottom);
+        Vector2 x4y4_ = new Vector2(0,0);
+        x1y1 = new Vector2( x1y1_.X * cos + x1y1_.Y * sin,
+            -x1y1_.X * sin + x1y1_.Y * cos
+            );
+        x2y2 = new Vector2( x2y2_.X * cos + x2y2_.Y * sin,
+            -x2y2_.X * sin + x2y2_.Y * cos
+        );
+        x3y3 = new Vector2( x3y3_.X * cos + x3y3_.Y * sin,
+            -x3y3_.X * sin + x3y3_.Y * cos
+        );
+        x4y4 = new Vector2( x4y4_.X * cos + x4y4_.Y * sin,
+            -x4y4_.X * sin + x4y4_.Y * cos
+        );
+        Console.WriteLine($" X : {x1y1.X}   Y : {(int)x1y1.Y}");
+    }
+
+    private static Texture2D GetTexture(SpriteBatch spriteBatch)
+    {
+        Texture2D _texture = null;
+        if (_texture == null)
+        {
+            _texture = new Texture2D(spriteBatch.GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
+            _texture.SetData(new[] {Color.White});
+        }
+
+        return _texture;
+    }
+    public void Draw()
+    {
+        Globals.spriteBatch.Draw(GetTexture(Globals.spriteBatch), new Vector2(x1y1.X,x1y1.Y),
+            null, Color.Black, Angle, new Vector2(0,0), new Vector2(x2y2.X - x1y1.X, 5f), SpriteEffects.None, 0);
+        // Globals.spriteBatch.Draw(GetTexture(Globals.spriteBatch), new Vector2(x4y4.X,x4y4.Y),
+        //     null, Color.Black, Angle, new Vector2(0,0), new Vector2(x2y2.X - x1y1.X, 5f), SpriteEffects.None, 0);
+         Globals.spriteBatch.Draw(GetTexture(Globals.spriteBatch), new Vector2(x4y4.X,x4y4.Y),
+            null, Color.Black, MathHelper.ToRadians(90), new Vector2(0,0), new Vector2(x2y2.X - x1y1.X, 5f), SpriteEffects.None, 0);
+        // Globals.spriteBatch.Draw(GetTexture(Globals.spriteBatch), new Vector2(Right,Top),
+        //     null, Color.Black, MathHelper.ToRadians(90), new Vector2(0,0), new Vector2(Bottom - Top, 5f), SpriteEffects.None, 0);
+    }
 }
 
 public static class Circle

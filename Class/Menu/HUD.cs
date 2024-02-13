@@ -37,7 +37,10 @@ public class HUD
         _fps.Update();
         UpdateHPBar();
         UpdateStaminaBar();
+
     }
+
+
 
     public void UpdateStaminaBar()
     {
@@ -128,8 +131,6 @@ public class HUD
             }
         }
     }
-
-    
 }
 
 public class Inventory
@@ -145,8 +146,8 @@ public class Inventory
     
     public List<Item> inventory = new List<Item>
     {
-        Data.Items.GetWeaponById(1),
-        Data.Items.GetPotionById(1),
+        Data.Items.GetItemById(1),
+        Data.Items.GetItemById(2),
         null,
         null,
         null
@@ -159,8 +160,7 @@ public class Inventory
         null,
         null
     };
-
-
+    
     public void decreaseItemAmountByOne(int index)
     {
         slotItemAmount[index] -= 1;
@@ -175,7 +175,10 @@ public class Inventory
     {
         for (int i = 0; i < inventory.Count; i++)
         {
-            if (inventory[i].GetType().Equals(typeof(Potion))) return i;
+            if (inventory[i] != null)
+            {
+                if (inventory[i].GetType().Equals(typeof(Potion))) return i;
+            }
         }
         return null;
     }

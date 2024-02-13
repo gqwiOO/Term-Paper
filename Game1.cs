@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Data;
 using Game1.Class.Camera;
 using Game1.Class.Entity;
@@ -17,6 +18,8 @@ using Microsoft.Xna.Framework.Media;
 using Button = Menu.Button;
 using Movement;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+using TermPaper.Class.Cursor;
 using TermPaper.Class.Font;
 
 namespace Game1
@@ -57,7 +60,7 @@ namespace Game1
             Globals.project_path =  Directory.GetParent(
                 Directory.GetParent(
                     Directory.GetParent(
-                        Environment.CurrentDirectory).ToString()).ToString()).ToString();
+                            Environment.CurrentDirectory).ToString()).ToString()).ToString();
             
             Globals.gameState = State.MainMenu;
             
@@ -78,6 +81,7 @@ namespace Game1
         }
         protected override void LoadContent()
         {
+            Cursor.setCursor(0);
             LoadItems();
             LoadEntities();
             
@@ -96,6 +100,7 @@ namespace Game1
             SoundEffect.MasterVolume = 0.5f;
             MediaPlayer.IsRepeating = true;
             MediaPlayer.Play(sweden);
+            
 
             TmxMap mapObject = new TmxMap("Content/NewMap.tmx");
             map = new Map(mapObject, Content.Load<Texture2D>("Map/" + mapObject.Tilesets[0].Name));
@@ -301,9 +306,11 @@ namespace Game1
             _mainMenu.Update();
             
             Globals._camera.Follow(Globals.player);
+            Cursor.UpdateCursorStyle();
 
             base.Update(gameTime);
         }
+        
         protected override void Draw(GameTime gameTime)
         {
             GraphicsDevice.Clear(Color.CornflowerBlue);
@@ -322,26 +329,36 @@ namespace Game1
             if (Globals.player.isDead) _restartMenu.Draw();
             
             _mainMenu.Draw();
+            // cursor.Draw();
             Globals.spriteBatch.End();
 
             base.Draw(gameTime);
         }
         public void LoadItems()
         {
-            using StreamReader itemsReader = new StreamReader(Path.Combine(Globals.project_path + "/data/sword.json"));
+            using StreamReader itemsReader = new StreamReader(Path.Combine(Globals.project_path + "/data/items.json"));
             var itemJson = itemsReader.ReadToEnd();
-            Items.Weapons = JsonConvert.DeserializeObject<List<Weapon>>(itemJson);
+            JArray array = JArray.Parse(itemJson);
             
-            using StreamReader potionReader = new StreamReader(Path.Combine(Globals.project_path + "/data/potion.json"));
-            var potionJson = potionReader.ReadToEnd();
-            Items.Potions = JsonConvert.DeserializeObject<List<Potion>>(potionJson);
+            foreach (JObject obj in array.Children<JObject>())
+            {
+                switch (obj.Property("itemType").Value.ToString())
+                {
+                    case "Potion":
+                        Items.ItemList.Add(JsonConvert.DeserializeObject<Potion>(obj.ToString(Formatting.None)));
+                        break;
+                    case "Weapon":
+                        Items.ItemList.Add(JsonConvert.DeserializeObject<Weapon>(obj.ToString(Formatting.None)));
+                        break;
+                }
+            }
         }
 
         public void LoadEntities()
         {
             using StreamReader entReader = new StreamReader(Path.Combine(Globals.project_path + "/data/NPC.json"));
             var json = entReader.ReadToEnd();
-            Data.Entities.entities = JsonConvert.DeserializeObject<List<NPC>>(json);
+            Entities.entities = JsonConvert.DeserializeObject<List<NPC>>(json);
             Entities.LoadAnimation();
         }
     }

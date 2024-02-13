@@ -53,7 +53,9 @@
     <Content Remove="C:\Users\zeite\.nuget\packages\monogame.extended\3.8.0\contentFiles\any\netstandard2.0\libmojoshader_64.dll" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="Content\Cursor\" />
     <Folder Include="Content\NPC\" />
+    <Folder Include="Content\NPC\Interface\" />
   </ItemGroup>
   <Target Name="RestoreDotnetTools" BeforeTargets="Restore">
     <Message Text="Restoring dotnet tools" Importance="High" />

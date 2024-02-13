@@ -3,6 +3,8 @@ using Game1;
 using Microsoft.Xna.Framework.Input;
 
 using MathL;
+using Microsoft.Xna.Framework;
+
 namespace Movement;
 
 public class Input
@@ -11,8 +13,8 @@ public class Input
     static KeyboardState previousKeyState;
     static MouseState previousMouseState;
     static MouseState currentMouseState;
-    public static int TopLeftPositionX;
-    public static int TopLeftPositionY;
+    public static float TopLeftPositionX;
+    public static float TopLeftPositionY;
 
     public static KeyboardState GetKeyboardState()
     {
@@ -23,10 +25,11 @@ public class Input
 
     public static MouseState GetMouseState()
     {
+        TopLeftPositionX = -Globals._camera.position.M41 - Game1.Game1._screenWidth / 2;
+        TopLeftPositionY = -Globals._camera.position.M42 -Game1.Game1._screenHeight / 2;
         previousMouseState = currentMouseState;
         currentMouseState = Mouse.GetState();
-        TopLeftPositionX = (int)-Globals._camera.position.M41 - (int)Game1.Game1._screenWidth / 2;
-        TopLeftPositionY = (int)-Globals._camera.position.M42 - (int)Game1.Game1._screenHeight / 2;
+        
         return currentMouseState;
     }
 
@@ -59,8 +62,9 @@ public class Input
 
     public static bool isMouseInRectangle(RectangleF rec)
     {
-        int mouseX = TopLeftPositionX + Input.GetMouseState().X;
-        int mouseY = TopLeftPositionY + Input.GetMouseState().Y;
+        
+        float mouseX = TopLeftPositionX + Globals.mouseState.X;
+        float mouseY = TopLeftPositionY + Globals.mouseState.Y;
         return mouseX > rec.X && mouseX < rec.X + rec.Width && mouseY > rec.Y && mouseY < rec.Y + rec.Height;
     }
 }

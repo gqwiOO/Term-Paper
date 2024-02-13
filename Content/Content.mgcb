@@ -14,6 +14,30 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin Cursor/cursor_default.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Cursor/cursor_default.png
+
+#begin Cursor/cursor_select.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Cursor/cursor_select.png
+
 #begin Debug/blackRectangle.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -148,7 +172,6 @@
 /processorParam:TextureFormat=Color
 /build:HUD/staminaBarUsed.png
 
-
 #begin Items/Potion/HealingPotion.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -197,6 +220,18 @@
 /processorParam:TextureFormat=Color
 /build:Items/Sword.png
 
+#begin Items/Weapon/Bow/Arrow.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Items/Weapon/Bow/Arrow.png
+
 #begin Items/Weapon/Sword/Sword.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -221,7 +256,7 @@
 /processorParam:TextureFormat=Color
 /build:Map/worldTileSet.png
 
-#begin NPC/Interface/npc inventory.png
+#begin NPC/Interface/shopInterfaceBackground.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -231,7 +266,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:NPC/Interface/npc inventory.png;NPC/Interface/npcShopBackground.png
+/build:NPC/Interface/shopInterfaceBackground.png
 
 #begin NPC/Jason/JasonDownWalk.png
 /importer:TextureImporter

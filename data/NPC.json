@@ -1,6 +1,27 @@
 [
   {
+    "name": "Shimazu",
+    "hasShop": false,
+    "damage" : 20,
+    "id" : 2,
+    "speed": 100,
+    "hitboxWidth": 64,
+    "hitboxHeight": 64,
+    "spawnX": 5000,
+    "spawnY": 4000,
+    "frameCount": 4,
+    "frameTime": 0.28,
+    "animationFrameWidth": 16,
+    "animationFrameHeight": 16,
+    "WalkLeftAnimationPath": "NPC/Shimazu/ShimazuLeftWalk",
+    "WalkRightAnimationPath": "NPC/Shimazu/ShimazuRightWalk",
+    "WalkUpAnimationPath": "NPC/Shimazu/ShimazuUpWalk",
+    "WalkDownAnimationPath": "NPC/Shimazu/ShimazuDownWalk",
+    "IdlePath": "NPC/Shimazu/ShimazuIdle"
+  },
+  {
     "name": "Jason",
+    "hasShop": true,
     "damage" : 20,
     "id" : 1,
     "speed": 100,
@@ -17,19 +38,21 @@
     "WalkUpAnimationPath": "NPC/Jason/JasonUpWalk",
     "WalkDownAnimationPath": "NPC/Jason/JasonDownWalk",
     "IdlePath": "NPC/Jason/JasonIdle",
-    "shopItems": 
+    "shopItemsID": 
     [
-         1
+         1, 1, 2
     ]
   },
+  
   {
-    "name": "Shimazu",
+    "name": "Mike",
+    "hasShop": false,
     "damage" : 20,
-    "id" : 2,
+    "id" : 3,
     "speed": 100,
     "hitboxWidth": 64,
     "hitboxHeight": 64,
-    "spawnX": 5000,
+    "spawnX": 4000,
     "spawnY": 4000,
     "frameCount": 4,
     "frameTime": 0.28,

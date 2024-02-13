@@ -3,7 +3,6 @@ using MathL;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Audio;
-using ButtonState = Microsoft.Xna.Framework.Input.ButtonState;
 using TermPaper.Class.Font;
 
 namespace Game1.Class.Entity
@@ -28,7 +27,7 @@ namespace Game1.Class.Entity
             _speed = 200;
             _damage = 20;
             _attackCooldown = 1000;
-            _hitBox = new RectangleF(4600,3000 , 100, 100);
+            _hitBox = new RectangleF(6600,3000 , 100, 100);
             animation = new Animation(EnemySprite, new Vector2(16, 16), 4, 0.3f);
         }
         public override void Update()
