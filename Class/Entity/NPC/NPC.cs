@@ -66,6 +66,8 @@ namespace Game1.Class.Entity
         public string WalkDownAnimationPath { get; set; }
         public string IdlePath { get; set; }
 
+        public List<int> shopItemsID { get; set; }
+
         public Vector2 previousDir;
         public Vector2 directionVector;
         public Vector2 spawnPoint = new Vector2(4000, 3000);

@@ -1,4 +1,5 @@
 ﻿using System;
+using Data;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Movement;
@@ -86,18 +87,60 @@ public class BuyInterface
             // Boots slot
             Globals.spriteBatch.Draw(Globals.Content.Load<Texture2D>("HUD/inventorySlot"), new Rectangle(horizontalCell * 28, verticalCell * 20, 100,100 ), Color.Yellow);
             
-            for (int i = 1; i < 6; i++)
-            {
-                for (int j = 1; j < 3; j++)
-                {
-                    Globals.spriteBatch.Draw(Globals.Content.Load<Texture2D>("HUD/inventorySlot"), new Rectangle(horizontalCell * i * 3, verticalCell * j * 10, 150,150 ), Color.Yellow);
-                }
-            }
+            // for (int i = 1; i < 6; i++)
+            // {
+            //     for (int j = 1; j < 3; j++)
+            //     {
+            //         Globals.spriteBatch.Draw(Globals.Content.Load<Texture2D>("HUD/inventorySlot"), new Rectangle(horizontalCell * i * 3, verticalCell * j * 10, 150,150 ), Color.Yellow);
+            //     }
+            // }
             // TODO: Items Slot Row 1
-            
-            
+            // for (int i = 0; i < npc.shopItemsID.Count/2; i++)
+            // {
+            //         Items.GetItemById(npc.shopItemsID[i]).Draw(new Rectangle(i*horizontalCell * 3 + 4 * horizontalCell, 11 * verticalCell, 65, 65));
+            // }
+            // for (int i = npc.shopItemsID.Count/2 ; i < npc.shopItemsID.Count; i++)
+            // {
+            //     Items.GetItemById(npc.shopItemsID[i]).Draw(new Rectangle(i*horizontalCell - 4 * horizontalCell , 12 * verticalCell, 50, 50));
+            // }
             // TODO: Items Slot Row 2
+            
+            Globals.spriteBatch.Draw(Globals.Content.Load<Texture2D>("HUD/inventorySlot"), new Rectangle(horizontalCell * 1 * 3, verticalCell * 1 * 10, 150,150 ), null,Color.White, 0f, new Vector2(16, 16), SpriteEffects.None, 1);
+            Globals.spriteBatch.Draw(Globals.Content.Load<Texture2D>("HUD/inventorySlot"), new Rectangle(horizontalCell * 2 * 3, verticalCell * 1 * 10, 150,150 ), null,Color.White, 0f, new Vector2(16, 16), SpriteEffects.None, 1);
+            Globals.spriteBatch.Draw(Globals.Content.Load<Texture2D>("HUD/inventorySlot"), new Rectangle(horizontalCell * 3 * 3, verticalCell * 1 * 10, 150,150 ), null,Color.White, 0f, new Vector2(16, 16), SpriteEffects.None, 1);
+            Globals.spriteBatch.Draw(Globals.Content.Load<Texture2D>("HUD/inventorySlot"), new Rectangle(horizontalCell * 4 * 3, verticalCell * 1 * 10, 150,150 ), null,Color.White, 0f, new Vector2(16, 16), SpriteEffects.None, 1);
+            Globals.spriteBatch.Draw(Globals.Content.Load<Texture2D>("HUD/inventorySlot"), new Rectangle(horizontalCell * 5 * 3, verticalCell * 1 * 10, 150,150 ), null,Color.White, 0f, new Vector2(16, 16), SpriteEffects.None, 1);
+            Globals.spriteBatch.Draw(Globals.Content.Load<Texture2D>("HUD/inventorySlot"), new Rectangle(horizontalCell * 1 * 3, verticalCell * 2 * 10, 150,150 ), null,Color.White, 0f, new Vector2(16, 16), SpriteEffects.None, 1);
+            Globals.spriteBatch.Draw(Globals.Content.Load<Texture2D>("HUD/inventorySlot"), new Rectangle(horizontalCell * 2 * 3, verticalCell * 2 * 10, 150,150 ), null,Color.White, 0f, new Vector2(16, 16), SpriteEffects.None, 1);
+            Globals.spriteBatch.Draw(Globals.Content.Load<Texture2D>("HUD/inventorySlot"), new Rectangle(horizontalCell * 3 * 3, verticalCell * 2 * 10, 150,150 ), null,Color.White, 0f, new Vector2(16, 16), SpriteEffects.None, 1);
+            Globals.spriteBatch.Draw(Globals.Content.Load<Texture2D>("HUD/inventorySlot"), new Rectangle(horizontalCell * 4 * 3, verticalCell * 2 * 10, 150,150 ), null,Color.White, 0f, new Vector2(16, 16), SpriteEffects.None, 1);
+            Globals.spriteBatch.Draw(Globals.Content.Load<Texture2D>("HUD/inventorySlot"), new Rectangle(horizontalCell * 5 * 3, verticalCell * 2 * 10, 150,150 ), null,Color.White, 0f, new Vector2(16, 16), SpriteEffects.None, 1);
+
+            // for(int j = 1; j<3;j++)
+            // {
+            //     for (int i = 0; i < npc.shopItemsID.Count; i++)
+            //     {
+            //         if (i < 6)
+            //         {
+            //             Items.GetItemById(npc.shopItemsID[i]).Draw(new Rectangle(horizontalCell * i * 3, verticalCell * 1 * 10, 100,100 ));
+            //         }
+            //         else
+            //         {
+            //             Items.GetItemById(npc.shopItemsID[i]).Draw(new Rectangle(horizontalCell * i-5 * 3, verticalCell * 1 * 10, 100,100 ));
+            //         }
+            //     }
+            // }
+
+            Items.GetItemById(npc.shopItemsID[0]).Draw(new Rectangle(horizontalCell * 1 * 3, verticalCell * 1 * 10, 100,100 ));
+            Items.GetItemById(npc.shopItemsID[1]).Draw(new Rectangle(horizontalCell * 2 * 3, verticalCell * 1 * 10, 100,100 ));
+            Items.GetItemById(npc.shopItemsID[2]).Draw(new Rectangle(horizontalCell * 3 * 3, verticalCell * 1 * 10, 100,100 ));
+            Items.GetItemById(npc.shopItemsID[3]).Draw(new Rectangle(horizontalCell * 4 * 3, verticalCell * 1 * 10, 100,100 ));
+            Items.GetItemById(npc.shopItemsID[4]).Draw(new Rectangle(horizontalCell * 5 * 3, verticalCell * 1 * 10, 100,100 ));
+            Items.GetItemById(npc.shopItemsID[5]).Draw(new Rectangle(horizontalCell * 1 * 3, verticalCell * 2 * 10, 100,100 ));
+            Items.GetItemById(npc.shopItemsID[6]).Draw(new Rectangle(horizontalCell * 2 * 3, verticalCell * 2 * 10, 100,100 ));
+            Items.GetItemById(npc.shopItemsID[7]).Draw(new Rectangle(horizontalCell * 3 * 3, verticalCell * 2 * 10, 100,100 ));
+            Items.GetItemById(npc.shopItemsID[8]).Draw(new Rectangle(horizontalCell * 4 * 3, verticalCell * 2 * 10, 100,100 ));
+            Items.GetItemById(npc.shopItemsID[9]).Draw(new Rectangle(horizontalCell * 5 * 3, verticalCell * 2 * 10, 100,100 ));
         }
-        
     }
 }

@@ -29,11 +29,26 @@ namespace Game1.Class.Item
         public void Sell()
         {
         }
-        public void DrawInInventory(Rectangle _position)
+        public void Draw(Rectangle _position)
+        {
+            _hitbox = new RectangleF(_position.X, _position.Y, _position.Width, _position.Height);
+            Globals.spriteBatch.Draw(_sprite, _position,null, Color.White, 0f, new Vector2(16,16), SpriteEffects.None, 0f);
+        }
+
+        public void DrawTopLeft(Rectangle _position)
         {
             Globals.spriteBatch.Draw(_sprite, _position, Color.White);
         }
+
+        public void UpdateShopLogic()
+        {
+            if (Globals.gameState == State.State.InShop)
+            {
+                
+            }
+        }
         public abstract void Update();
         public abstract void Draw();
+
     }
 }

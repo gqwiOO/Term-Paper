@@ -17,7 +17,8 @@
     "WalkRightAnimationPath": "NPC/Shimazu/ShimazuRightWalk",
     "WalkUpAnimationPath": "NPC/Shimazu/ShimazuUpWalk",
     "WalkDownAnimationPath": "NPC/Shimazu/ShimazuDownWalk",
-    "IdlePath": "NPC/Shimazu/ShimazuIdle"
+    "IdlePath": "NPC/Shimazu/ShimazuIdle",
+    "shopItemsId": []
   },
   {
     "name": "Jason",
@@ -40,28 +41,7 @@
     "IdlePath": "NPC/Jason/JasonIdle",
     "shopItemsID": 
     [
-         1, 1, 2
+         1, 2, 3, 1, 2, 3, 1, 2, 3, 3
     ]
-  },
-  
-  {
-    "name": "Mike",
-    "hasShop": false,
-    "damage" : 20,
-    "id" : 3,
-    "speed": 100,
-    "hitboxWidth": 64,
-    "hitboxHeight": 64,
-    "spawnX": 4000,
-    "spawnY": 4000,
-    "frameCount": 4,
-    "frameTime": 0.28,
-    "animationFrameWidth": 16,
-    "animationFrameHeight": 16,
-    "WalkLeftAnimationPath": "NPC/Shimazu/ShimazuLeftWalk",
-    "WalkRightAnimationPath": "NPC/Shimazu/ShimazuRightWalk",
-    "WalkUpAnimationPath": "NPC/Shimazu/ShimazuUpWalk",
-    "WalkDownAnimationPath": "NPC/Shimazu/ShimazuDownWalk",
-    "IdlePath": "NPC/Shimazu/ShimazuIdle"
   }
 ]

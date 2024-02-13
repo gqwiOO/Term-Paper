@@ -300,11 +300,11 @@ public class Inventory
             {
                 if (i != _currentItem)
                 {
-                    inventory[i].DrawInInventory(new Rectangle(i * 83, 18, 64, 64));
+                    inventory[i].DrawTopLeft(new Rectangle(i * 83 + 2, 18, 64, 60));
                 }
                 else
                 {
-                    inventory[i].DrawInInventory(new Rectangle(i * 83, 23, 64, 64));
+                    inventory[i].DrawTopLeft(new Rectangle(i * 83 +2, 23, 64, 60));
                 }
             }
             // Draw item's amount in inventory 

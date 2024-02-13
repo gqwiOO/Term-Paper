@@ -26,6 +26,7 @@
     <Compile Remove="Class\Invertory.cs" />
     <Compile Remove="Class\Music.cs" />
     <Compile Remove="Content\Jason\**" />
+    <Compile Remove="Class\Item\Armor.cs" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Level\Generating\**" />
