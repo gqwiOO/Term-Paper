@@ -1,3 +1,4 @@
+using System;
 using Game1.Class.Item;
 using MathL;
 using Microsoft.Xna.Framework;
@@ -86,10 +87,10 @@ namespace Game1.Class.Entity
                 if (Globals.player.inventory.getCurrentItem().GetType().Equals(typeof(Weapon)))
                 {
                     Weapon currentWeapon = (Weapon)Globals.player.inventory.getCurrentItem();
-                    if (_hitBox.Intersects(currentWeapon._hitbox) && tookDamageTime > cooldownTookDamage &&
-                        _hitBox.Intersects(currentWeapon._hitbox) && currentWeapon.getACtiveStatus())
+                    SwordVector vector = currentWeapon.getSwordVector();
+                    if (vector.CollisionWithRectangle(_hitBox.X, _hitBox.Y, _hitBox.Width, _hitBox.Height) && currentWeapon.getACtiveStatus() && tookDamageTime > cooldownTookDamage)
                     {
-                        _hp -= 10;
+                        _hp -= 20;
                         tookDamageTime = 0;
                     }
                 }

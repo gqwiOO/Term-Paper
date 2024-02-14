@@ -8,13 +8,21 @@ namespace Game1.Class.Item
 {
     public class Weapon : Item
     {
+        public Weapon()
+        {
+            _hitbox = new RectangleF(0, 0, 100, 100);
+            _swordVector = new SwordVector(141, 0, new Vector2(0, 0));
+        }
         // Json Fields
         public int damage{ get; set; }
         public float cooldown { get; set;}
         public int animationTime { get; set; }
-
+        
         private float _currentCooldown;
-        private SwordVector _swordVector = new SwordVector(15);
+        private SwordHandVector _swordHandVector = new SwordHandVector(15);
+        private SwordVector _swordVector;
+
+        public SwordVector getSwordVector() => _swordVector;
         
         // Can be only Left or Right
         private Entity.Movement _vectorSide;
@@ -39,9 +47,11 @@ namespace Game1.Class.Item
         {
             if (Globals.gameState == State.State.Playing)
             {
-                _swordVector.UpdatePosition();
-                _hitbox = new RectangleF(_swordVector.getSecondPointVector().X, _swordVector.getSecondPointVector().Y,
+                _swordHandVector.UpdatePosition();
+                _hitbox = new RectangleF(_swordHandVector.getSecondPointVector().X, _swordHandVector.getSecondPointVector().Y,
                     100, 100);
+                
+                _swordVector.Update(_swordHandVector.getSecondPointVector());
                 if (_currentCooldown < cooldown)
                 {
                     _currentCooldown += (float)Globals.gameTime.ElapsedGameTime.TotalMilliseconds;
@@ -52,17 +62,21 @@ namespace Game1.Class.Item
                     isActive = true;
                     if (_vectorSide == Entity.Movement.Right)
                     {
-                        _swordVector.RightSideUpdate();
+                        _swordHandVector.RightSideUpdate();
                         _swordAngle += 7;
+                        _swordVector.Rotate((int)_swordAngle- 90);
+
                     }
                     else
                     {
-                        _swordVector.LeftSideUpdate();
+                        _swordVector.Rotate((int)_swordAngle - 90);
+                        _swordHandVector.LeftSideUpdate();
                         _swordAngle -= 7;
                     }
                 }
                 else
                 {
+                    _swordHandVector.Reset();
                     _swordVector.Reset();
                     if (_vectorSide == Entity.Movement.Right) _swordAngle = -100;
                     else _swordAngle = -80;
@@ -76,9 +90,7 @@ namespace Game1.Class.Item
                     _vectorSide = Globals.player.lastStrafeDirection;
                     _currentCooldown = 0f;
                 }
-
-                Console.WriteLine($"X: {_hitbox.Left} Y: {_hitbox.Bottom}");
-                _hitbox.rotateRectangleBottomLeftOrigin(45);
+                
             }
         }
 
@@ -88,7 +100,7 @@ namespace Game1.Class.Item
             {
                 if (isActive)
                 {
-                    _swordVector.Draw();
+                    _swordHandVector.Draw();
                     if (_vectorSide == Entity.Movement.Right)
                     {
                         Globals.spriteBatch.Draw(_sprite, _hitbox.ToRectangle(), null, Color.White,
@@ -102,8 +114,6 @@ namespace Game1.Class.Item
                             new Vector2(0, 0), SpriteEffects.FlipVertically, 0f);
                     }
                 }
-
-                _hitbox.Draw();
             }
         }
     }

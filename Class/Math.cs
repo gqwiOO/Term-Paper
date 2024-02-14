@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Numerics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Game1;
+using Vector2 = Microsoft.Xna.Framework.Vector2;
 
 namespace MathL;
 
@@ -40,7 +42,6 @@ public struct RectangleF
         x3y3 = new Vector2(x + width,y + height);
         x4y4 = new Vector2(x,y + height);
         Angle = 0;
-        this.rotateRectangleBottomLeftOrigin(0);
     }
     
     /// <summary>
@@ -84,58 +85,7 @@ public struct RectangleF
     /// <param name="rec">object the distance to which is calculated</param>
     /// <returns></returns>
     public bool isDistanceYLessZero(RectangleF rec) => rec.Y - Y < 1f;
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="angle"></param>
-    /// <param name="origin">Origin should be one of the vertexes of a rectange</param>
-    public void rotateRectangleBottomLeftOrigin(float angle)
-    {
-        Angle = MathHelper.ToRadians(angle);
-        float cos = (float)Math.Cos(MathHelper.ToRadians(angle));
-        float sin = (float)Math.Sin(MathHelper.ToRadians(angle));
-        Vector2 x1y1_ = new Vector2(Left - Left,Bottom - Top);
-        Vector2 x2y2_ = new Vector2(Right - Left,Bottom - Top);
-        Vector2 x3y3_ = new Vector2(Right - Right,Bottom - Bottom);
-        Vector2 x4y4_ = new Vector2(0,0);
-        x1y1 = new Vector2( x1y1_.X * cos + x1y1_.Y * sin,
-            -x1y1_.X * sin + x1y1_.Y * cos
-            );
-        x2y2 = new Vector2( x2y2_.X * cos + x2y2_.Y * sin,
-            -x2y2_.X * sin + x2y2_.Y * cos
-        );
-        x3y3 = new Vector2( x3y3_.X * cos + x3y3_.Y * sin,
-            -x3y3_.X * sin + x3y3_.Y * cos
-        );
-        x4y4 = new Vector2( x4y4_.X * cos + x4y4_.Y * sin,
-            -x4y4_.X * sin + x4y4_.Y * cos
-        );
-        Console.WriteLine($" X : {x1y1.X}   Y : {(int)x1y1.Y}");
-    }
-
-    private static Texture2D GetTexture(SpriteBatch spriteBatch)
-    {
-        Texture2D _texture = null;
-        if (_texture == null)
-        {
-            _texture = new Texture2D(spriteBatch.GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
-            _texture.SetData(new[] {Color.White});
-        }
-
-        return _texture;
-    }
-    public void Draw()
-    {
-        Globals.spriteBatch.Draw(GetTexture(Globals.spriteBatch), new Vector2(x1y1.X,x1y1.Y),
-            null, Color.Black, Angle, new Vector2(0,0), new Vector2(x2y2.X - x1y1.X, 5f), SpriteEffects.None, 0);
-        // Globals.spriteBatch.Draw(GetTexture(Globals.spriteBatch), new Vector2(x4y4.X,x4y4.Y),
-        //     null, Color.Black, Angle, new Vector2(0,0), new Vector2(x2y2.X - x1y1.X, 5f), SpriteEffects.None, 0);
-         Globals.spriteBatch.Draw(GetTexture(Globals.spriteBatch), new Vector2(x4y4.X,x4y4.Y),
-            null, Color.Black, MathHelper.ToRadians(90), new Vector2(0,0), new Vector2(x2y2.X - x1y1.X, 5f), SpriteEffects.None, 0);
-        // Globals.spriteBatch.Draw(GetTexture(Globals.spriteBatch), new Vector2(Right,Top),
-        //     null, Color.Black, MathHelper.ToRadians(90), new Vector2(0,0), new Vector2(Bottom - Top, 5f), SpriteEffects.None, 0);
-    }
+    
 }
 
 public static class Circle
@@ -150,7 +100,111 @@ public static class Circle
     }
 }
 
-class SwordVector
+public class SwordVector
+{
+    private int startDegree = -90;
+    private int length;
+    private int angle;
+    private Vector2 startPoint;
+    private Vector2 endPoint;
+    public SwordVector(int length, int angle, Vector2 startPoint)
+    {
+        this.startPoint = startPoint;
+        this.endPoint = new Vector2(this.startPoint.X, this.startPoint.Y + length);
+        this.length = length;
+        this.angle = angle;
+    }
+    public void Update(Vector2 pos)
+    {
+        startPoint = pos;
+        this.endPoint = new Vector2(this.startPoint.X, this.startPoint.Y + length);
+    }
+
+    public void Reset()
+    {
+        angle = startDegree;
+        endPoint = new Vector2(this.startPoint.X, this.startPoint.Y - length);
+    }
+
+    public Vector2 getEndPoint()
+    {
+        return new Vector2(endPoint.X - startPoint.X, endPoint.Y - startPoint.Y);
+    }
+
+    public void Rotate(int Angle)
+    {
+        // Convert position end point to 
+        Vector2 endPointConverted = new Vector2(endPoint.X - startPoint.X, endPoint.Y - startPoint.Y);
+        float x = endPointConverted.X; 
+        float y = endPointConverted.Y;
+        endPointConverted.X = x * (float)Math.Cos(MathHelper.ToRadians(Angle)) -
+                              y * (float)Math.Sin(MathHelper.ToRadians(Angle));
+        endPointConverted.Y = x * (float)Math.Sin(MathHelper.ToRadians(Angle)) +
+                              y * (float)Math.Cos(MathHelper.ToRadians(Angle));
+        endPoint.X = endPointConverted.X + startPoint.X;
+        endPoint.Y = endPointConverted.Y + startPoint.Y;
+        angle = Angle;
+    }
+    public void Draw()
+    {
+        Globals.spriteBatch.Draw(GetTexture(Globals.spriteBatch), new Vector2(startPoint.X, startPoint.Y), null,
+            Color.Black, MathHelper.ToRadians(angle), new Vector2(0, 0), new Vector2(length, 5f), SpriteEffects.None,
+            0);
+    }
+
+    public void DrawEndPoint()
+    {
+        Globals.spriteBatch.Draw(Globals.Content.Load<Texture2D>("Debug/blackRectangle"),endPoint,Color.Black);
+    }
+    
+    private static Texture2D GetTexture(SpriteBatch spriteBatch)
+    {
+        Texture2D _texture;
+        _texture = new Texture2D(spriteBatch.GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
+        _texture.SetData(new[] {Color.White});
+        return _texture;
+    }
+    
+    
+    public bool CollisionWithRectangle(float rx, float ry, float rw, float rh) {
+
+        // check if the line has hit any of the rectangle's sides
+        // uses the Line/Line function below
+        bool left =   lineLine(startPoint.X,startPoint.Y,endPoint.X,endPoint.Y, rx,ry,rx, ry+rh);
+        bool right =  lineLine(startPoint.X,startPoint.Y,endPoint.X,endPoint.Y, rx+rw,ry, rx+rw,ry+rh);
+        bool top =    lineLine(startPoint.X,startPoint.Y,endPoint.X,endPoint.Y, rx,ry, rx+rw,ry);
+        bool bottom = lineLine(startPoint.X,startPoint.Y,endPoint.X,endPoint.Y, rx,ry+rh, rx+rw,ry+rh);
+
+        // if ANY of the above are true, the line
+        // has hit the rectangle
+        if (left || right || top || bottom) {
+            return true;
+        }
+        return false;
+    }
+
+    
+    private bool lineLine(float x1, float y1, float x2, float y2, float x3, float y3, float x4, float y4) {
+
+        // calculate the direction of the lines
+        float uA = ((x4-x3)*(y1-y3) - (y4-y3)*(x1-x3)) / ((y4-y3)*(x2-x1) - (x4-x3)*(y2-y1));
+        float uB = ((x2-x1)*(y1-y3) - (y2-y1)*(x1-x3)) / ((y4-y3)*(x2-x1) - (x4-x3)*(y2-y1));
+
+        // if uA and uB are between 0-1, lines are colliding
+        if (uA >= 0 && uA <= 1 && uB >= 0 && uB <= 1) {
+
+            // optionally, draw a circle where the lines meet
+            float intersectionX = x1 + (uA * (x2-x1));
+            float intersectionY = y1 + (uA * (y2-y1));
+
+            return true;
+        }
+        return false;
+    }
+    
+    
+}
+class SwordHandVector
 {
     private Vector2 _pos;
     private float _length;
@@ -158,7 +212,7 @@ class SwordVector
     private float  _leftSideDegree = -270;
     private float  _rightSideDegree = 90;
     private float _currentDegree = -90;
-    public SwordVector(float length)
+    public SwordHandVector(float length)
     {
         _length = length;
     }
