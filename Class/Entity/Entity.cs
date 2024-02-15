@@ -8,7 +8,6 @@ namespace Game1.Class.Entity
         public int _hp;
         public int _damage;
         public int _speed;
-        public Texture2D _sprite;
         public RectangleF _hitBox;
         public bool isDead;
         

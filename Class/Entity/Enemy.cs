@@ -1,4 +1,4 @@
-using System;
+
 using Game1.Class.Item;
 using MathL;
 using Microsoft.Xna.Framework;
@@ -13,6 +13,7 @@ namespace Game1.Class.Entity
         private Animation animation;
         private float _visionRange = 500;
         
+        public Texture2D _sprite;
         // Attack Time
         private int _attackCooldown;
         private int _attackTime;

@@ -13,5 +13,10 @@ public static class Items
     {
         return ItemList.Where(item => item.id == id).First();
     }
+
+    public static int GetIdByItem(Item item)
+    {
+        return ItemList.Where(i => i == item).First().id;
+    }
 }
 

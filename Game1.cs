@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using Data;
 using Game1.Class.Camera;
 using Game1.Class.Entity;
@@ -41,12 +40,10 @@ namespace Game1
         public Enemy _enemy;
         public List<Entity> _entities;
         
-
         public HUD _hud;
         
         public Map map;
         public Song sweden;
-
         
         public Game1()
         {
@@ -84,8 +81,14 @@ namespace Game1
             Cursor.setCursor(0);
             LoadItems();
             LoadEntities();
-            
-            Globals.player = new Player();
+            if (File.Exists(Path.Combine(data.dataclasses.Data.getPlayerSavesPath(), "lastsave.json")))
+            {
+                Globals.player = data.dataclasses.Data.Load();
+            }
+            else
+            {
+                Globals.player = new Player();
+            }
 
             _entities = new List<Entity>()
             {
@@ -140,7 +143,7 @@ namespace Game1
                 },
                 new Button( "Sound", new Vector2(_screenWidth / 2,_screenHeight / 2 - 100))
                 {
-                    _onClick = () => {  },
+                    _onClick = () => {},
                 },
                 new Button( "Back", new Vector2(_screenWidth / 2,_screenHeight / 2))
                 {
@@ -240,7 +243,7 @@ namespace Game1
                 {
                     _onClick = () => 
                     {
-                        // TODO: Save player and world info 
+                        data.dataclasses.Data.Save(Globals.player);
                     }
                 },
                 new Button( "Main menu", new Vector2(_screenWidth / 2, _screenHeight / 2 - 100))
@@ -266,6 +269,10 @@ namespace Game1
 
         protected override void Update(GameTime gameTime)
         {
+            if (!IsActive)
+            {
+                Globals.gameState = State.Pause;
+            }
             Globals.gameTime = gameTime;
             Input.GetKeyboardState();
             Input.GetMouseState();
@@ -329,7 +336,6 @@ namespace Game1
             if (Globals.player.isDead) _restartMenu.Draw();
             
             _mainMenu.Draw();
-            // cursor.Draw();
             Globals.spriteBatch.End();
 
             base.Draw(gameTime);

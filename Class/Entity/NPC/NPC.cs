@@ -1,13 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Numerics;
 using MathL;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
-using MonoGame.Extended.Content;
 using Movement;
-using TermPaper.Class.Cursor;
 using TermPaper.Class.Font;
 using Vector2 = Microsoft.Xna.Framework.Vector2;
 
@@ -195,7 +191,6 @@ namespace Game1.Class.Entity
             if (chooseDir == 4 && hitbox.Y > spawnPoint.Y + walkRadius) return upVector;
             else if (chooseDir == 3 && hitbox.Y < spawnPoint.Y + walkRadius) return downVector;
             
-
             return Vector2.Zero;
         }
         public Movement GetMoveDirection(Vector2 direction)

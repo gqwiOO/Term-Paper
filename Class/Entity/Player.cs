@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using MathL;
 using Menu;
 using Microsoft.Xna.Framework.Graphics;
@@ -12,9 +13,7 @@ namespace Game1.Class.Entity
         public bool _isDead;
         public Inventory inventory;
         public int _balance;
-        public Vector2 Position;
-        public float _stamina;
-        public float _sprintCooldown;
+        private float _stamina;
 
         private Animation downWalk;
         private Animation upWalk;
@@ -38,7 +37,6 @@ namespace Game1.Class.Entity
             inventory = new Inventory();
             _hitBox = new RectangleF(4864, 3220, 64, 64);
             _stamina = 100;
-            _sprintCooldown = 0.1f;
             
             downWalk = new Animation(Globals.Content.Load<Texture2D>("Player/DOWN_WALK"), new Vector2(16, 16), 4, 0.2f);
             upWalk = new Animation(Globals.Content.Load<Texture2D>("Player/UP_WALK"), new Vector2(16, 16), 4, 0.2f);
@@ -46,6 +44,31 @@ namespace Game1.Class.Entity
             rightWalk = new Animation(Globals.Content.Load<Texture2D>("Player/RIGHT_WALK"), new Vector2(16, 16), 4, 0.2f);
             idle = Globals.Content.Load<Texture2D>("Player/IDLE");
         }
+
+        public Player(int balance, Dictionary<int,List<int?>> inventory)
+        {
+            _balance = balance;
+            
+            _hp = _maxHealth;
+            _speed = 300;
+            _damage = 20;
+
+            this.inventory = new Inventory(inventory);
+            _hitBox = new RectangleF(4864, 3220, 64, 64);
+            _stamina = 100;
+            
+            downWalk = new Animation(Globals.Content.Load<Texture2D>("Player/DOWN_WALK"), new Vector2(16, 16), 4, 0.2f);
+            upWalk = new Animation(Globals.Content.Load<Texture2D>("Player/UP_WALK"), new Vector2(16, 16), 4, 0.2f);
+            leftWalk = new Animation(Globals.Content.Load<Texture2D>("Player/LEFT_WALK"), new Vector2(16, 16), 4, 0.2f);
+            rightWalk = new Animation(Globals.Content.Load<Texture2D>("Player/RIGHT_WALK"), new Vector2(16, 16), 4, 0.2f);
+            idle = Globals.Content.Load<Texture2D>("Player/IDLE");
+        }
+
+        public float getStamina()
+        {
+            return _stamina;
+        }
+
         public override void Update()
         {
             if (Globals.gameState == State.State.Playing && !isDead)
@@ -166,6 +189,7 @@ namespace Game1.Class.Entity
             }
             if(inventory.getCurrentItem() != null)inventory.getCurrentItem().Draw();
         }
+        
 
         public void Revive()
         {

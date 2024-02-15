@@ -3,13 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using Game1;
 using Game1.Class;
-using Game1.Class.Entity;
 using Game1.Class.Item;
 using Game1.Class.State;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using Audio;
+using Data;
 using Keyboard = Microsoft.Xna.Framework.Input.Keyboard;
 using TermPaper.Class.Font;
 
@@ -32,6 +31,7 @@ public class HUD
         _fps = new Fps();
     }
 
+    
     public void Update()
     {
         _fps.Update();
@@ -39,12 +39,11 @@ public class HUD
         UpdateStaminaBar();
 
     }
-
-
-
+    
+    
     public void UpdateStaminaBar()
     {
-        float playerStam = Globals.player._stamina;
+        float playerStam = Globals.player.getStamina();
 
         for (int i = 0; i < _stam.Count; i++)
         {
@@ -135,7 +134,6 @@ public class HUD
 
 public class Inventory
 {
-    public Player _player;
     private int _currentItem;
     private Texture2D _inventorySlot = Globals.Content.Load<Texture2D>("HUD/inventorySlot");
     private Texture2D _currentInventorySlot = Globals.Content.Load<Texture2D>("HUD/currentInventorySlot");
@@ -143,23 +141,58 @@ public class Inventory
     private Texture2D _chestPlateFrame = Globals.Content.Load<Texture2D>("HUD/ChestPlateFrame");
     private Texture2D _bootsFrame = Globals.Content.Load<Texture2D>("HUD/BootsFrame");
     private Texture2D _arrowFrame = Globals.Content.Load<Texture2D>("HUD/ArrowFrame");
-    
     public List<Item> inventory = new List<Item>
     {
-        Data.Items.GetItemById(1),
-        Data.Items.GetItemById(2),
-        null,
-        null,
-        null
+        Items.GetItemById(1),
+        Items.GetItemById(2),
+        Items.GetItemById(2),
+        Items.GetItemById(2),
+        Items.GetItemById(2)
     };
-    public List<int?> slotItemAmount = new List<int?>
+    public List<int?> slotItemAmount= new List<int?>
     {
         1,
-        5,
-        null,
-        null,
-        null
+        2,
+        3,
+        4,
+        4
     };
+
+    public Inventory()
+    {
+    }
+    public Inventory(Dictionary<int,List<int?>> inventory)
+    {
+        this.inventory = new List<Item>();
+        this.slotItemAmount = new List<int?>();
+        for (int i = 0; i < 5; i++)
+        {
+            try
+            {
+                if (inventory.Values.ToList()[i][0] != null)
+                {
+                    this.inventory.Add(Items.GetItemById((int)inventory.Values.ToList()[i][0]));
+                }
+                else
+                {
+                    this.inventory.Add(null);
+                }
+                if (inventory.Values.ToList()[i][1] != null)
+                {
+                    this.slotItemAmount.Add((int)inventory.Values.ToList()[i][1]);
+                }
+                else
+                {
+                    this.slotItemAmount.Add(null);
+                }
+            }
+            catch (ArgumentOutOfRangeException)
+            {
+                this.inventory.Add(null);
+                this.slotItemAmount.Add(null);
+            }
+        }
+    }
     
     public void decreaseItemAmountByOne(int index)
     {
@@ -289,22 +322,23 @@ public class Inventory
             // Draw icon for current item in inventory
             if (i != _currentItem)
             {
-                Globals.spriteBatch.Draw(_inventorySlot, new Rectangle(i * 80, 5, 80, 80), Color.White);
+                Globals.spriteBatch.Draw(_inventorySlot, new Rectangle(i * 80 + 110, 110, 80, 80),null, Color.White,0f,new Vector2(40,40),SpriteEffects.None,0f );
             }
             else
             {
-                Globals.spriteBatch.Draw(_currentInventorySlot, new Rectangle(i * 80, 9, 80, 80), Color.White);
+                Globals.spriteBatch.Draw(_currentInventorySlot, new Rectangle(i * 80 + 110, 120, 80, 80),null, Color.White,0f,new Vector2(40,40),SpriteEffects.None,0f );
+
             }
             // Draw icons for items inventory
             if (inventory[i] != null)
             {
                 if (i != _currentItem)
                 {
-                    inventory[i].DrawTopLeft(new Rectangle(i * 83 + 2, 18, 64, 60));
+                    inventory[i].Draw(new Rectangle(i * 80 + 50 , 55, 64, 60));
                 }
                 else
                 {
-                    inventory[i].DrawTopLeft(new Rectangle(i * 83 +2, 23, 64, 60));
+                    inventory[i].Draw(new Rectangle(i * 80 + 50, 65, 64, 60));
                 }
             }
             // Draw item's amount in inventory 
@@ -312,8 +346,21 @@ public class Inventory
             {
                 if (inventory[i]._isStackable)
                 {
-                    Globals.spriteBatch.DrawString(Font.fonts["MainFont-16"], slotItemAmount[i].ToString(),
-                        new Vector2(i * 130, 60), Color.Black);
+                    if (i != _currentItem)
+                    {
+                        Globals.spriteBatch.DrawString(Font.fonts["MainFont-16"], slotItemAmount[i].ToString(),
+                            new Vector2(i * 80 + 80, 85),Color.Black,0f,new Vector2(
+                                Font.fonts["MainFont-16"].MeasureString(slotItemAmount[i].ToString()).X,
+                                Font.fonts["MainFont-16"].MeasureString(slotItemAmount[i].ToString()).Y),1f,SpriteEffects.None,0f);
+                    }
+                    else
+                    {
+                        Globals.spriteBatch.DrawString(Font.fonts["MainFont-16"], slotItemAmount[i].ToString(),
+                            new Vector2(i * 80 + 80, 95),Color.Black,0f,new Vector2(
+                                Font.fonts["MainFont-16"].MeasureString(slotItemAmount[i].ToString()).X,
+                                Font.fonts["MainFont-16"].MeasureString(slotItemAmount[i].ToString()).Y),1f,SpriteEffects.None,0f);
+                    }
+                    
                 }
             }
         }

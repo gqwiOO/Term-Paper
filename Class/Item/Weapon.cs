@@ -1,5 +1,4 @@
-﻿using System;
-using MathL;
+﻿using MathL;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Movement;
@@ -56,7 +55,6 @@ namespace Game1.Class.Item
                 {
                     _currentCooldown += (float)Globals.gameTime.ElapsedGameTime.TotalMilliseconds;
                 }
-
                 if (_currentCooldown < animationTime)
                 {
                     isActive = true;
@@ -83,14 +81,12 @@ namespace Game1.Class.Item
 
                     isActive = false;
                 }
-
                 if (_currentCooldown > cooldown && Input.hasBeenLeftMouseButtonPressed() && !isActive ||
                     isActive && _currentCooldown - animationTime > cooldown)
                 {
                     _vectorSide = Globals.player.lastStrafeDirection;
                     _currentCooldown = 0f;
                 }
-                
             }
         }
 
@@ -100,7 +96,6 @@ namespace Game1.Class.Item
             {
                 if (isActive)
                 {
-                    _swordHandVector.Draw();
                     if (_vectorSide == Entity.Movement.Right)
                     {
                         Globals.spriteBatch.Draw(_sprite, _hitbox.ToRectangle(), null, Color.White,
