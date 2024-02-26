@@ -26,10 +26,10 @@ public class Input
     public static MouseState GetMouseState()
     {
         TopLeftPositionX = -Globals._camera.position.M41 - Game1.Game1._screenWidth / 2;
-        TopLeftPositionY = -Globals._camera.position.M42 -Game1.Game1._screenHeight / 2;
+        TopLeftPositionY = -Globals._camera.position.M42 - Game1.Game1._screenHeight / 2;
         previousMouseState = currentMouseState;
         currentMouseState = Mouse.GetState();
-        
+
         return currentMouseState;
     }
 
@@ -43,7 +43,7 @@ public class Input
     {
         return currentMouseState.LeftButton == ButtonState.Pressed;
     }
-    
+
     public static bool hasBeenRightMouseButtonPressed()
     {
         return currentMouseState.RightButton == ButtonState.Pressed &&
@@ -62,7 +62,7 @@ public class Input
 
     public static bool isMouseInRectangle(RectangleF rec)
     {
-        
+
         float mouseX = TopLeftPositionX + Globals.mouseState.X;
         float mouseY = TopLeftPositionY + Globals.mouseState.Y;
         return mouseX > rec.X && mouseX < rec.X + rec.Width && mouseY > rec.Y && mouseY < rec.Y + rec.Height;

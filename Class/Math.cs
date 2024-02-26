@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Game1;
-using Vector2 = Microsoft.Xna.Framework.Vector2;
 
 namespace MathL;
 

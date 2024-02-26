@@ -15,7 +15,6 @@ namespace Game1.Class.Entity
         public string name { get; set; }
         private Vector2 namePos;
         public int damage { get; set; }
-        public int id { get; set; }
         
         public bool hasShop { get; set; }
         public int speed { get; set; }
@@ -150,6 +149,7 @@ namespace Game1.Class.Entity
                     new Vector2(Font.fonts["MainFont-16"].MeasureString(name).X / 2, Font.fonts["MainFont-16"].MeasureString(name).Y / 2),
                     1, SpriteEffects.None, 0f);
             }
+            DrawHUD();
         }
 
         public void DrawHUD()
@@ -157,6 +157,7 @@ namespace Game1.Class.Entity
             if (isShopOpened)
             {
                 _buyInterface.Draw();
+                Console.WriteLine("dsadsdasd");
             }
         }
         public void LoadAnimation()

@@ -24,7 +24,21 @@
     "restoredHealth" : 100,
     "cooldown" : 30000,
     "spritePath" : "Items/Potion/largePotion"
+  },
+  {
+    "name": "defaultArrow",
+    "itemType": "Ammunition",
+    "id" : 4,
+    "damage" : 20,
+    "lifeSpan": 3,
+    "speed": 2,
+    "spritePath": "Items/Weapon/Bow/Arrow"
+  },
+  {
+    "name": "Bow",
+    "itemType": "Bow",
+    "id": 5,
+    "spritePath": "Items/Weapon/Bow/BowSprite"
   }
-  
 ]
 

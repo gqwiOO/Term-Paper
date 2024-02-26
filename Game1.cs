@@ -36,10 +36,7 @@ namespace Game1
         public Menu.Menu _resolutionMenu;
         public Menu.Menu _restartMenu;
         public Menu.Menu _pauseMenu;
-        
-        public Enemy _enemy;
-        public List<Entity> _entities;
-        
+
         public HUD _hud;
         
         public Map map;
@@ -81,6 +78,8 @@ namespace Game1
             Cursor.setCursor(0);
             LoadItems();
             LoadEntities();
+            
+            Globals.player = new Player();
             if (File.Exists(Path.Combine(data.dataclasses.Data.getPlayerSavesPath(), "lastsave.json")))
             {
                 Globals.player = data.dataclasses.Data.Load();
@@ -89,12 +88,6 @@ namespace Game1
             {
                 Globals.player = new Player();
             }
-
-            _entities = new List<Entity>()
-            {
-                new Enemy(Content.Load<Texture2D>("Enemy/Axolot/AxolotWalk"))
-            };
-            
             _hud = new HUD();
             
             sweden = Content.Load<Song>("Sound/Sweden");
@@ -302,14 +295,13 @@ namespace Game1
             // Gives _mouseState state each frame
             Globals.mouseState = Mouse.GetState(); 
             
-            _entities.ForEach(entity => entity.Update());
             _hud.Update();
             Globals.player.Update();
             if (Globals.player.isDead)
             {
                 _restartMenu.Update();
             }
-            Entities.entities.ForEach(npc => npc.Update());
+            Entities.Update();
             _mainMenu.Update();
             
             Globals._camera.Follow(Globals.player);
@@ -324,17 +316,16 @@ namespace Game1
             
             Globals.spriteBatch.Begin(SpriteSortMode.Deferred, null,SamplerState.PointClamp,transformMatrix: Globals._camera.Transform);
             map.Draw();
-            _entities.ForEach(entity => entity.Draw());
             Globals.player.Draw();
             Entities.entities.ForEach(npc => npc.Draw());
             Globals.spriteBatch.End();
             
             Globals.spriteBatch.Begin(SpriteSortMode.Deferred, null,SamplerState.PointClamp);
             _hud.Draw();
-            Entities.entities.ForEach(npc => npc.DrawHUD());
 
             if (Globals.player.isDead) _restartMenu.Draw();
             
+            Entities.DrawNPCHUD();
             _mainMenu.Draw();
             Globals.spriteBatch.End();
 
@@ -356,6 +347,9 @@ namespace Game1
                     case "Weapon":
                         Items.ItemList.Add(JsonConvert.DeserializeObject<Weapon>(obj.ToString(Formatting.None)));
                         break;
+                    case "Bow":
+                        Items.ItemList.Add(JsonConvert.DeserializeObject<Bow>(obj.ToString(Formatting.None)));
+                        break;
                 }
             }
         }
@@ -364,7 +358,20 @@ namespace Game1
         {
             using StreamReader entReader = new StreamReader(Path.Combine(Globals.project_path + "/data/NPC.json"));
             var json = entReader.ReadToEnd();
-            Entities.entities = JsonConvert.DeserializeObject<List<NPC>>(json);
+            
+            JArray array = JArray.Parse(json);
+            foreach (JObject obj in array.Children<JObject>())
+            {
+                switch (obj.Property("entityType").Value.ToString())
+                {
+                    case "NPC":
+                        Entities.entities.Add(JsonConvert.DeserializeObject<NPC>(obj.ToString(Formatting.None)));
+                        break;
+                    case "Enemy":
+                        Entities.entities.Add(JsonConvert.DeserializeObject<Enemy>(obj.ToString(Formatting.None)));
+                        break;
+                }
+            }
             Entities.LoadAnimation();
         }
     }

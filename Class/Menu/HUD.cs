@@ -8,6 +8,7 @@ using Game1.Class.State;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Movement;
 using Data;
 using Keyboard = Microsoft.Xna.Framework.Input.Keyboard;
 using TermPaper.Class.Font;
@@ -26,21 +27,19 @@ public class HUD
     private Texture2D _fullStam = Globals.Content.Load<Texture2D>("HUD/staminaBar");
     private Texture2D _emptyStam = Globals.Content.Load<Texture2D>("HUD/staminaBarUsed");
 
+    private Animation coinAnimation =
+        new Animation(Globals.Content.Load<Texture2D>("HUD/Coin"), new Vector2(10, 10), 4, 0.28f);
     public HUD()
     {
         _fps = new Fps();
     }
-
-    
     public void Update()
     {
         _fps.Update();
         UpdateHPBar();
         UpdateStaminaBar();
-
+        coinAnimation.Update();
     }
-    
-    
     public void UpdateStaminaBar()
     {
         float playerStam = Globals.player.getStamina();
@@ -70,9 +69,9 @@ public class HUD
              Globals.player.inventory.Draw();
             DrawHPBar();
             DrawStaminaBar();
+            DrawBalance();
         }   
     }
-
     private void DrawStaminaBar()
     {
         for (int i = 0; i < _hp.Count; i++)
@@ -130,6 +129,14 @@ public class HUD
             }
         }
     }
+
+    private void DrawBalance()
+    {
+        Globals.spriteBatch.DrawString(Font.fonts["MainFont-24"], $"{Globals.player._balance}",
+            new Vector2((int)Game1.Game1._screenWidth * 0.97f - Font.fonts["MainFont-24"].MeasureString($"{Globals.player._balance}").X, (int)Game1.Game1._screenHeight * 0.085f) , Color.Black);
+        coinAnimation.Draw(new Rectangle((int)(Game1.Game1._screenWidth * 0.97f), (int)(Game1.Game1._screenHeight * 0.083f), 32,32));
+    }
+    
 }
 
 public class Inventory
@@ -145,7 +152,7 @@ public class Inventory
     {
         Items.GetItemById(1),
         Items.GetItemById(2),
-        Items.GetItemById(2),
+        Items.GetItemById(5),
         Items.GetItemById(2),
         Items.GetItemById(2)
     };
@@ -153,7 +160,7 @@ public class Inventory
     {
         1,
         2,
-        3,
+        1,
         4,
         4
     };
@@ -215,7 +222,6 @@ public class Inventory
         }
         return null;
     }
-
     public Item getCurrentItem()
     {
         return inventory[_currentItem];
@@ -290,18 +296,14 @@ public class Inventory
         {
             _currentItem = 4;
         }
-        
-        if (Keyboard.GetState().IsKeyDown(Keys.G) && _currentItem != null)
-        {
-            dropItem(_currentItem);
-        }
-        if (Movement.Input.hasBeenPressed(Keys.H))
+        if (Input.hasBeenPressed(Keys.H))
         {
             for (int i = 0; i < inventory.Count; i++)
             {
                 if (inventory[i] is Potion)
                 {
                     inventory[i].Use();
+                    break;
                 }
             }
         }

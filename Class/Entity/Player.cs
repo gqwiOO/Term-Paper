@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using MathL;
 using Menu;
@@ -5,10 +6,12 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 using Audio;
+using Game1.Class.Item;
+using Movement;
 
 namespace Game1.Class.Entity
 {
-    public class Player: Entity 
+    public class Player: Entity
     {
         public bool _isDead;
         public Inventory inventory;
@@ -21,6 +24,7 @@ namespace Game1.Class.Entity
         private Animation rightWalk;
         private Texture2D idle;
         private Movement direction;
+        public Ammunition arrow = new Ammunition();
 
         private int _maxHealth = 200;
         
@@ -37,6 +41,7 @@ namespace Game1.Class.Entity
             inventory = new Inventory();
             _hitBox = new RectangleF(4864, 3220, 64, 64);
             _stamina = 100;
+            _balance = 0;
             
             downWalk = new Animation(Globals.Content.Load<Texture2D>("Player/DOWN_WALK"), new Vector2(16, 16), 4, 0.2f);
             upWalk = new Animation(Globals.Content.Load<Texture2D>("Player/UP_WALK"), new Vector2(16, 16), 4, 0.2f);
@@ -78,6 +83,7 @@ namespace Game1.Class.Entity
                     isDead = true;
                 }
                 UpdateMovement();
+                arrow.Update();
             }
             inventory.Update();
         }
@@ -171,8 +177,7 @@ namespace Game1.Class.Entity
             {
                 if (_stamina < 100f)
                 {
-                    _stamina += 30f * (float)Globals.gameTime.ElapsedGameTime.TotalSeconds;
-
+                    _stamina += 20f * (float)Globals.gameTime.ElapsedGameTime.TotalSeconds;
                 }
             }
         }
@@ -186,10 +191,13 @@ namespace Game1.Class.Entity
                 else if(direction == Movement.Left)leftWalk.Draw(this._hitBox.ToRectangle());
                 else if(direction == Movement.Right)rightWalk.Draw(this._hitBox.ToRectangle());
                 else if (direction == Movement.Idle) Globals.spriteBatch.Draw(idle, _hitBox.ToRectangle(), Color.White);
+                if (Globals.gameState == State.State.Playing)
+                {
+                    arrow.Draw();
+                }
             }
             if(inventory.getCurrentItem() != null)inventory.getCurrentItem().Draw();
         }
-        
 
         public void Revive()
         {

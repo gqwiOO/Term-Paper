@@ -2,6 +2,7 @@
   {
     "name": "Shimazu",
     "hasShop": false,
+    "entityType": "NPC",
     "damage" : 20,
     "id" : 2,
     "speed": 100,
@@ -23,6 +24,7 @@
   {
     "name": "Jason",
     "hasShop": true,
+    "entityType": "NPC",
     "damage" : 20,
     "id" : 1,
     "speed": 100,
@@ -43,5 +45,24 @@
     [
          1, 2, 3, 1, 2, 3, 1, 2, 3, 3
     ]
+  },
+  {
+    "name": "Skeleton",
+    "entityType": "Enemy",
+    "damage" : 20,
+    "id" : 3,
+    "speed": 125,
+    "hitboxWidth": 70,
+    "hitboxHeight": 70,
+    "spawnX": 3000,
+    "spawnY": 3000,
+    "frameCount": 4,
+    "frameTime": 0.28,
+    "animationFrameWidth": 14,
+    "animationFrameHeight": 14,
+    "WalkLeftAnimationPath": "Enemy/Skeleton/SkeletonLeftWalk",
+    "WalkRightAnimationPath": "Enemy/Skeleton/SkeletonRightWalk",
+    "WalkUpAnimationPath": "Enemy/Skeleton/SkeletonUpWalk",
+    "WalkDownAnimationPath": "Enemy/Skeleton/SkeletonDownWalk"
   }
 ]

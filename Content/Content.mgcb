@@ -62,6 +62,54 @@
 /processorParam:TextureFormat=Color
 /build:Enemy/Axolot/AxolotWalk.png
 
+#begin Enemy/Skeleton/SkeletonDownWalk.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Enemy/Skeleton/SkeletonDownWalk.png
+
+#begin Enemy/Skeleton/SkeletonLeftWalk.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Enemy/Skeleton/SkeletonLeftWalk.png
+
+#begin Enemy/Skeleton/SkeletonRightWalk.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Enemy/Skeleton/SkeletonRightWalk.png
+
+#begin Enemy/Skeleton/SkeletonUpWalk.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Enemy/Skeleton/SkeletonUpWalk.png
+
 #begin Fonts/MainFont-16.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
@@ -111,6 +159,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:HUD/ChestPlateFrame.png
+
+#begin HUD/Coin.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:HUD/Coin.png
 
 #begin HUD/currentInventorySlot.png
 /importer:TextureImporter
@@ -172,6 +232,18 @@
 /processorParam:TextureFormat=Color
 /build:HUD/staminaBarUsed.png
 
+#begin Items/Potion/ArrowSprite.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Items/Potion/ArrowSprite.png
+
 #begin Items/Potion/HealingPotion.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -220,6 +292,18 @@
 /processorParam:TextureFormat=Color
 /build:Items/Sword.png
 
+#begin Items/Weapon/ArrowSprite.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Items/Weapon/ArrowSprite.png
+
 #begin Items/Weapon/Bow/Arrow.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -231,6 +315,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:Items/Weapon/Bow/Arrow.png
+
+#begin Items/Weapon/Bow/BowSprite.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:Items/Weapon/Bow/BowSprite.png
 
 #begin Items/Weapon/Sword/Sword.png
 /importer:TextureImporter
