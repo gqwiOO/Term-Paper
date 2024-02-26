@@ -15,9 +15,9 @@ public struct RectangleF
     public float Angle;
     
     public Vector2 x1y1;
-    public Vector2 x2y2 = new Vector2(0,0);
-    public Vector2 x3y3 = new Vector2(0,0);
-    public Vector2 x4y4 = new Vector2(0,0);
+    public Vector2 x2y2;
+    public Vector2 x3y3;
+    public Vector2 x4y4;
     public float Left => this.X;
     public float Right => this.X + this.Width;
     public float Top => this.Y;
@@ -42,6 +42,7 @@ public struct RectangleF
         Angle = 0;
     }
     
+    
     /// <summary>
     /// Works only for no rotated rectangles
     /// </summary>
@@ -51,6 +52,8 @@ public struct RectangleF
     {
         return value.Left < this.Right && this.Left < value.Right && value.Top < this.Bottom && this.Top < value.Bottom;
     }
+    
+    
     public float getDistance(RectangleF rec)
     {
         return (float)Math.Abs(Math.Pow(Math.Pow(rec.X - X, 2) + Math.Pow(rec.Y - Y, 2), 0.5f));
@@ -83,7 +86,6 @@ public struct RectangleF
     /// <param name="rec">object the distance to which is calculated</param>
     /// <returns></returns>
     public bool isDistanceYLessZero(RectangleF rec) => rec.Y - Y < 1f;
-    
 }
 
 public static class Circle
@@ -112,23 +114,28 @@ public class SwordVector
         this.length = length;
         this.angle = angle;
     }
+    
+    
     public void Update(Vector2 pos)
     {
         startPoint = pos;
         this.endPoint = new Vector2(this.startPoint.X, this.startPoint.Y + length);
     }
 
+    
     public void Reset()
     {
         angle = startDegree;
         endPoint = new Vector2(this.startPoint.X, this.startPoint.Y - length);
     }
 
+    
     public Vector2 getEndPoint()
     {
         return new Vector2(endPoint.X - startPoint.X, endPoint.Y - startPoint.Y);
     }
 
+    
     public void Rotate(int Angle)
     {
         // Convert position end point to 
@@ -199,8 +206,6 @@ public class SwordVector
         }
         return false;
     }
-    
-    
 }
 class SwordHandVector
 {
@@ -214,11 +219,16 @@ class SwordHandVector
     {
         _length = length;
     }
+    
+    
     public float Thickness => 10f;
+    
     public void UpdatePosition()
     {
         _pos = Globals.player._hitBox.Center;
     }
+    
+    
     public void RightSideUpdate()
     {
         _currentDegree = _currentDegree % 360;
@@ -227,6 +237,8 @@ class SwordHandVector
             _currentDegree += 5;
         }
     }
+    
+    
     public void LeftSideUpdate()
     {
         if (_currentDegree > _leftSideDegree)
@@ -239,12 +251,14 @@ class SwordHandVector
         _currentDegree = _startDegree;
     }
 
+    
     public Vector2 getSecondPointVector()
     {
         float a = (float)Math.Sin(-MathHelper.ToRadians(_currentDegree)) * _length;
         float b = (float)Math.Cos(-MathHelper.ToRadians(_currentDegree)) * _length;
         return new Vector2(_pos.X + b, _pos.Y - a);
     }
+    
     
     public void Draw()
     {
@@ -254,3 +268,25 @@ class SwordHandVector
             new Vector2(0,0), SpriteEffects.None, 0f);
     }
 }
+
+
+public static class MathL
+{
+    /// <summary>
+    /// Vector where X and Y is a position on unit circle as a direction of arrow
+    /// </summary>
+    public static Vector2 GetUnitVector2Mouse()
+    {
+        // Center of screen
+        Vector2 center = new Vector2(Game1.Game1._screenWidth / 2, Game1.Game1._screenHeight / 2);
+        
+        // Mouse pos with respect to center
+        Vector2 r = new Vector2(Globals.mouseState.X - center.X, Globals.mouseState.Y - center.Y);
+        
+        //Length of vector
+        float length = (float)Math.Sqrt(r.X * r.X + r.Y * r.Y);
+        
+        return new Vector2(r.X * 1 / length, r.Y * 1 / length);
+    }
+}
+

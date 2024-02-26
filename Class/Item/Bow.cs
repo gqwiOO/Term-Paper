@@ -1,7 +1,7 @@
-using MathL;
-using Microsoft.Xna.Framework;
+using System;
 using Microsoft.Xna.Framework.Graphics;
 using Movement;
+using SharpDX;
 
 namespace Game1.Class.Item;
 
@@ -12,16 +12,17 @@ public class Bow: Item
         public float cooldown { get; set;}
         public int animationTime { get; set; }
 
-        private float _currentCooldown;
-
+        private int _arrowFlyingDuration = 5000;
+        private int _timer = 0;
+        
         private bool isActive;
+
+        private Arrow arrow;
         public bool getACtiveStatus() => isActive;
-        private Ammunition ammunition;
-        private int _timer = 3000;
-        public int LifeSpan = 3000;
         public override void Use()
         {
         }
+        
         public string spritePath
         {
             set
@@ -30,27 +31,36 @@ public class Bow: Item
             }
         }
 
+        
         public override void Update()
         {
             if (Globals.gameState == State.State.Playing)
             {
-                ammunition = Globals.player.arrow;
-                _timer += (int)Globals.gameTime.ElapsedGameTime.TotalMilliseconds;
-        
-                if (_timer > LifeSpan) ammunition.IsRemoved = true;
-
-                if (Input.hasBeenLeftMouseButtonPressed() && _timer > LifeSpan)
+                if (Input.hasBeenLeftMouseButtonPressed())
                 {
-                    ammunition.Position.X = (int)Globals.player._hitBox.X;
-                    ammunition.Position.Y = (int)Globals.player._hitBox.Y;
-                    ammunition.IsRemoved = false;
-                    _timer = 0;
+                    arrow = new Arrow(MathL.MathL.GetUnitVector2Mouse());
+                }
+
+                if (arrow != null)
+                {
+                    _timer += (int)Globals.gameTime.ElapsedGameTime.TotalMilliseconds;
+                    arrow.MoveArrow();
+                    if (_timer > _arrowFlyingDuration)
+                    {
+                        _timer = 0;
+                        arrow = null;
+                    }
                 }
             }
         }
 
+        
         public override void Draw()
         {
-
+            if (arrow != null)
+            {
+                arrow.Draw();
+                Debug.Debug.DrawInfo(_timer.ToString(), 100);
+            }
         }
 }

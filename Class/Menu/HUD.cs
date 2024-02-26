@@ -311,7 +311,7 @@ public class Inventory
 
     private static void UpdateInventory()
     {
-        if (Movement.Input.hasBeenPressed(Keys.E))
+        if (Input.hasBeenPressed(Keys.E))
         {
             Globals.gameState = State.Playing;
         }

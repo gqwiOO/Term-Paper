@@ -232,18 +232,6 @@
 /processorParam:TextureFormat=Color
 /build:HUD/staminaBarUsed.png
 
-#begin Items/Potion/ArrowSprite.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:Items/Potion/ArrowSprite.png
-
 #begin Items/Potion/HealingPotion.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -292,7 +280,7 @@
 /processorParam:TextureFormat=Color
 /build:Items/Sword.png
 
-#begin Items/Weapon/ArrowSprite.png
+#begin Items/Weapon/Bow/Arrow2.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -302,7 +290,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Items/Weapon/ArrowSprite.png
+/build:Items/Weapon/Bow/Arrow2.png
 
 #begin Items/Weapon/Bow/Arrow.png
 /importer:TextureImporter
