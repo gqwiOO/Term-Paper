@@ -34,9 +34,9 @@ public class Bow: Item
         
         public override void Update()
         {
-            if (Globals.gameState == State.State.Playing && Globals.player.inventory.getCurrentItemIndex() == Globals.player.inventory.getBowIndex())
+            if (Globals.gameState == State.State.Playing )
             {
-                if (Input.hasBeenLeftMouseButtonPressed() && arrow == null)
+                if (Input.hasBeenLeftMouseButtonPressed() && arrow == null&& Globals.player.inventory.getCurrentItemIndex() == Globals.player.inventory.getBowIndex())
                 {
                     arrow = new Arrow(MathL.MathL.GetUnitVector2Mouse());
                 }
