@@ -50,6 +50,7 @@
     "name": "Skeleton",
     "entityType": "Enemy",
     "damage" : 20,
+    "hp":100, 
     "id" : 3,
     "speed": 125,
     "hitboxWidth": 70,
