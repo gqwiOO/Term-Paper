@@ -24,7 +24,6 @@ namespace Game1.Class.Entity
         private Animation rightWalk;
         private Texture2D idle;
         private Movement direction;
-        public Ammunition arrow = new Ammunition();
 
         private int _maxHealth = 200;
         
@@ -83,7 +82,6 @@ namespace Game1.Class.Entity
                     isDead = true;
                 }
                 UpdateMovement();
-                arrow.Update();
             }
             inventory.Update();
         }
@@ -191,12 +189,13 @@ namespace Game1.Class.Entity
                 else if(direction == Movement.Left)leftWalk.Draw(this._hitBox.ToRectangle());
                 else if(direction == Movement.Right)rightWalk.Draw(this._hitBox.ToRectangle());
                 else if (direction == Movement.Idle) Globals.spriteBatch.Draw(idle, _hitBox.ToRectangle(), Color.White);
-                if (Globals.gameState == State.State.Playing)
-                {
-                    arrow.Draw();
-                }
             }
-            if(inventory.getCurrentItem() != null)inventory.getCurrentItem().Draw();
+
+            if (inventory.getBowIndex() != inventory.getCurrentItemIndex())
+            {
+                inventory.inventory[(int)inventory.getBowIndex()].Draw();
+            }
+            if (inventory.getCurrentItem() != null) inventory.getCurrentItem().Draw();
         }
 
         public void Revive()

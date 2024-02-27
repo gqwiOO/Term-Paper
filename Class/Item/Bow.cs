@@ -12,7 +12,7 @@ public class Bow: Item
         public float cooldown { get; set;}
         public int animationTime { get; set; }
 
-        private int _arrowFlyingDuration = 5000;
+        private int _arrowFlyingDuration = 2000;
         private int _timer = 0;
         
         private bool isActive;
@@ -36,7 +36,7 @@ public class Bow: Item
         {
             if (Globals.gameState == State.State.Playing)
             {
-                if (Input.hasBeenLeftMouseButtonPressed())
+                if (Input.hasBeenLeftMouseButtonPressed() && arrow == null)
                 {
                     arrow = new Arrow(MathL.MathL.GetUnitVector2Mouse());
                 }
@@ -45,6 +45,8 @@ public class Bow: Item
                 {
                     _timer += (int)Globals.gameTime.ElapsedGameTime.TotalMilliseconds;
                     arrow.MoveArrow();
+                    if (arrow.IntersectsEnemy()) arrow = null;
+                    
                     if (_timer > _arrowFlyingDuration)
                     {
                         _timer = 0;

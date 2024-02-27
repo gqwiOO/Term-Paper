@@ -200,6 +200,11 @@ public class Inventory
             }
         }
     }
+
+    public int getCurrentItemIndex()
+    {
+        return _currentItem;
+    }
     
     public void decreaseItemAmountByOne(int index)
     {
@@ -218,6 +223,17 @@ public class Inventory
             if (inventory[i] != null)
             {
                 if (inventory[i].GetType().Equals(typeof(Potion))) return i;
+            }
+        }
+        return null;
+    }
+    public int? getBowIndex()
+    {
+        for (int i = 0; i < inventory.Count; i++)
+        {
+            if (inventory[i] != null)
+            {
+                if (inventory[i].GetType().Equals(typeof(Bow))) return i;
             }
         }
         return null;
@@ -267,6 +283,10 @@ public class Inventory
             {
                 Globals.gameState = State.Inventory;
             }
+            if (getBowIndex() != getCurrentItemIndex())
+            {
+                inventory[(int)getBowIndex()].Update();
+            }
         }
         else if (Globals.gameState == State.Inventory && !Globals.player.isDead)
         {
@@ -309,7 +329,7 @@ public class Inventory
         }
     }
 
-    private static void UpdateInventory()
+    private void UpdateInventory()
     {
         if (Input.hasBeenPressed(Keys.E))
         {

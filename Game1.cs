@@ -356,7 +356,7 @@ namespace Game1
 
         public void LoadEntities()
         {
-            using StreamReader entReader = new StreamReader(Path.Combine(Globals.project_path + "/data/NPC.json"));
+            using StreamReader entReader = new StreamReader(Path.Combine(Globals.project_path + "/data/Entity.json"));
             var json = entReader.ReadToEnd();
             
             JArray array = JArray.Parse(json);
