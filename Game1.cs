@@ -345,7 +345,7 @@ namespace Game1
                         Items.ItemList.Add(JsonConvert.DeserializeObject<Potion>(obj.ToString(Formatting.None)));
                         break;
                     case "Weapon":
-                        Items.ItemList.Add(JsonConvert.DeserializeObject<Weapon>(obj.ToString(Formatting.None)));
+                        Items.ItemList.Add(JsonConvert.DeserializeObject<Sword>(obj.ToString(Formatting.None)));
                         break;
                     case "Bow":
                         Items.ItemList.Add(JsonConvert.DeserializeObject<Bow>(obj.ToString(Formatting.None)));

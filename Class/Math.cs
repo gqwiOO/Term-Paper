@@ -23,6 +23,9 @@ public struct RectangleF
     public float Top => this.Y;
     public float Bottom => this.Y + this.Height;
     public Vector2 Center => new Vector2(this.X + this.Width / 2, this.Y + this.Height / 2);
+
+    public RectangleF CenterRec =>
+        new RectangleF(this.X + this.Width / 2, this.Y + this.Height / 2, this.Width, this.Height);
     public Vector2 BottomLeft => new Vector2(this.X, this.Y + this.Height);
     
     public Rectangle ToRectangle() => new Rectangle((int)this.X, (int)this.Y, (int)this.Width, (int)this.Height);
@@ -287,6 +290,11 @@ public static class MathL
         float length = (float)Math.Sqrt(r.X * r.X + r.Y * r.Y);
         
         return new Vector2(r.X * 1 / length, r.Y * 1 / length);
+    }
+
+    public static Vector2 TransformWithRespectToPlayerPos(Vector2 vector)
+    {
+        return new Vector2(vector.X - Globals.player._hitBox.X,vector.Y - Globals.player._hitBox.Y);
     }
 }
 

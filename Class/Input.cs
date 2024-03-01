@@ -74,4 +74,11 @@ public class Input
         float mouseY = TopLeftPositionY + Globals.mouseState.Y;
         return mouseX > rec.X && mouseX < rec.X + rec.Width && mouseY > rec.Y && mouseY < rec.Y + rec.Height;
     }
+
+    public static Vector2 GetAbsoluteMousePos()
+    {
+        float mouseX = TopLeftPositionX + Globals.mouseState.X;
+        float mouseY = TopLeftPositionY + Globals.mouseState.Y;
+        return new Vector2(mouseX, mouseY);
+    }
 }

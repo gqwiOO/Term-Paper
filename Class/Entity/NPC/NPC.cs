@@ -157,7 +157,6 @@ namespace Game1.Class.Entity
             if (isShopOpened)
             {
                 _buyInterface.Draw();
-                Console.WriteLine("dsadsdasd");
             }
         }
         public void LoadAnimation()

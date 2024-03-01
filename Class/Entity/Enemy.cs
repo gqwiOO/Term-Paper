@@ -140,19 +140,6 @@ namespace Game1.Class.Entity
             {
                 canBeDamaged = true;
             }
-            if (Globals.player.inventory.getCurrentItem() != null)
-            {
-                if (Globals.player.inventory.getCurrentItem().GetType().Equals(typeof(Weapon)))
-                {
-                    Weapon currentWeapon = (Weapon)Globals.player.inventory.getCurrentItem();
-                    SwordVector vector = currentWeapon.getSwordVector();
-
-                    if (vector.CollisionWithRectangle(_hitBox.X, _hitBox.Y, _hitBox.Width, _hitBox.Height) && currentWeapon.getACtiveStatus() && _takeDamageTimer > cooldownTookDamage)
-                    {
-                        TakeDamage(20);
-                    }
-                }
-            }
         }
 
         public void TakeDamage(int damage)
@@ -163,7 +150,7 @@ namespace Game1.Class.Entity
         }
         public override void Draw()
         {
-            if (Globals.gameState == State.State.Playing || Globals.gameState == State.State.Inventory)
+            if (Globals.gameState == State.State.Playing || Globals.gameState == State.State.Inventory && !isDead)
             {
                 DrawHP();
                 switch (direction)

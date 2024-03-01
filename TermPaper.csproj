@@ -27,10 +27,12 @@
     <Compile Remove="Class\Music.cs" />
     <Compile Remove="Content\Jason\**" />
     <Compile Remove="Class\Item\Armor.cs" />
+    <Compile Remove="Class\Decoration\**" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Remove="Level\Generating\**" />
     <EmbeddedResource Remove="Content\Jason\**" />
+    <EmbeddedResource Remove="Class\Decoration\**" />
   </ItemGroup>
   <ItemGroup>
     <None Remove="Level\Generating\**" />
@@ -39,6 +41,7 @@
     </None>
     <None Remove="Content\inventorySlot.png" />
     <None Remove="Content\Jason\**" />
+    <None Remove="Class\Decoration\**" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="C:\Users\zeite\.nuget\packages\monogame.extended\3.8.0\contentFiles\any\netstandard2.0\SharpDX.D3DCompiler.xml" />

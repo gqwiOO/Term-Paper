@@ -23,7 +23,7 @@ namespace Game1.Class.Item
         public void Draw(Rectangle _position)
         {
             _hitbox = new RectangleF(_position.X, _position.Y, _position.Width, _position.Height);
-            Globals.spriteBatch.Draw(_sprite, _position,null, Color.White, 0f, new Vector2(16,16), SpriteEffects.None, 0f);
+            Globals.spriteBatch.Draw(_sprite, _position,null, Color.White, 0f, new Vector2(_sprite.Width/2,_sprite.Height/2), SpriteEffects.None, 0f);
         }
 
         public void DrawTopLeft(Rectangle _position)
