@@ -2,7 +2,6 @@
 using Data;
 using Game1;
 using Game1.Class.State;
-using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -25,6 +24,7 @@ public static class Cursor
             currentCursorIndex = index;
         }
     }
+    
     
     public static void UpdateCursorStyle()
     {

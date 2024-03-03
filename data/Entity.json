@@ -49,7 +49,8 @@
   {
     "name": "Skeleton",
     "entityType": "Enemy",
-    "damage" : 20,
+    "damage" : 40,
+    "attackCooldown": 1000,
     "hp":100, 
     "id" : 3,
     "speed": 125,

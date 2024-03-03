@@ -37,7 +37,7 @@ public class Map
                 {
                     float x = (i % map.Width) * map.TileWidth;
                     float y = (float)Math.Floor(i / (double)map.Width) * map.TileHeight;
-                    if (Math.Abs(Globals.player._hitBox.X - x) < 1200 && Math.Abs(Globals.player._hitBox.Y - y) < 1200)
+                    if (Math.Abs(Globals.Player._hitBox.X - x) < 1200 && Math.Abs(Globals.Player._hitBox.Y - y) < 1200)
                     {
                         int tileFrame = gid - 1;
                         int column = tileFrame % tilesetTilesWide;

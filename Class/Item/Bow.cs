@@ -37,7 +37,7 @@ public class Bow: Item
         if (Globals.gameState == State.State.Playing )
         {
             if (Input.hasBeenLeftMouseButtonPressed() && arrow == null &&
-                Globals.player.inventory.getCurrentItemIndex() == Globals.player.inventory.getBowIndex())
+                Globals.Player.inventory.getCurrentItemIndex() == Globals.Player.inventory.getBowIndex())
             {
                 arrow = new Arrow(MathL.MathL.GetUnitVector2Mouse());
             }

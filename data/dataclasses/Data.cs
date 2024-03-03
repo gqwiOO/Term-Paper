@@ -1,8 +1,5 @@
-﻿
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Text;
 using Data;
 using Game1.Class.Entity;
@@ -21,6 +18,7 @@ public static class Data
         return savesPath;
     }
     
+    
     public static Player Load()
     {
         using StreamReader  fs =  new StreamReader(Path.Combine(savesPath, "lastsave.json"));
@@ -30,9 +28,9 @@ public static class Data
         return obj;
     }
 
+    
     public static void Save(Player player)
     {
-        
         //Get amount list of items without NULL
         Dictionary<int,List<int?>> itemsData = new Dictionary<int, List<int?>>();
         for (int i =0; i < player.inventory.slotItemAmount.Count;i++)
@@ -44,16 +42,13 @@ public static class Data
                 itemsData.Add(i,new List<int?>(){null,null});
             }
         }
-        
-        
         //Get IDs list of items without NULL
         List<int> ids = new List<int>();
         foreach (Item item in player.inventory.inventory)
         {
             if(item != null)ids.Add(item.id);
         }
-        
-        PlayerInfo playerObj = new PlayerInfo(player._balance, itemsData);
+        PlayerInfo playerObj = new PlayerInfo(player.Balance, itemsData);
         
         // Create folder with file and write it
         Directory.CreateDirectory((Path.GetDirectoryName(savesPath)));
@@ -61,6 +56,7 @@ public static class Data
         fs.Write(Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(playerObj)));
     }
 }
+
 
 public class PlayerInfo
 {
@@ -72,5 +68,4 @@ public class PlayerInfo
         this.balance = balance;
         this.inventory = inventory;
     }
-    
 }

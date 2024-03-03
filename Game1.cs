@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using Audio;
 using Data;
 using Game1.Class.Camera;
 using Game1.Class.Entity;
@@ -50,6 +51,7 @@ namespace Game1
         }
         protected override void Initialize()
         {
+            Window.Title = "RPG Game";
             Globals.Content = Content;
             Globals.project_path =  Directory.GetParent(
                 Directory.GetParent(
@@ -75,29 +77,28 @@ namespace Game1
         }
         protected override void LoadContent()
         {
+            Sound.Load();
             Cursor.setCursor(0);
             LoadItems();
             LoadEntities();
             
-            Globals.player = new Player();
+            Globals.Player = new Player();
             if (File.Exists(Path.Combine(data.dataclasses.Data.getPlayerSavesPath(), "lastsave.json")))
             {
-                Globals.player = data.dataclasses.Data.Load();
+                Globals.Player = data.dataclasses.Data.Load();
             }
             else
             {
-                Globals.player = new Player();
+                Globals.Player = new Player();
             }
             _hud = new HUD();
             
-            sweden = Content.Load<Song>("Sound/Sweden");
-                
-            MediaPlayer.Volume = 0.1f;
+            MediaPlayer.Volume = 0.4f;
             SoundEffect.MasterVolume = 0.5f;
             MediaPlayer.IsRepeating = true;
-            MediaPlayer.Play(sweden);
             
-
+            Sound.PlayMusic();
+            
             TmxMap mapObject = new TmxMap("Content/NewMap.tmx");
             map = new Map(mapObject, Content.Load<Texture2D>("Map/" + mapObject.Tilesets[0].Name));
             
@@ -114,7 +115,7 @@ namespace Game1
                     _onClick = () =>
                     {
                         Globals.gameState = State.Playing;
-                        Globals.player.Revive();
+                        Globals.Player.Revive();
                     }
                 },
                 new Button( "Settings", new Vector2(_screenWidth / 2, _screenHeight / 2 - 100))
@@ -210,7 +211,7 @@ namespace Game1
                     _onClick = () =>
                     {
                         Globals.gameState = State.Playing;
-                        Globals.player.Revive();
+                        Globals.Player.Revive();
                     }
                 },
                 new Button( "Main menu", new Vector2(_screenWidth / 2,_screenHeight / 2 - 200))
@@ -218,7 +219,7 @@ namespace Game1
                     _onClick = () => 
                     {
                         Globals.gameState = State.MainMenu;
-                        Globals.player.isDead = false;
+                        Globals.Player.isDead = false;
                     }
                 }
             },State.Playing);
@@ -236,7 +237,7 @@ namespace Game1
                 {
                     _onClick = () => 
                     {
-                        data.dataclasses.Data.Save(Globals.player);
+                        data.dataclasses.Data.Save(Globals.Player);
                     }
                 },
                 new Button( "Main menu", new Vector2(_screenWidth / 2, _screenHeight / 2 - 100))
@@ -262,7 +263,7 @@ namespace Game1
 
         protected override void Update(GameTime gameTime)
         {
-            if (!IsActive)
+            if (!IsActive && Globals.gameState == State.Playing)
             {
                 Globals.gameState = State.Pause;
             }
@@ -296,15 +297,15 @@ namespace Game1
             Globals.mouseState = Mouse.GetState(); 
             
             _hud.Update();
-            Globals.player.Update();
-            if (Globals.player.isDead)
+            Globals.Player.Update();
+            if (Globals.Player.isDead)
             {
                 _restartMenu.Update();
             }
             Entities.Update();
             _mainMenu.Update();
             
-            Globals._camera.Follow(Globals.player);
+            Globals._camera.Follow(Globals.Player);
             Cursor.UpdateCursorStyle();
 
             base.Update(gameTime);
@@ -316,14 +317,14 @@ namespace Game1
             
             Globals.spriteBatch.Begin(SpriteSortMode.Deferred, null,SamplerState.PointClamp,transformMatrix: Globals._camera.Transform);
             map.Draw();
-            Globals.player.Draw();
+            Globals.Player.Draw();
             Entities.entities.ForEach(npc => npc.Draw());
             Globals.spriteBatch.End();
             
             Globals.spriteBatch.Begin(SpriteSortMode.Deferred, null,SamplerState.PointClamp);
             _hud.Draw();
 
-            if (Globals.player.isDead) _restartMenu.Draw();
+            if (Globals.Player.isDead) _restartMenu.Draw();
             
             Entities.DrawNPCHUD();
             _mainMenu.Draw();

@@ -37,8 +37,6 @@ namespace Menu
                 position.Y - _font.MeasureString(_text).Y / 2,
                 _font.MeasureString(_text).X,
                 _font.MeasureString(_text).Y);
-            
-
         }
 
 

@@ -9,7 +9,6 @@ public class Animation
     private Texture2D animationTexture;
     private int _frames;
     private int _frame;
-    private Vector2 res;
     private List<Rectangle> rectangles;
     private readonly float _frameTime;
     private float _frameTimeLeft;
@@ -18,14 +17,14 @@ public class Animation
     {
         this.animationTexture = texture;
         this._frames = count;
-        this.res = res;
         rectangles = new List<Rectangle>();
         this._frameTime = frameTime;
         for (int i = 0; i < _frames; i++)
         {
-            rectangles.Add(new Rectangle(i*(int)this.res.X,0, (int)this.res.X, (int)this.res.Y));
+            rectangles.Add(new Rectangle(i*(int)res.X,0, (int)res.X, (int)res.Y));
         }
     }
+    
     
     public void Update()
     {

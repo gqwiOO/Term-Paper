@@ -228,7 +228,7 @@ class SwordHandVector
     
     public void UpdatePosition()
     {
-        _pos = Globals.player._hitBox.Center;
+        _pos = Globals.Player._hitBox.Center;
     }
     
     
@@ -294,7 +294,7 @@ public static class MathL
 
     public static Vector2 TransformWithRespectToPlayerPos(Vector2 vector)
     {
-        return new Vector2(vector.X - Globals.player._hitBox.X,vector.Y - Globals.player._hitBox.Y);
+        return new Vector2(vector.X - Globals.Player._hitBox.X,vector.Y - Globals.Player._hitBox.Y);
     }
 }
 

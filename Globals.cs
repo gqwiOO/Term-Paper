@@ -11,7 +11,7 @@ namespace Game1;
 
 public static class Globals
 {
-    public static Player player;
+    public static Player Player;
     public static SpriteBatch spriteBatch;
     
     public static GameTime gameTime;

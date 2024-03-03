@@ -6,16 +6,18 @@ namespace Menu;
 public class ButtonFactory
 {
     private List<Button> buttonList;
-
-
+    
     public ButtonFactory(List<Button> buttons)
     {
         buttonList = buttons;
     }
+    
+    
     public void AddButton(Button button)
     {
         this.buttonList.Add(button);
     }
+    
     
     public bool isMouseOnAnyButton()
     {

@@ -20,7 +20,7 @@ public class Arrow
     
     public Arrow(Vector2 direction)
     {
-        _hitbox = Globals.player._hitBox.CenterRec;
+        _hitbox = Globals.Player._hitBox.CenterRec;
         _direction = direction;
         _directionVector = new Vector2(Input.GetAbsoluteMousePos().X - _hitbox.X, Input.GetAbsoluteMousePos().Y - _hitbox.Y);
         _arrowRotation = (float)Math.Atan2(_directionVector.Y, _directionVector.X);

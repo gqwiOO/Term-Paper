@@ -10,12 +10,8 @@ namespace Game1.Class.Entity
 {
     public class Enemy: Entity
     {
-        public string name { get; set; }
-        private Vector2 namePos;
         public int damage { get; set; }
-        
         public int speed { get; set; }
-
         public int hp { get; set; }
         public int hitboxWidth
         {
@@ -55,29 +51,26 @@ namespace Game1.Class.Entity
         public string WalkUpAnimationPath { get; set; }
         public string WalkDownAnimationPath { get; set; }
         
-        public Animation leftWalk;
+        private Vector2 _nameTextPosition;
+        private Animation leftWalk;
         private Animation rightWalk;
         private Animation upWalk;
         private Animation downWalk;
         
         private float _visionRange = 500;
 
-        private Movement direction;
+        private Direction direction;
         
         // Attack Time
-        private int _attackCooldown;
+        public int attackCooldown { get; set; }
         private int _attackTime;
         
         // Getting Damage
         private int _takeDamageTimer;
         private int cooldownTookDamage = 400;
-        public bool canBeDamaged;
-
-        public Enemy()
-        {
-            _damage = 20;
-            _attackCooldown = 1000;
-        }
+        public bool canBeDamaged { get; private set; }
+        public string name { get; set; }
+        
         public override void Update()
         {
             _takeDamageTimer += (int)Globals.gameTime.ElapsedGameTime.TotalMilliseconds;
@@ -93,42 +86,42 @@ namespace Game1.Class.Entity
         }
         private void UpdateFollowPlayer()
         {
-            if (_hitBox.getDistance(Globals.player._hitBox) < _visionRange &&
-                _hitBox.getDistance(Globals.player._hitBox) > 10)
+            if (_hitBox.getDistance(Globals.Player._hitBox) < _visionRange &&
+                _hitBox.getDistance(Globals.Player._hitBox) > 10)
             {
-                if (_hitBox.isDistanceYMoreZero(Globals.player._hitBox))
+                if (_hitBox.isDistanceYMoreZero(Globals.Player._hitBox))
                 {
                     _hitBox.Y += speed * (float)Globals.gameTime.ElapsedGameTime.TotalSeconds;
-                    direction = Movement.Down;
+                    direction = Direction.Down;
                     downWalk.Update();
                 }
-                if (_hitBox.isDistanceYLessZero(Globals.player._hitBox))
+                if (_hitBox.isDistanceYLessZero(Globals.Player._hitBox))
                 {
                     _hitBox.Y -= speed * (float)Globals.gameTime.ElapsedGameTime.TotalSeconds;
-                    direction = Movement.Up;
+                    direction = Direction.Up;
                     upWalk.Update();
                 }
-                if (_hitBox.isDistanceXMoreZero(Globals.player._hitBox))
+                if (_hitBox.isDistanceXMoreZero(Globals.Player._hitBox))
                 {
                     _hitBox.X += speed * (float)Globals.gameTime.ElapsedGameTime.TotalSeconds;
-                    direction = Movement.Right;
+                    direction = Direction.Right;
                     rightWalk.Update();
                 }
-                if(_hitBox.isDistanceXLessZero(Globals.player._hitBox))
+                if(_hitBox.isDistanceXLessZero(Globals.Player._hitBox))
                 {
                     _hitBox.X -= speed * (float)Globals.gameTime.ElapsedGameTime.TotalSeconds;
-                    direction = Movement.Left;
+                    direction = Direction.Left;
                     leftWalk.Update();
                 }
             }
         }
         private void UpdateCollision()
         {
-            if (_hitBox.Intersects(Globals.player._hitBox))
+            if (_hitBox.Intersects(Globals.Player._hitBox))
             {
-                if (_attackTime > _attackCooldown && Globals.player._hp > 0  && !Globals.player.isDead)
+                if (_attackTime > attackCooldown && Globals.Player._hp > 0  && !Globals.Player.isDead)
                 {
-                    Globals.player._hp -= _damage;
+                    Globals.Player._hp -= damage;
                     Sound.PlaySoundEffect("hurt", 1.0f);
                     _attackTime = 0;
                 }
@@ -155,10 +148,10 @@ namespace Game1.Class.Entity
                 DrawHP();
                 switch (direction)
                 {
-                    case Movement.Left: leftWalk.Draw(_hitBox.ToRectangle()); break;
-                    case Movement.Right: rightWalk.Draw(_hitBox.ToRectangle()); break;
-                    case Movement.Up: upWalk.Draw(_hitBox.ToRectangle()); break;
-                    case Movement.Down: downWalk.Draw(_hitBox.ToRectangle()); break;
+                    case Direction.Left: leftWalk.Draw(_hitBox.ToRectangle()); break;
+                    case Direction.Right: rightWalk.Draw(_hitBox.ToRectangle()); break;
+                    case Direction.Up: upWalk.Draw(_hitBox.ToRectangle()); break;
+                    case Direction.Down: downWalk.Draw(_hitBox.ToRectangle()); break;
                 }
             }
         }

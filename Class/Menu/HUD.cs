@@ -10,7 +10,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Movement;
 using Data;
-using Keyboard = Microsoft.Xna.Framework.Input.Keyboard;
 using TermPaper.Class.Font;
 
 namespace Menu;
@@ -42,7 +41,7 @@ public class HUD
     }
     public void UpdateStaminaBar()
     {
-        float playerStam = Globals.player.getStamina();
+        float playerStam = Globals.Player.Stamina;
 
         for (int i = 0; i < _stam.Count; i++)
         {
@@ -62,11 +61,11 @@ public class HUD
     {
         if (Globals.gameState == State.Playing || Globals.gameState == State.Inventory)
         {
-            Globals.spriteBatch.DrawString(Font.fonts["MainFont-24"], $"Pos: {Globals.player._hitBox.Center.X} " +
-                                                                      $" {Globals.player._hitBox.Center.Y}",
+            Globals.spriteBatch.DrawString(Font.fonts["MainFont-24"], $"Pos: {Globals.Player._hitBox.Center.X} " +
+                                                                      $" {Globals.Player._hitBox.Center.Y}",
                 new Vector2(10, 250), Color.Black);
             _fps.DrawFps( new Vector2(10, 150), Color.Black);
-             Globals.player.inventory.Draw();
+             Globals.Player.inventory.Draw();
             DrawHPBar();
             DrawStaminaBar();
             DrawBalance();
@@ -110,7 +109,7 @@ public class HUD
 
     private void UpdateHPBar()
     {
-        int playerHp = Globals.player._hp;
+        int playerHp = Globals.Player._hp;
         for(int i = 0; i < _hp.Count; i++)
         {
             if (playerHp >= 20)
@@ -132,8 +131,8 @@ public class HUD
 
     private void DrawBalance()
     {
-        Globals.spriteBatch.DrawString(Font.fonts["MainFont-24"], $"{Globals.player._balance}",
-            new Vector2((int)Game1.Game1._screenWidth * 0.97f - Font.fonts["MainFont-24"].MeasureString($"{Globals.player._balance}").X, (int)Game1.Game1._screenHeight * 0.085f) , Color.Black);
+        Globals.spriteBatch.DrawString(Font.fonts["MainFont-24"], $"{Globals.Player.Balance}",
+            new Vector2((int)Game1.Game1._screenWidth * 0.97f - Font.fonts["MainFont-24"].MeasureString($"{Globals.Player.Balance}").X, (int)Game1.Game1._screenHeight * 0.085f) , Color.Black);
         coinAnimation.Draw(new Rectangle((int)(Game1.Game1._screenWidth * 0.97f), (int)(Game1.Game1._screenHeight * 0.083f), 32,32));
     }
     
@@ -151,15 +150,15 @@ public class Inventory
     public List<Item> inventory = new List<Item>
     {
         Items.GetItemById(1),
-        Items.GetItemById(2),
+        null,
         Items.GetItemById(5),
         Items.GetItemById(2),
-        Items.GetItemById(2)
+        Items.GetItemById(3)
     };
     public List<int?> slotItemAmount= new List<int?>
     {
         1,
-        2,
+        null,
         1,
         4,
         4
@@ -266,13 +265,13 @@ public class Inventory
     {
         if (inventory[index] != null)
         {
-            Globals.player.Sell(10);
+            Globals.Player.Sell(10);
         }
         inventory[index] = null;
     }
     public void Update()
     {
-        if (Globals.gameState == State.Playing && !Globals.player.isDead)
+        if (Globals.gameState == State.Playing && !Globals.Player.isDead)
         {
             UpdateKeyboardHotBar();
             if (inventory[_currentItem] != null)
@@ -288,7 +287,7 @@ public class Inventory
                 inventory[(int)getBowIndex()].Update();
             }
         }
-        else if (Globals.gameState == State.Inventory && !Globals.player.isDead)
+        else if (Globals.gameState == State.Inventory && !Globals.Player.isDead)
         {
             UpdateInventory();
         }
@@ -296,23 +295,23 @@ public class Inventory
 
     private void UpdateKeyboardHotBar()
     {
-        if (Keyboard.GetState().IsKeyDown(Keys.D1))
+        if (Input.hasBeenPressed(Keys.D1))
         {
             _currentItem = 0;
         }
-        if (Keyboard.GetState().IsKeyDown(Keys.D2))
+        if (Input.hasBeenPressed(Keys.D2))
         {
             _currentItem = 1;
         }
-        if (Keyboard.GetState().IsKeyDown(Keys.D3))
+        if (Input.hasBeenPressed(Keys.D3))
         {
             _currentItem = 2;
         }
-        if (Keyboard.GetState().IsKeyDown(Keys.D4))
+        if (Input.hasBeenPressed(Keys.D4))
         {
             _currentItem = 3;
         }
-        if (Keyboard.GetState().IsKeyDown(Keys.D5))
+        if (Input.hasBeenPressed(Keys.D5))
         {
             _currentItem = 4;
         }

@@ -6,9 +6,7 @@ namespace Game1.Class.Entity
     public abstract class Entity
     {
         public int _hp;
-        public int _damage;
         public int id {get; set;}
-        public int _speed;
         public RectangleF _hitBox;
         public bool isDead;
         
@@ -16,7 +14,7 @@ namespace Game1.Class.Entity
 
         public abstract void Draw();
     }
-    public enum Movement
+    public enum Direction
     {
         Left,
         Right,

@@ -27,7 +27,7 @@ namespace Game1.Class.Item
         public SwordVector getSwordVector() => _swordVector;
         
         // Can be only Left or Right
-        private Entity.Movement _vectorSide;
+        private Entity.Direction _vectorSide;
         
         private bool isActive;
         public bool getACtiveStatus() => isActive;
@@ -62,7 +62,7 @@ namespace Game1.Class.Item
                 if (_currentCooldown < animationTime)
                 {
                     isActive = true;
-                    if (_vectorSide == Entity.Movement.Right)
+                    if (_vectorSide == Entity.Direction.Right)
                     {
                         _swordHandVector.RightSideUpdate();
                         _swordAngle += 7;
@@ -80,7 +80,7 @@ namespace Game1.Class.Item
                 {
                     _swordHandVector.Reset();
                     _swordVector.Reset();
-                    if (_vectorSide == Entity.Movement.Right) _swordAngle = -100;
+                    if (_vectorSide == Entity.Direction.Right) _swordAngle = -100;
                     else _swordAngle = -80;
 
                     isActive = false;
@@ -88,7 +88,7 @@ namespace Game1.Class.Item
                 if (_currentCooldown > cooldown && Input.hasBeenLeftMouseButtonPressed() && !isActive ||
                     isActive && _currentCooldown - animationTime > cooldown)
                 {
-                    _vectorSide = Globals.player.lastStrafeDirection;
+                    _vectorSide = Globals.Player.lastStrafeDirection;
                     _currentCooldown = 0f;
                 }
                 IntersectsEnemy();
@@ -102,7 +102,7 @@ namespace Game1.Class.Item
             {
                 if (isActive)
                 {
-                    if (_vectorSide == Entity.Movement.Right)
+                    if (_vectorSide == Entity.Direction.Right)
                     {
                         Globals.spriteBatch.Draw(_sprite, _hitbox.ToRectangle(), null, Color.White,
                             MathHelper.ToRadians(_swordAngle),
@@ -123,7 +123,7 @@ namespace Game1.Class.Item
         {
             foreach (var enemy in Entities.entities.Where(npc => npc.GetType().Equals(typeof(Enemy))).ToList())
             {
-                Sword currentSword = (Sword)Globals.player.inventory.getCurrentItem();
+                Sword currentSword = (Sword)Globals.Player.inventory.getCurrentItem();
                 SwordVector vector = currentSword.getSwordVector();
                 
                 if (vector.CollisionWithRectangle(enemy._hitBox.X, enemy._hitBox.Y, enemy._hitBox.Width, enemy._hitBox.Height) && currentSword.getACtiveStatus() && ((Enemy)enemy).canBeDamaged )

@@ -12,6 +12,7 @@
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=1F2770D9_002DC594_002D4600_002D8BD1_002D258AAC2CAE38_002Fd_003AClass_002Fd_003AMenu_002Ff_003AMainMenu_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=1F2770D9_002DC594_002D4600_002D8BD1_002D258AAC2CAE38_002Fd_003AClass_002Ff_003AInput_002Ecs/@EntryIndexedValue">ExplicitlyExcluded</s:String>
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=1F2770D9_002DC594_002D4600_002D8BD1_002D258AAC2CAE38_002Fd_003AClass_002Ff_003AKeyboard_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
+	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=1F2770D9_002DC594_002D4600_002D8BD1_002D258AAC2CAE38_002Fd_003Adata_002Ff_003AItems_002Ecs/@EntryIndexedValue">ExplicitlyExcluded</s:String>
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=1F2770D9_002DC594_002D4600_002D8BD1_002D258AAC2CAE38_002Ff_003AGame1_002Ecs/@EntryIndexedValue">ForceIncluded</s:String>
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=1F2770D9_002DC594_002D4600_002D8BD1_002D258AAC2CAE38_002Ff_003AGlobals_002Ecs/@EntryIndexedValue">ExplicitlyExcluded</s:String>
 	<s:String x:Key="/Default/CodeInspection/PencilsConfiguration/Storage/@EntryValue">ThisComputer</s:String>

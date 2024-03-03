@@ -37,16 +37,16 @@ namespace Game1.Class.Item
 
         public override void Use()
         {
-            if (Globals.player._hp < 200 &&  !Globals.player.isDead)
+            if (Globals.Player._hp < 200 &&  !Globals.Player.isDead)
             {
-                Globals.player._hp += restoredHealth;
-                if (Globals.player.inventory.getHealthPotionIndex() != null)
+                Globals.Player._hp += restoredHealth;
+                if (Globals.Player.inventory.getHealthPotionIndex() != null)
                 {
-                    Globals.player.inventory.decreaseItemAmountByOne((int)Globals.player.inventory.getHealthPotionIndex());
+                    Globals.Player.inventory.decreaseItemAmountByOne((int)Globals.Player.inventory.getHealthPotionIndex());
                 }
-                if (Globals.player._hp > 200)
+                if (Globals.Player._hp > 200)
                 {
-                    Globals.player._hp = 200;
+                    Globals.Player._hp = 200;
                 }
                 
             }

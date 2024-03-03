@@ -9,20 +9,17 @@ namespace Audio;
 
 public static class Sound
 {
-
-    public static Song Key;
-    public static Song sweden;
-    public static Song aria;
     public static List<Song> music;
 
 
     public static void Load()
     {
-        Key = Globals.Content.Load<Song>("Sound/Key");
-        sweden = Globals.Content.Load<Song>("Sound/Sweden");
-        aria = Globals.Content.Load<Song>("Sound/Aria");
-
-        music = new List<Song> { Key, sweden, aria };
+        music = new List<Song>
+        {
+            Globals.Content.Load<Song>("Sound/Key"),
+            Globals.Content.Load<Song>("Sound/Sweden"),
+            Globals.Content.Load<Song>("Sound/Aria")
+        };
     }
     
     public static Dictionary<string,SoundEffectInstance> soundDict = new Dictionary<string,SoundEffectInstance>()

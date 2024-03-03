@@ -43,10 +43,10 @@ public class BuyInterface
             Globals.spriteBatch.DrawString(Font.fonts["MainFont-24"], $"{npc.name}'s shop", new Vector2(horizontalCell / 5  , verticalCell / 3), Color.Black);
             
             // Player HP
-            Globals.spriteBatch.DrawString(Font.fonts["MainFont-24"], $"{Globals.player._hp}", new Vector2(horizontalCell * 25, verticalCell * 5 ), Color.Red);
+            Globals.spriteBatch.DrawString(Font.fonts["MainFont-24"], $"{Globals.Player._hp}", new Vector2(horizontalCell * 25, verticalCell * 5 ), Color.Red);
             
             // Player Balance
-            Globals.spriteBatch.DrawString(Font.fonts["MainFont-24"], $"{Globals.player._balance}", new Vector2(horizontalCell * 29, verticalCell * 5 ), Color.Yellow);
+            Globals.spriteBatch.DrawString(Font.fonts["MainFont-24"], $"{Globals.Player.Balance}", new Vector2(horizontalCell * 29, verticalCell * 5 ), Color.Yellow);
             
             //Arrow Sprite
             Globals.spriteBatch.Draw(Globals.Content.Load<Texture2D>("Items/Weapon/Bow/Arrow"), new Rectangle(horizontalCell * 24, verticalCell * 8, 100,40 ), Color.Yellow);
@@ -55,9 +55,9 @@ public class BuyInterface
             Globals.spriteBatch.Draw(Globals.Content.Load<Texture2D>("Items/Potion/smallPotion"), new Rectangle(horizontalCell * 28, verticalCell * 8, 100,100 ), Color.Yellow);
             
             // Potion amount
-            if (Globals.player.inventory.getHealthPotionIndex() != null)
+            if (Globals.Player.inventory.getHealthPotionIndex() != null)
             {
-                Globals.spriteBatch.DrawString(Font.fonts["MainFont-24"],$"{Globals.player.inventory.slotItemAmount[(int)Globals.player.inventory.getHealthPotionIndex()]}", new Vector2(horizontalCell * 28, verticalCell * 10), Color.Black);
+                Globals.spriteBatch.DrawString(Font.fonts["MainFont-24"],$"{Globals.Player.inventory.slotItemAmount[(int)Globals.Player.inventory.getHealthPotionIndex()]}", new Vector2(horizontalCell * 28, verticalCell * 10), Color.Black);
             }
             else
             {
