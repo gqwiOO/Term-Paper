@@ -38,6 +38,11 @@ public class Arrow
         _hitbox.Y += _speed * _direction.Y;
     }
 
+    public float Rotation()
+    {
+        return _arrowRotation;
+    }
+
     
     public void Draw()
     {

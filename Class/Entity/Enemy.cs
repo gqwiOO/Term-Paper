@@ -67,7 +67,7 @@ namespace Game1.Class.Entity
         
         // Getting Damage
         private int _takeDamageTimer;
-        private int cooldownTookDamage = 400;
+        private int cooldownTookDamage = 125;
         public bool canBeDamaged { get; private set; }
         public string name { get; set; }
         
@@ -77,7 +77,10 @@ namespace Game1.Class.Entity
             _attackTime += (int)Globals.gameTime.ElapsedGameTime.TotalMilliseconds;
             if (!isDead && Globals.gameState == State.State.Playing)
             {
-                if (hp <= 0)isDead = true;
+                if (hp <= 0)
+                {
+                    isDead = true;
+                }
                 
                 UpdateCollision();
                 UpdateFollowPlayer();
