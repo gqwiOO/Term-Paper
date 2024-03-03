@@ -2,6 +2,10 @@ using System;
 using Microsoft.Xna.Framework.Graphics;
 using Movement;
 using SharpDX;
+using Color = Microsoft.Xna.Framework.Color;
+using Rectangle = Microsoft.Xna.Framework.Rectangle;
+using RectangleF = MathL.RectangleF;
+using Vector2 = Microsoft.Xna.Framework.Vector2;
 
 namespace Game1.Class.Item;
 
@@ -13,7 +17,10 @@ public class Bow: Item
     public int animationTime { get; set; }
 
     private int _arrowFlyingDuration = 2000;
-    private int _timer = 0;
+    private int _arrowTimer;
+    
+    private int _bowDuration = 400;
+    private int _bowTimer;
     
     private bool isActive;
 
@@ -22,19 +29,16 @@ public class Bow: Item
     public override void Use()
     {
     }
-    
+
     public string spritePath
     {
-        set
-        {
-            _sprite = Globals.Content.Load<Texture2D>(value);
-        }
+        set { _sprite = Globals.Content.Load<Texture2D>(value); }
     }
 
-    
+
     public override void Update()
     {
-        if (Globals.gameState == State.State.Playing )
+        if (Globals.gameState == State.State.Playing)
         {
             if (Input.hasBeenLeftMouseButtonPressed() && arrow == null &&
                 Globals.player.inventory.getCurrentItemIndex() == Globals.player.inventory.getBowIndex())
@@ -44,14 +48,16 @@ public class Bow: Item
 
             if (arrow != null)
             {
-                _timer += (int)Globals.gameTime.ElapsedGameTime.TotalMilliseconds;
+                _arrowTimer += (int)Globals.gameTime.ElapsedGameTime.TotalMilliseconds;
+                _bowTimer += (int)Globals.gameTime.ElapsedGameTime.TotalMilliseconds;
                 arrow.Update();
                 if (arrow.IntersectsEnemy()) arrow = null;
                 
-                if (_timer > _arrowFlyingDuration)
+                if (_arrowTimer > _arrowFlyingDuration)
                 {
-                    _timer = 0;
+                    _arrowTimer = 0;
                     arrow = null;
+                    _bowTimer = 0;
                 }
             }
         }
@@ -60,9 +66,23 @@ public class Bow: Item
     
     public override void Draw()
     {
-        if (arrow != null)
+        if (arrow != null && Globals.gameState == State.State.Playing)
         {
+            if (_bowTimer < _bowDuration)
+            {
+                Globals.spriteBatch.Draw(_sprite,
+                    new Rectangle((int)Globals.player._hitBox.CenterRec.X + BowXPosiition(), (int)Globals.player._hitBox.CenterRec.Y,
+                        60, 60),
+                    null, Color.White, arrow.Rotation(), new Vector2(_sprite.Width / 2, _sprite.Height / 2),
+                    SpriteEffects.None, 0f);
+            }
             arrow.Draw();
         }
+    }
+
+    public int BowXPosiition()
+    {
+        if (Globals.player.lastStrafeDirection == Entity.Movement.Left) return -10;
+        return 10;
     }
 }

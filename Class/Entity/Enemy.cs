@@ -84,7 +84,11 @@ namespace Game1.Class.Entity
             _attackTime += (int)Globals.gameTime.ElapsedGameTime.TotalMilliseconds;
             if (!isDead && Globals.gameState == State.State.Playing)
             {
-                if (hp <= 0)isDead = true;
+                if (hp <= 0)
+                {
+                    isDead = true;
+                    Globals.player._balance += 5;
+                }
                 
                 UpdateCollision();
                 UpdateFollowPlayer();
