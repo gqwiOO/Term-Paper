@@ -322,6 +322,7 @@ namespace Game1
             Globals.spriteBatch.End();
             
             Globals.spriteBatch.Begin(SpriteSortMode.Deferred, null,SamplerState.PointClamp);
+            Debug.Debug.DrawInfo();
             _hud.Draw();
 
             if (Globals.Player.isDead) _restartMenu.Draw();

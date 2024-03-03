@@ -242,7 +242,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:Items/Potion/HealingPotion.png;Items/Potion/smallPotion.png
+/build:Items/Potion/HealingPotion.png
 
 #begin Items/Potion/LargePotion.png
 /importer:TextureImporter

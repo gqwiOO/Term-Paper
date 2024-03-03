@@ -4,8 +4,11 @@ namespace Game1.Debug;
 
 public class Debug
 {
-    public static void DrawInfo(string text,int yPosition)
+    public static string Text = "";
+    
+    
+    public static void DrawInfo()
     {
-        Globals.spriteBatch.DrawString(Font.fonts["MainFont-24"],text,new Vector2(10, yPosition),Color.Black);
+        Globals.spriteBatch.DrawString(Font.fonts["MainFont-24"],Text,new Vector2(10, 400),Color.Black);
     }
 }
